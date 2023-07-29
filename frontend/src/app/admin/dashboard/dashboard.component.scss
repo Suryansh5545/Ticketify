@@ -1,0 +1,22 @@
+.customer-interface-card {
+    background-color: #121212;
+    width: auto; /* Adjust the width as per your requirements */
+    margin: 10px; /* Adjust the margin as per your requirements */
+    border: 1px solid #ccc; /* Add a border as the bounding box */
+    transition: box-shadow 0.3s ease;
+}
+
+.graph-text {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 10px 15px 10px 5px;
+    margin: 0;
+}
+
+.graph-card {
+    background-color: #252323;
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+    height: 300px;
+}

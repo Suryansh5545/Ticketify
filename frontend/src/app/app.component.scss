@@ -1,0 +1,42 @@
+@import "../_base.scss";
+
+
+.custom-element {
+  background-color: #121212;
+  }
+  
+
+.customer-interface-card {
+    background-color: #121212;
+    width: auto; /* Adjust the width as per your requirements */
+    margin: 10px; /* Adjust the margin as per your requirements */
+    border: 1px solid #ccc; /* Add a border as the bounding box */
+    transition: box-shadow 0.3s ease;
+}
+
+.payment-interface-card {
+  background-color: #301E67;
+  width: auto; /* Adjust the width as per your requirements */
+  margin: 10px; /* Adjust the margin as per your requirements */
+  position: sticky; 
+  top: 0;
+}
+
+.customer-interface-card:hover {
+  box-shadow: 0 0 10px 3px rgba(0, 255, 0, 0.3);
+}
+
+.card-image-container {
+  height: 200px; /* Adjust the maximum height as needed */
+  overflow: hidden;
+}
+
+.card-img {
+  width: auto;
+  max-height: 100%;
+}
+
+.checkout {
+  width: 100%;
+  margin: 10px;
+}

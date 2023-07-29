@@ -1,0 +1,45 @@
+
+
+<!-- Main content -->
+<div class="container mt-4">
+  <div class="row" *ngIf="SalesData">
+    <div class="col-md-6">
+      <div class="card customer-interface-card">
+        <div class="card-body row">
+          <h1 class="card-title graph-text col-md-6">Total Tickets</h1>
+          <h1 class="graph-text col-md-6 text-end" style="color: chocolate;">{{SalesData.total_tickets}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card customer-interface-card">
+        <div class="card-body row">
+          <h1 class="card-title graph-text col-md-6">Total Sale</h1>
+          <h1 class="graph-text col-md-6 text-end" style="color: chocolate;">{{SalesData.total_amount | currency : "INR"}}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Chart 1 Card -->
+    <div class="col-md-6">
+      <div class="card customer-interface-card">
+        <div class="card-body">
+          <h5 class="card-title graph-text">Events</h5>
+          <canvas id="SubEventSaleChart" class="graph-card"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart 2 Card -->
+    <div class="col-md-6">
+      <div class="card customer-interface-card">
+        <div class="card-body">
+          <h5 class="card-title graph-text">Addons</h5>
+          <canvas id="AddonSaleChart" class="graph-card"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

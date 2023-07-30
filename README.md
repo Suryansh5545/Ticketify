@@ -55,12 +55,14 @@ If you are facing any issue during installation, please feel free to reach out t
 5. Ability to host mutliple concurrently active events on the same site.
 
 # Screenshot (Early Development Phase)
-![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/488cd1e7-0aeb-458c-9075-d7daaf82516c)
-![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/7669f314-1453-4867-ab41-c7f3981aab7c)
-![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/a8334b9f-dfc5-426d-892a-f6861c5e29c4)
-![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/cbbb91a3-f934-4a6c-9287-2ba283e670be)
-![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/9ba7a6e3-fa00-4cb5-9824-feb1149c4ba9)
-![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/e5d2887f-784b-4978-92bf-97ad21914055)
+![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/1874be8f-f40d-4038-abc4-479b9cbd53b9)
+![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/62f31e56-ebfe-41b3-9cba-54f108022571)
+![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/631b3526-236a-4aff-bceb-0f7868f383d8)
+![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/9bb1fc2d-e409-401a-88c1-8f22e3e1b6be)
+![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/6f20f547-0a2a-4f52-a20b-af1c35f439de)
+
+
+
 
 
 

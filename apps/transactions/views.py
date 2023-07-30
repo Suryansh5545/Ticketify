@@ -15,7 +15,6 @@ from base.utils import EmailService
 client = razorpay.Client(auth=(os.environ.get("RAZORPAY_KEY"), os.environ.get("RAZORPAY_SECRET")))
 
 class HandlePayment(APIView):
-    permission_classes = (permissions.AllowAny,)
     def post(self, request):
         if (os.environ.get("PAYMENT_ENV") == "development"):
             transaction = Transaction.objects.create(payment_method="card", payment_status="success", payment_id="1234567890", payment_amount=1000, payment_currency="NGN")
@@ -82,7 +81,6 @@ def HandlePriceCalculation(request):
 
 
 class HandlePaymentSuccess(APIView):
-    permission_classes = (permissions.AllowAny,)
     def post(self, request):
         razorpay_payment_id = request.data.get('razorpay_payment_id')
         razorpay_order_id = request.data.get('razorpay_order_id')

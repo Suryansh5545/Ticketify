@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service/api.service.component';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -207,6 +208,33 @@ export class EventDetailsService {
         reject(error); // Reject the promise if an error occurs
         this._snackBar.open(error.error.message, 'Close', {
           duration: 2000,
+          });
+      });
+    });
+  }
+
+  send_login_data(data: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      this.HttpService.post<Event[]>('login/', data).subscribe(data => {
+        resolve(); // Resolve the promise after the HTTP request is complete
+      }, error => {
+        reject(error); // Reject the promise if an error occurs
+        this._snackBar.open(error.error.message, 'Close', {
+          duration: 4000,
+          });
+      });
+    });
+  }
+
+  send_logout(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.HttpService.post<Event[]>('logout/', 66).subscribe(data => {
+        resolve(); // Resolve the promise after the HTTP request is complete
+      }, error => {
+        reject(error); // Reject the promise if an error occurs
+        this._snackBar.open(error.error.message, 'Close', {
+          duration: 4000,
           });
       });
     });

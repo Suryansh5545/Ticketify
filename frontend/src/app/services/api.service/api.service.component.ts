@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CsrfInterceptorService } from '../interceptor/csrf-interceptor.service';
 
 @Injectable()
 export class ApiService {
   API = environment.api_endpoint;
-  HEADERS = { 'Content-Type': 'application/json' };
+  private HEADERS = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
   HTTP_OPTIONS: any;
 
     /**
@@ -16,16 +19,20 @@ export class ApiService {
    */
     constructor(private http: HttpClient) {}
 
-    get<T>(endpoint: string): Observable<T> {
+    get<T>(endpoint: string, withCredentials: boolean = true): Observable<T> {
       const url = `${this.API}${endpoint}`;
-      const headers = this.HEADERS;
-      return this.http.get<T>(url, { headers });
+      const options = { headers: this.HEADERS, withCredentials: withCredentials };
+      return this.http.get<T>(url, options);
     }
   
-    post<T>(endpoint: string, data: any): Observable<T> {
+    post<T>(endpoint: string, data: any, withCredentials: boolean = true): Observable<T> {
       const url = `${this.API}${endpoint}`;
-      const headers = this.HEADERS;
-      return this.http.post<T>(url, data, { headers });
-    }
+      const options = { headers: this.HEADERS, withCredentials: withCredentials };
+      return this.http.post<T>(url, data, options);
+    }    
 
 }
+
+export const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptorService, multi: true },
+];

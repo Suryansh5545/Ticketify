@@ -1,15 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ApiService } from './services/api.service/api.service.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EventDetailsService } from './services/event-details/event-details.service';
 import { HeaderComponent } from './header/header.component';
 import { FormsModule } from '@angular/forms';
 import { Routes , RouterModule } from '@angular/router';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { SideBarComponent } from './side-bar/side-bar.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { TicketsComponent } from './admin/tickets/tickets.component';
+import { TicketDialogComponent } from './admin/dialog/ticket-dialog/ticket-dialog.component';
+import { ScanComponent } from './admin/scan/scan.component';
+import { TransactionsComponent } from './admin/dialog/transactions/transactions.component';
 
 // Angular Material
 import {MatButtonModule} from '@angular/material/button';
@@ -32,24 +37,26 @@ import {MatSelectModule} from '@angular/material/select';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { CheckoutComponent } from './checkout/checkout.component';
-import { SideBarComponent } from './side-bar/side-bar.component';
-import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { TicketsComponent } from './admin/tickets/tickets.component';
-import { TicketDialogComponent } from './admin/dialog/ticket-dialog/ticket-dialog.component';
-import { ScanComponent } from './admin/scan/scan.component';
-import { TransactionsComponent } from './admin/dialog/transactions/transactions.component';
 
 // NPM Module
 import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
 import { ListComponent } from './admin/list/list.component';
+import { LoginComponent } from './admin/login/login.component';
+
+// Services
+import { ApiService, httpInterceptorProviders  } from './services/api.service/api.service.component';
+import { EventDetailsService } from './services/event-details/event-details.service';
+import { isAtuhGuard } from './services/authentication/authguard.guard';
+import { HttpinterceptorService } from './services/interceptor/httpinterceptor.service';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent},
   { path: '', redirectTo: 'checkout', pathMatch: 'full' },
   { path: 'checkout', component: CheckoutComponent },
   {
     path: 'admin',
     component: SideBarComponent, // AdminComponent will be displayed in the main router-outlet
+    canActivate: [isAtuhGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' }, // Redirect to dashboard as the default child route for /admin
       { path: 'dashboard', component: DashboardComponent }, // DashboardComponent will be displayed in the router-outlet of AdminComponent
@@ -75,6 +82,7 @@ const routes: Routes = [
     ScanComponent,
     TransactionsComponent,
     ListComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,7 +109,8 @@ const routes: Routes = [
     MatSelectModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [ApiService, EventDetailsService],
+  providers: [ApiService, EventDetailsService, 
+    { provide: HTTP_INTERCEPTORS, useClass: HttpinterceptorService, multi: true }, httpInterceptorProviders ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

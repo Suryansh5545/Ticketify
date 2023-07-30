@@ -17,6 +17,12 @@
             <mat-icon>{{link.icon}}</mat-icon>
           </button>
         </mat-list-item>
+        <mat-list-item (click)="logout()">
+          <a> Logout </a>
+          <button mat-icon-button matListItemMeta>
+            <mat-icon>exit_to_app</mat-icon>
+          </button>
+        </mat-list-item>
       </mat-nav-list>      
     </mat-sidenav>
     <mat-sidenav-content>

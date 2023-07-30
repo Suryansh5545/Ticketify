@@ -1,14 +1,13 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions, status
+from rest_framework import permissions, status, authentication
 from .models import Event, PromoCode, SubEvent, Addon
 from ticket.models import Ticket
 from .serializers import EventSerializer, SubEventSerializer, AddonSerializer
 
 
 class GetActiveEvent(APIView):
-    permission_classes = (permissions.AllowAny, )
     def get(self, request, format=None):
         event = Event.objects.filter(is_active=True)
         serializer = EventSerializer(event, context={"request": request}, many=True)
@@ -18,7 +17,6 @@ class GetActiveEvent(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class GetSubEvent(APIView):
-    permission_classes = (permissions.AllowAny, )
     def get(self, request, pk, format=None):
         event = Event.objects.get(pk=pk)
         sub_event = event.subevent_set.filter(is_active=True)
@@ -29,7 +27,6 @@ class GetSubEvent(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class GetAddon(APIView):
-    permission_classes = (permissions.AllowAny, )
     def get(self, request, pk, format=None):
             event = Event.objects.get(pk=pk)
             addon = event.addon_set.filter(is_active=True)
@@ -40,7 +37,6 @@ class GetAddon(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
 class ProcessPromoCode(APIView):
-    permission_classes = (permissions.AllowAny, )
     def post(self, request, format=None):
         try:
             promo_code = request.data.get("promo_code")
@@ -57,6 +53,8 @@ class ProcessPromoCode(APIView):
         
 
 class get_max_ticket_sales(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.SessionAuthentication]
     def get(self, request, pk):
         event = Event.objects.get(pk=pk)
         tickets = Ticket.objects.filter(event=event, is_active=True)
@@ -68,6 +66,8 @@ class get_max_ticket_sales(APIView):
 
 
 class get_sub_event_sales(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.SessionAuthentication]
     def get(self, request, pk):
         event = Event.objects.get(pk=pk)
         sub_events = SubEvent.objects.filter(event=event)
@@ -81,6 +81,8 @@ class get_sub_event_sales(APIView):
     
 
 class get_addon_sales(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.SessionAuthentication]
     def get(self, request, pk):
         event = Event.objects.get(pk=pk)
         addons = Addon.objects.filter(event=event)

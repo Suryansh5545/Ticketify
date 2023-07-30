@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, OnDestroy} from '@angular/core';
+import { Router } from '@angular/router';
+import { EventDetailsService } from '../services/event-details/event-details.service';
 
 @Component({
   selector: 'side-bar',
@@ -17,9 +19,18 @@ export class SideBarComponent {
     { path: '/admin/addon', label: 'Addons', icon: 'add_circle' },
   ];
   private _mobileQueryListener: () => void;
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router, private EventDetailsService: EventDetailsService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  logout() {
+    this.EventDetailsService.send_logout().then(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+      document.cookie = 'csrftoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      this.router.navigate(['/login']);
+    });
   }
 }

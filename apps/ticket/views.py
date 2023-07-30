@@ -3,13 +3,14 @@ from .models import Ticket, CheckIn
 from rest_framework.views import APIView, Response
 from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer
 from django.db.models import Q
-from rest_framework import permissions, status
+from rest_framework import permissions, status, authentication
 from .utils import send_ticket
 
     
 
 class get_tickets_by_filter(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         email = request.data.get('email')
         phone = request.data.get('phone')
@@ -43,7 +44,8 @@ class get_tickets_by_filter(APIView):
     
 
 class handle_check_in(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         ticket_id = request.data.get('ticket_id')
         operator = request.data.get('operator')
@@ -77,7 +79,8 @@ class handle_check_in(APIView):
             
 
 class get_check_in_data(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
@@ -98,7 +101,8 @@ class get_check_in_data(APIView):
         
 
 class resend_email(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
@@ -115,7 +119,8 @@ class resend_email(APIView):
         
 
 class get_ticket_id(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         email = request.data.get('email')
         phone = request.data.get('phone')
@@ -133,7 +138,8 @@ class get_ticket_id(APIView):
         
 
 class get_ticket_by_subevents(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         list_id = request.data.get('list_id')
         if not list_id:
@@ -150,7 +156,8 @@ class get_ticket_by_subevents(APIView):
         
 
 class get_ticket_by_addons(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         list_id = request.data.get('list_id')
         if not list_id:

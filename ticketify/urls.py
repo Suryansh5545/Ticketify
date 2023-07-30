@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/event/', include('event.urls')),
     path('api/transactions/', include('transactions.urls')),
     path('api/ticket/', include('ticket.urls')),
+    path('api/', include('dj_rest_auth.urls')),
 ]
 
 if settings.DEBUG:

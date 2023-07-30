@@ -41,7 +41,7 @@ Setting up Ticketify on your local machine is really easy. You can setup Ticketi
     docker compose up --build
     ```
 4. To Test Email support or Razorpay integration edit the docker.env.example file and rename the new one to docker.env
-5. That's it. Open web browser and hit the URL [http://127.0.0.1:8888](http://127.0.0.1:4200). One user is created by default which are listed below -
+5. That's it. Open web browser and hit the URL [http://127.0.0.1:4200](http://127.0.0.1:4200). One user is created by default which are listed below -
 
     **SUPERUSER-** username: `admin` password: `password`
 

@@ -28,8 +28,7 @@ services:
       context: ./
       dockerfile: docker/dev/nodejs_v1/Dockerfile
     environment:
-        ANGULAR_ENV: development
-        API_ENDPOINT: http://localhost:8000/api/ 
+        ANGULAR_ENV: development 
     ports:
       -  "49153:49153"
       - "4200:4200"

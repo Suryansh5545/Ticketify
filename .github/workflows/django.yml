@@ -14,7 +14,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.11]
-
+    environment: dev
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -26,7 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements/dev.txt
     - name: Echo "this"
-      run: echo "${{env.DJANGO_SETTINGS_MODULE}}"
+      run: echo "${{vars.DJANGO_SETTINGS_MODULE}}"
     - name: Run Tests
       run: |
         python manage.py test

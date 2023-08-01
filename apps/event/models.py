@@ -39,7 +39,6 @@ class SubEvent(models.Model):
     image = models.ImageField(upload_to='sub_event', blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     event = models.ForeignKey('event.Event', on_delete=models.CASCADE)
-    coordinator = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

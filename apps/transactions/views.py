@@ -1,14 +1,15 @@
-import json
+from base.utils import get_url_from_hostname
 from django.shortcuts import redirect, render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions, status
+from rest_framework import status
+from django.conf import settings
 from .models import Transaction
 from ticket.utils import create_ticket, generate_ticket_image
 from ticket.models import Ticket
 from event.models import Event, SubEvent, Addon
 from django.http import HttpResponse
-import os, razorpay
+import os, razorpay, json
 from base.utils import EmailService
 
 
@@ -55,7 +56,7 @@ class HandlePayment(APIView):
                                 "currency": order['currency'], 
                                 "id": (os.environ.get("RAZORPAY_KEY")),
                                 "Business": "JKLU",
-                                "callback_url": "http://" + request.get_host() + "/api/transactions/handle-payment-success/",
+                                "callback_url": get_url_from_hostname(settings.HOSTNAME) + "/api/transactions/handle-payment-success/",
                                 "image": "https://sabrang.jklu.edu.in/wp-content/uploads/2022/10/sabrang-cover-text-e1664621537950.png"}
                 return Response(return_data, status=status.HTTP_200_OK)
 

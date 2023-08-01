@@ -21,3 +21,5 @@ def get_file_content(file_path, mode):
     if os.path.isfile(file_path):
         with open(file_path, mode) as file_content:
             return file_content.read()
+    else:
+        raise FileNotFoundError

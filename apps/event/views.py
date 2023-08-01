@@ -7,47 +7,62 @@ from ticket.models import Ticket
 from .serializers import EventSerializer, SubEventSerializer, AddonSerializer
 
 
-class GetActiveEvent(APIView):
-    def get(self, request, format=None):
-        event = Event.objects.filter(is_active=True)
-        serializer = EventSerializer(event, context={"request": request}, many=True)
-        if serializer.is_valid:
-            return Response(serializer.data, status=status.HTTP_200_OK)
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework import status
+
+class GetActiveEvent(ListAPIView):
+    queryset = Event.objects.filter(is_active=True)
+    serializer_class = EventSerializer
+
+    def list(self, request, *args, **kwargs):
+        if self.queryset.exists():
+            return super().list(request, *args, **kwargs)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response("No Active Event", status=status.HTTP_400_BAD_REQUEST)
+
     
 class GetSubEvent(APIView):
     def get(self, request, pk, format=None):
         event = Event.objects.get(pk=pk)
         sub_event = event.subevent_set.filter(is_active=True)
-        serializer = SubEventSerializer(sub_event, context={"request": request}, many=True)
-        if serializer.is_valid:
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        if sub_event:
+            serializer = SubEventSerializer(sub_event, context={"request": request}, many=True)
+            if serializer.is_valid:
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response("No Active Sub Event", status=status.HTTP_400_BAD_REQUEST)
         
 class GetAddon(APIView):
     def get(self, request, pk, format=None):
             event = Event.objects.get(pk=pk)
             addon = event.addon_set.filter(is_active=True)
-            serializer = AddonSerializer(addon, many=True)
-            if serializer.is_valid:
-                return Response(serializer.data, status=status.HTTP_200_OK)
+            if addon:
+                serializer = AddonSerializer(addon, many=True)
+                if serializer.is_valid:
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response("No active Addon", status=status.HTTP_400_BAD_REQUEST)
             
 class ProcessPromoCode(APIView):
     def post(self, request, format=None):
         try:
             promo_code = request.data.get("promo_code")
             event_id = request.data.get("event_id")
-            promo_code = PromoCode.objects.get(code=promo_code)
-            event = Event.objects.get(pk=event_id)
-            if promo_code.event == event:
-                promo_code.stock -= 1
-                return Response({"discount": promo_code.discount}, status=status.HTTP_200_OK)
+            promo_code = PromoCode.objects.get(code=promo_code,is_active=True)
+            if promo_code.stock == 0:
+                return Response({"error": "Promo code out of stock"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({"error": "Promo code not valid for this event"}, status=status.HTTP_400_BAD_REQUEST)
+                event = Event.objects.get(pk=event_id)
+                if promo_code.event == event:
+                    promo_code.stock -= 1
+                    return Response({"discount": promo_code.discount}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": "Promo code not valid for this event"}, status=status.HTTP_400_BAD_REQUEST)
         except PromoCode.DoesNotExist:
             return Response({"error": "Promo code does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         

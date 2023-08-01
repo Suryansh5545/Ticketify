@@ -74,7 +74,6 @@ def create_sub_event(event):
         image= ContentFile(get_file_content("example/logo/3-725x1024.png", "rb"), "logo.png"),
         price=100.00,
         event=event,
-        coordinator="Sub Event 1",
         is_active=True,
     )
     sub_event2 = SubEvent.objects.create(
@@ -85,7 +84,6 @@ def create_sub_event(event):
         image= ContentFile(get_file_content("example/logo/4-725x1024.png", "rb"), "logo.png"),
         price=100.00,
         event=event,
-        coordinator="Sub Event 1",
         is_active=True,
     )
     sub_event3 = SubEvent.objects.create(
@@ -96,7 +94,6 @@ def create_sub_event(event):
         image= ContentFile(get_file_content("example/logo/1-725x1024.png", "rb"), "logo.png"),
         price=100.00,
         event=event,
-        coordinator="Sub Event 1",
         is_active=True,
     )
     sub_event4 = SubEvent.objects.create(
@@ -107,7 +104,6 @@ def create_sub_event(event):
         image= ContentFile(get_file_content("example/logo/6-725x1024.png", "rb"), "logo.png"),
         price=100.00,
         event=event,
-        coordinator="Sub Event 1",
         is_active=True,
     )
     sub_event5 = SubEvent.objects.create(
@@ -118,7 +114,6 @@ def create_sub_event(event):
         image= ContentFile(get_file_content("example/logo/5-725x1024.png", "rb"), "logo.png"),
         price=100.00,
         event=event,
-        coordinator="Sub Event 1",
         is_active=True,
     )
     sub_event6 = SubEvent.objects.create(
@@ -129,7 +124,6 @@ def create_sub_event(event):
         image= ContentFile(get_file_content("example/logo/2-725x1024.png", "rb"), "logo.png"),
         price=100.00,
         event=event,
-        coordinator="Sub Event 1",
         is_active=True,
     )
     sub_event7 = SubEvent.objects.create(
@@ -140,7 +134,6 @@ def create_sub_event(event):
         image= ContentFile(get_file_content("example/logo/7-768x1085.png", "rb"), "logo.png"),
         price=100.00,
         event=event,
-        coordinator="Sub Event 1",
         is_active=True,
     )
     print("Sub Events was created")

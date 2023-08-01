@@ -26,7 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements/dev.txt
     - name: Echo "this"
-      run: echo "${{vars.DJANGO_SETTINGS_MODULE}}"
+      run: echo "${{dev.DJANGO_SETTINGS_MODULE}}"
     - name: Run Tests
       run: |
         python manage.py test

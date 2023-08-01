@@ -1,7 +1,6 @@
 import os
 from django.core import mail
 from django.test import TestCase
-from unittest.mock import patch
 from base.utils import get_url_from_hostname, EmailService, get_file_content
 from django.conf import settings
 

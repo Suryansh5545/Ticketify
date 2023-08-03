@@ -12,7 +12,7 @@ export interface TransactionsDialogData {
 })
 
 export class TransactionsComponent {
-  displayedColumns: string[] = ['payment_id', 'order_id', 'payment_method', 'payment_status', 'payment_amount'];
+  displayedColumns: string[] = ['payment_id', 'order_id', 'payment_method', 'payment_status', 'payment_amount', 'payment_currency'];
   constructor(@Inject(MAT_DIALOG_DATA) public data: TransactionsDialogData) {
   }
 

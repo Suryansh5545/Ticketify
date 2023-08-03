@@ -13,6 +13,7 @@ class TestGetUrl(TestCase):
 
     def test_get_url_from_hostname_with_https(self):
         settings.DEBUG = False
+        settings.TEST = False
         url = get_url_from_hostname("localhost:8000")
         self.assertEqual(url, "https://localhost:8000")
 

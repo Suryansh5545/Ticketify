@@ -156,20 +156,6 @@ TICKETIFY_API_SERVER = os.environ.get(
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_NAME", "evalai"),
-        "USER": os.environ.get("POSTGRES_USER", "postgres"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "PORT": os.environ.get("POSTGRES_PORT", 5432),
-    }
-}
-
 # Celery settings
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL" , "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND" , "redis://redis:6379/0")
@@ -202,3 +188,5 @@ if getenv("CSRF_TRUSTED_ORIGINS"):
     CSRF_TRUSTED_ORIGINS = getenv("CSRF_TRUSTED_ORIGINS").split(",")
 else:
     CSRF_TRUSTED_ORIGINS = []
+
+HOSTNAME = os.environ.get("HOSTNAME", "localhost:8000")

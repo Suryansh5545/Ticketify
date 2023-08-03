@@ -169,19 +169,6 @@ export class EventDetailsService {
     });
   }
 
-  get_ticket_id(data: any): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.HttpService.post<Event[]>('ticket/get_ticket_id/', data).subscribe(data => {
-        this.TicketID = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
-      }, error => {
-        reject(error); // Reject the promise if an error occurs
-        this._snackBar.open(error.error.message, 'Close', {
-          duration: 2000,
-          });
-      });
-    });
-  }
 
   get_ticket_by_subevent(data: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {

@@ -14,7 +14,7 @@ export class TicketsComponent {
   phone: any;
   name: any;
   TicketData: any;
-  displayedColumns: string[] = ['customer_email', 'customer_phone', 'customer_name', 'selected_sub_event', 'selected_addon', 'ticket_view'];
+  displayedColumns: string[] = ['id', 'customer_email', 'customer_phone', 'customer_name', 'selected_sub_event', 'selected_addon', 'ticket_view'];
   constructor(private EventDetailsService: EventDetailsService, private dialog: MatDialog, private _snackBar: MatSnackBar) { }
   search() {
     if (this.email == undefined && this.phone == undefined && this.name == undefined) {

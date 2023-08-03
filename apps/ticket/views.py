@@ -1,4 +1,5 @@
 import datetime
+from event.models import SubEvent, Addon
 from .models import Ticket, CheckIn
 from rest_framework.views import APIView, Response
 from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer
@@ -18,9 +19,9 @@ class get_tickets_by_filter(APIView):
         ticket_id = request.data.get('ticket_id')
         if ticket_id:
             try:
-                ticket = Ticket.objects.get(check_in=ticket_id)
+                ticket = Ticket.objects.get(check_in=ticket_id, is_active=True)
             except Ticket.DoesNotExist:
-                return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "Ticket does not exist or isn't active"}, status=status.HTTP_400_BAD_REQUEST)
             serializer = AdminTicketSerializer(ticket)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
@@ -48,7 +49,9 @@ class handle_check_in(APIView):
     authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
         ticket_id = request.data.get('ticket_id')
-        operator = request.data.get('operator')
+        if not ticket_id:
+            return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        operator = request.user.id
         if len(ticket_id) == 10:
             method = "QR"
         else:
@@ -58,12 +61,11 @@ class handle_check_in(APIView):
             return Response({"message": "ticket_id, operator and method are required"}, status=status.HTTP_400_BAD_REQUEST)
         try:
             if(method == "QR"):
-                ticket = Ticket.objects.get(check_in=ticket_id)
+                ticket = Ticket.objects.get(check_in=ticket_id, is_active=True)
             else:
-                print("manual")
-                ticket = Ticket.objects.get(id=ticket_id)
+                ticket = Ticket.objects.get(id=ticket_id, is_active=True)
         except Ticket.DoesNotExist:
-            return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Ticket does not exist or is not active"}, status=status.HTTP_400_BAD_REQUEST)
         if ticket.event.end_date < time.date():
             return Response({"message": "Event has ended"}, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -72,7 +74,7 @@ class handle_check_in(APIView):
                 if check_in_check.exists():
                     return Response({"message": "Ticket already checked in today"}, status=status.HTTP_400_BAD_REQUEST)
                 
-                check_in = CheckIn.objects.create(ticket=ticket, operator=operator, method=method, check_in_time=time)
+                CheckIn.objects.create(ticket=ticket, operator=operator, method=method)
                 return Response({"message": "Ticket checked in successfully"}, status=status.HTTP_200_OK)
             else:
                 return Response({"message": "Ticket is not active"}, status=status.HTTP_400_BAD_REQUEST)
@@ -86,7 +88,7 @@ class get_check_in_data(APIView):
         if not ticket_id:
             return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            ticket = Ticket.objects.get(id=ticket_id)
+            ticket = Ticket.objects.get(id=ticket_id, is_active=True)
         except Ticket.DoesNotExist:
             return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         if ticket.is_active:
@@ -108,31 +110,12 @@ class resend_email(APIView):
         if not ticket_id:
             return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            ticket = Ticket.objects.get(id=ticket_id)
+            ticket = Ticket.objects.get(id=ticket_id, is_active=True)
         except Ticket.DoesNotExist:
             return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         if ticket.is_active:
             send_ticket.delay(ticket.id)
             return Response({"message": "Ticket email sent successfully"}, status=status.HTTP_200_OK)
-        else:
-            return Response({"message": "Ticket is not active"}, status=status.HTTP_400_BAD_REQUEST)
-        
-
-class get_ticket_id(APIView):
-    permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
-    def post(self, request):
-        email = request.data.get('email')
-        phone = request.data.get('phone')
-        name = request.data.get('name')
-        if not email or not phone or not name:
-            return Response({"message": "email, phone and name are required"}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            ticket = Ticket.objects.get(customer_email=email, customer_phone=phone, customer_name=name)
-        except Ticket.DoesNotExist:
-            return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
-        if ticket.is_active:
-            return Response({"ticket_id": ticket.id}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Ticket is not active"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -144,8 +127,10 @@ class get_ticket_by_subevents(APIView):
         list_id = request.data.get('list_id')
         if not list_id:
             return Response({"message": "ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        elif SubEvent.objects.filter(id=list_id, is_active=True).exists() == False:
+            return Response({"message": "Sub Event does not exist or is not active"}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            tickets = Ticket.objects.filter(selected_sub_events__in=[list_id])
+            tickets = Ticket.objects.filter(selected_sub_events__in=[list_id], is_active=True)
         except Ticket.DoesNotExist:
             return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         if tickets.exists():
@@ -162,8 +147,10 @@ class get_ticket_by_addons(APIView):
         list_id = request.data.get('list_id')
         if not list_id:
             return Response({"message": "ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        elif Addon.objects.filter(id=list_id, is_active=True).exists() == False:
+            return Response({"message": "Sub Event does not exist or is not active"}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            tickets = Ticket.objects.filter(selected_addons__in=[list_id])
+            tickets = Ticket.objects.filter(selected_addons__in=[list_id], is_active=True)
         except Ticket.DoesNotExist:
             return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         if tickets.exists():

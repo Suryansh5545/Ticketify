@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import  get_tickets_by_filter, handle_check_in, get_check_in_data, resend_email, get_ticket_by_subevents, get_ticket_by_addons
+from .views import  get_tickets_by_filter, handle_check_in, get_check_in_data, resend_email, get_ticket_by_subevents, get_ticket_by_addons, get_ticket_by_task
 
 urlpatterns = [
     path('get_tickets_by_filter/', get_tickets_by_filter.as_view(), name='get_tickets_by_filter'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('resend_email/', resend_email.as_view(), name='resend_email'),
     path('get_ticket_by_subevents/', get_ticket_by_subevents.as_view(), name='get_ticket_by_subevents'),
     path('get_ticket_by_addons/', get_ticket_by_addons.as_view(), name='get_ticket_by_addons'),
+    path('get_ticket_by_task/', get_ticket_by_task.as_view(), name='get_ticket_by_task'),
 ]

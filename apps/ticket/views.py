@@ -6,6 +6,7 @@ from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSer
 from django.db.models import Q
 from rest_framework import permissions, status, authentication
 from .utils import send_ticket
+from celery.result import AsyncResult
 
     
 
@@ -157,5 +158,20 @@ class get_ticket_by_addons(APIView):
             serializer = TicketListSerializer(tickets, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({"message": "No tickets found"}, status=status.HTTP_400_BAD_REQUEST)  
+            return Response({"message": "No tickets found"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class get_ticket_by_task(APIView):
+    def post(self, request):
+        task_id = request.data.get('task_id')
+        if not task_id:
+            return Response({"message": "task_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            result = AsyncResult(task_id)
+        except:
+            return Response({"message": "Task does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        if result.status == "SUCCESS":
+            return Response(result.result, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Task is not complete"}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -190,3 +190,5 @@ else:
     CSRF_TRUSTED_ORIGINS = []
 
 HOSTNAME = os.environ.get("HOSTNAME", "localhost:8000")
+
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "localhost:4200")

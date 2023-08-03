@@ -22,6 +22,7 @@ export class EventDetailsService {
   ResendEmailResponse: any;
   TicketID: any;
   Ticket_by_list: any;
+  task_result: any;
 
   constructor(private HttpService: ApiService, private router: Router, private _snackBar: MatSnackBar) {
   }
@@ -31,9 +32,10 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.get<Event[]>('event/get_event').subscribe(data => {
         this.event = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        this.router.navigate(['/maintenance']);
+        reject(error); 
       });
     });
   }
@@ -43,9 +45,9 @@ export class EventDetailsService {
       if (this.event[0].id) {
         this.HttpService.get<Event[]>('event/get_sub_event/' + this.event[0].id + '/').subscribe(data => {
           this.SubEvent = data;
-          resolve(); // Resolve the promise after the HTTP request is complete
+          resolve();
         }, error => {
-          reject(error); // Reject the promise if an error occurs
+          reject(error);
         });
       } else {
         reject('Event data is not available.'); // Reject the promise if event data is not available
@@ -57,9 +59,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.get<Event[]>('event/get_addon/' + this.event[0].id + '/').subscribe(data => {
         this.Addon = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -68,9 +70,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('event/process_promo_code/', { 'promo_code': promoCode, 'event_id': this.event[0].id }).subscribe(data => {
         this.PromoData = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -79,9 +81,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('transactions/handle-payment/', userData).subscribe(data => {
         this.CheckoutData = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -90,9 +92,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.get<Event[]>('event/get_max_ticket_sales/' + this.event[0].id + "/").subscribe(data => {
         this.SalesData = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -101,9 +103,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.get<Event[]>('event/get_sub_event_sales/' + this.event[0].id + "/").subscribe(data => {
         this.SubEventData = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -112,9 +114,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.get<Event[]>('event/get_addon_sales/' + this.event[0].id + "/").subscribe(data => {
         this.AddonData = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -123,9 +125,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('ticket/get_tickets_by_filter/', data).subscribe(data => {
         this.TicketData = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
         this._snackBar.open(error.error.message, 'Close', {
           duration: 2000,
           });
@@ -137,9 +139,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('ticket/handle_check_in/', data).subscribe(data => {
         this.CheckInResponse = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
         this._snackBar.open(error.error.message, 'Close', {
           duration: 2000,
           });
@@ -151,9 +153,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('ticket/get_check_in_data/', data).subscribe(data => {
         this.CheckInData = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -162,9 +164,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('ticket/resend_email/', data).subscribe(data => {
         this.ResendEmailResponse = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
       });
     });
   }
@@ -174,10 +176,10 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('ticket/get_ticket_by_subevents/', data).subscribe(data => {
         this.Ticket_by_list = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
         this.Ticket_by_list = [];
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
         this._snackBar.open(error.error.message, 'Close', {
           duration: 2000,
           });
@@ -189,10 +191,10 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('ticket/get_ticket_by_addons/', data).subscribe(data => {
         this.Ticket_by_list = data;
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
         this.Ticket_by_list = [];
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
         this._snackBar.open(error.error.message, 'Close', {
           duration: 2000,
           });
@@ -204,9 +206,9 @@ export class EventDetailsService {
     return new Promise<void>((resolve, reject) => {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       this.HttpService.post<Event[]>('login/', data).subscribe(data => {
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
         this._snackBar.open(error.error.message, 'Close', {
           duration: 4000,
           });
@@ -217,12 +219,24 @@ export class EventDetailsService {
   send_logout(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.HttpService.post<Event[]>('logout/', 66).subscribe(data => {
-        resolve(); // Resolve the promise after the HTTP request is complete
+        resolve();
       }, error => {
-        reject(error); // Reject the promise if an error occurs
+        reject(error);
         this._snackBar.open(error.error.message, 'Close', {
           duration: 4000,
           });
+      });
+    });
+  }
+
+  get_ticket_by_task(data: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.HttpService.post<Event[]>('ticket/get_ticket_by_task/', data).subscribe(data => {
+        this.task_result = data;
+        resolve();
+      }
+      , error => {
+        reject(error);
       });
     });
   }

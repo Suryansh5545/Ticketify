@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { EventDetailsService } from '../services/event-details/event-details.service';
+import { EventDetailsService } from '../../services/event-details/event-details.service';
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, Renderer2 } from '@angular/core';
-import { LoadingServiceComponent } from '../loading-service/loading-service.component';
+import { LoadingServiceComponent } from '../../loading-service/loading-service.component';
 
 @Component({
   selector: 'app-checkout',

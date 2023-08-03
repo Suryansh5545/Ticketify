@@ -1,3 +1,10 @@
+<nav class="navbar bg-black border-bottom border-bottom-dark" data-bs-theme="dark">
+  <div class="container-fluid">
+    <ng-container *ngIf="eventdata && eventdata.length > 0">
+      <img *ngIf="eventdata[0].image" [src]="eventdata[0].image" alt="Logo" height="30" class="d-inline-block align-text-top" />
+    </ng-container>    
+    </div>
+</nav>
 <div class="row container-fluid">
     <div class="col-lg-8">
       <div class="card text-light mb-3 customer-interface-card">
@@ -135,8 +142,6 @@
       </div>
     </div>
   </div>
-
-
 <div class="loading-overlay" [style.display]="loadingService.isLoading ? 'flex' : 'none'">
   <mat-spinner></mat-spinner>
 </div>

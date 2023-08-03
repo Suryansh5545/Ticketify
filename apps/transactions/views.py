@@ -116,13 +116,14 @@ class HandlePaymentSuccess(APIView):
             ticket.save()
             # Wait for the Celery task to complete using the get() method with a timeout
             try:
-                ticket_url = ticket_url.get(timeout=60)  # Adjust the timeout value as needed
+                task_id = ticket_url.id
+                # ticket_url = ticket_url.get(timeout=60)  # Adjust the timeout value as needed
             except TimeoutError:
                 html_response = "<html><body><h1>Ticket Generation Pending</h1><p>Payment Done , Your Ticket will be mailed to your email.</p></body></html>"
                 return HttpResponse(html_response, status=400)
 
-            if ticket_url:
-                return redirect(ticket_url)
+            if task_id:
+                return redirect(get_url_from_hostname(settings.FRONTEND_URL) + "/delivery/" + task_id)
             else:
                 html_response = "<html><body><h1>Invalid Payment</h1><p>This Payment ID doesn't match our database, if you believe this is a error contact us at our support mail at our homepage.</p></body></html>"
                 return HttpResponse(html_response, status=400)

@@ -5,16 +5,17 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './header/header.component';
 import { FormsModule } from '@angular/forms';
 import { Routes , RouterModule } from '@angular/router';
-import { CheckoutComponent } from './checkout/checkout.component';
+import { CheckoutComponent } from './customer/checkout/checkout.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { TicketsComponent } from './admin/tickets/tickets.component';
 import { TicketDialogComponent } from './admin/dialog/ticket-dialog/ticket-dialog.component';
 import { ScanComponent } from './admin/scan/scan.component';
 import { TransactionsComponent } from './admin/dialog/transactions/transactions.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { DeliveryComponent } from './customer/delivery/delivery.component';
 
 // Angular Material
 import {MatButtonModule} from '@angular/material/button';
@@ -66,6 +67,8 @@ const routes: Routes = [
       { path: 'addon', component: ListComponent },
     ],
   },
+  { path: 'maintenance', component: MaintenanceComponent },
+  { path: 'delivery/:ticketId', component: DeliveryComponent },
 ];
 
 
@@ -73,7 +76,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     CheckoutComponent,
     SideBarComponent,
     DashboardComponent,
@@ -83,6 +85,8 @@ const routes: Routes = [
     TransactionsComponent,
     ListComponent,
     LoginComponent,
+    MaintenanceComponent,
+    DeliveryComponent,
   ],
   imports: [
     BrowserModule,

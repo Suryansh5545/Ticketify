@@ -1,0 +1,31 @@
+<div class="container d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+  <mat-card *ngIf="!ticketUrl" class="p-4 text-center custom-card" style="max-width: 400px;">
+    <!-- Display a loading message while waiting for the ticket URL -->
+    <mat-card-header>
+      <mat-card-title>Payment Completed</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="custom-card-content">
+      <p>
+        Your Ticket is being processed. Please wait a moment. It will also be mailed to your provided email address.
+      </p>
+      <p>
+        Thank you for your patience.
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="ticketUrl">
+    <!-- Display the ticket image once the ticket URL is available -->
+    <img [src]="ticketUrl" alt="Ticket" class="img-fluid">
+  </div>
+
+  <div *ngIf="!ticketUrl && shownnote" class="note">
+    If your ticket isn't shown here, don't worry! It will be mailed to your provided email address.
+  </div>
+
+  <div *ngIf="!ticketUrl" class="mt-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>

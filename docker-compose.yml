@@ -1,0 +1,55 @@
+version: "3"
+services:
+  db:
+    image: postgres:15.3
+    ports:
+      - "5432:5432"
+    env_file:
+      - docker/dev/docker.env
+
+  django:
+    hostname: django
+    env_file:
+      - docker/dev/docker.env
+    build:
+      context: ./
+      dockerfile: docker/dev/django/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/code
+
+  nodejs_v1:
+    hostname: nodejs_v1
+    build:
+      context: ./
+      dockerfile: docker/dev/nodejs_v1/Dockerfile
+    environment:
+        ANGULAR_ENV: development 
+    ports:
+      - "49153:49153"
+      - "4200:4200"
+    volumes:
+    - ./frontend:/code
+    - /code/node_modules
+
+  redis:
+    image: redis:7.2-rc3
+    ports:
+      - "6379:6379"
+
+  celery:
+    build:
+      context: ./
+      dockerfile: docker/dev/celery/Dockerfile
+    env_file:
+      - docker/dev/docker.env
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+      - django

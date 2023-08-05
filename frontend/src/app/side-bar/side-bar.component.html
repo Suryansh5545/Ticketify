@@ -1,0 +1,32 @@
+<div   class="example-container"
+[class.example-is-mobile]="mobileQuery.matches">
+<mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">Admin Panel</h1>
+</mat-toolbar>
+<mat-sidenav-container class="example-sidenav-container" class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #sidenav
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [fixedInViewport]="mobileQuery.matches"
+    fixedTopGap="56"
+    [opened]="!mobileQuery.matches">
+    <mat-nav-list>
+        <mat-list-item *ngFor="let link of links" [routerLink]="link.path" routerLinkActive="active-link">
+          <a>{{ link.label }}</a>
+          <button mat-icon-button matListItemMeta>
+            <mat-icon>{{link.icon}}</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-list-item (click)="logout()">
+          <a> Logout </a>
+          <button mat-icon-button matListItemMeta>
+            <mat-icon>exit_to_app</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>      
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+</div>

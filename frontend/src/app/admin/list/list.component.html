@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12 mt-2">
+        <div class="row">
+          <div class="col-md-12 row-card">
+            <mat-form-field>
+                <mat-label>Select {{ title }}</mat-label>
+                <mat-select (selectionChange)="change_detection($event)">
+                    <mat-option *ngFor="let list of Listitems" [value]="list.id">
+                      {{list.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="TableData">
+    <div class="col-md-12 row-card">
+          <table mat-table [dataSource]="TableData" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="customer_name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let ticket">{{ ticket.customer_name }}</td>
+            </ng-container>
+          
+            <ng-container matColumnDef="customer_phone">
+              <th mat-header-cell *matHeaderCellDef>Phone</th>
+              <td mat-cell *matCellDef="let ticket">{{ ticket.customer_phone }}</td>
+            </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+      </div>
+  </div>

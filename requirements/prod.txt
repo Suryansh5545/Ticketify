@@ -1,2 +1,0 @@
--r common.txt
-sentry-sdk==1.28.1

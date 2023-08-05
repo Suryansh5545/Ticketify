@@ -1,3 +1,3 @@
 #!/bin/sh
 cd /code && \
-celery -A ticketify worker --loglevel=INFO
+celery -A ticketify worker --beat --loglevel=INFO

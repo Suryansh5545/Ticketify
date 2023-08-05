@@ -7,13 +7,13 @@ from django.conf import settings
 from .models import Transaction
 from ticket.utils import create_ticket, generate_ticket_image
 from ticket.models import Ticket
-from event.models import Event, SubEvent, Addon
 from django.http import HttpResponse
 import os, razorpay, json
 from base.utils import EmailService
+from .utils import HandlePriceCalculation
 
 
-client = razorpay.Client(auth=(os.environ.get("RAZORPAY_KEY"), os.environ.get("RAZORPAY_SECRET")))
+client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
 
 class HandlePayment(APIView):
     def post(self, request):
@@ -55,31 +55,11 @@ class HandlePayment(APIView):
                                 "payment_id": order['id'],
                                 "amount": order['amount'],
                                 "currency": order['currency'], 
-                                "id": (os.environ.get("RAZORPAY_KEY")),
+                                "id": settings.RAZORPAY_KEY,
                                 "Business": "JKLU",
                                 "callback_url": get_url_from_hostname(settings.HOSTNAME) + "/api/transactions/handle-payment-success/",
                                 "image": "https://sabrang.jklu.edu.in/wp-content/uploads/2022/10/sabrang-cover-text-e1664621537950.png"}
                 return Response(return_data, status=status.HTTP_200_OK)
-
-
-def HandlePriceCalculation(request):
-    event_id = request.data.get('event_id')
-    selected_sub_events = request.data.get('selected_sub_events', []),
-    selected_addons = request.data.get('selected_addons', [])
-    total_sub_event_allowed = Event.objects.get(pk=event_id).sub_events_included_allowed
-    sub_event_count = 0
-    sub_event_price = 0
-    addon_price = 0
-    for sub_event in selected_sub_events[0]:
-        if sub_event_count < total_sub_event_allowed:
-            sub_event_count += 1
-        else:
-            sub_event_price += SubEvent.objects.get(pk=sub_event).price
-    for addon in selected_addons:
-        addon_price += Addon.objects.get(pk=addon).price
-    event_price = Event.objects.get(pk=event_id).price
-    total_price = event_price + sub_event_price + addon_price
-    return int(total_price)
 
 
 class HandlePaymentSuccess(APIView):

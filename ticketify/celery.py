@@ -14,6 +14,14 @@ app.conf.enable_utc = False
 #   should have a `CELERY_` prefix.
 app.config_from_object("django.conf:settings", namespace='CELERY')
 
+# Celery Periodic Tasks
+app.conf.beat_schedule = {
+    'check-all-transaction-status': {
+        'task': 'transactions.tasks.check_all_transaction_status',
+        'schedule': 1800.0,  # 30 minutes
+    },
+}
+
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
 

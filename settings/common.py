@@ -192,3 +192,7 @@ else:
 HOSTNAME = os.environ.get("HOSTNAME", "localhost:8000")
 
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "localhost:4200")
+
+# Razorpay settings
+RAZORPAY_KEY = os.environ.get("RAZORPAY_KEY", "")
+RAZORPAY_SECRET = os.environ.get("RAZORPAY_SECRET", "")

@@ -20,4 +20,11 @@ class TicketAdmin(ImportExportModelAdmin):
 
 admin.site.register(Ticket, TicketAdmin)
 admin.site.register(CheckIn)
-admin.site.register(TicketEmailLog)
+
+
+class TicketEmailLogAdmin(ImportExportModelAdmin):
+    list_display = ('id', 'ticket', 'email_sent_time',)
+    search_fields = ('id', 'ticket')
+
+
+admin.site.register(TicketEmailLog, TicketEmailLogAdmin)

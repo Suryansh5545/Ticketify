@@ -113,8 +113,7 @@ def send_ticket(ticket_id):
 
     # Send the email
     email.send()
-    ticket_send_log = TicketEmailLog.objects.create(ticket=ticket, email_sent_time=timezone.now())
-    ticket.ticket_mail_log.set([ticket_send_log])
+    TicketEmailLog.objects.create(ticket=ticket, email_sent_time=timezone.now())
     ticket.save()
     return True
 

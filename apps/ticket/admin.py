@@ -19,7 +19,14 @@ class TicketAdmin(ImportExportModelAdmin):
             return [field for field in superuser_list_display if field != 'check_in']
 
 admin.site.register(Ticket, TicketAdmin)
-admin.site.register(CheckIn)
+
+
+class CheckInAdmin(ImportExportModelAdmin):
+    list_display = ('id', 'ticket', 'check_in_time', 'operator', 'method',)
+    search_fields = ('id', 'ticket', 'operator')
+    list_filter = ('method',)
+
+admin.site.register(CheckIn, CheckInAdmin)
 
 
 class TicketEmailLogAdmin(ImportExportModelAdmin):

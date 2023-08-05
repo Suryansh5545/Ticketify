@@ -20,6 +20,7 @@ def create_ticket(request, order_id):
                 customer_name = validated_data['customer_name']
                 customer_email = validated_data['customer_email']
                 customer_phone = validated_data['customer_phone']
+                referral = validated_data.get('referral', None)
                 event_id = validated_data['event_id']
                 selected_sub_events = validated_data.get('selected_sub_events', [])
                 selected_addons = validated_data.get('selected_addons', [])
@@ -28,6 +29,7 @@ def create_ticket(request, order_id):
                     customer_name=customer_name,
                     customer_email=customer_email,
                     customer_phone=customer_phone,
+                    referral=referral,
                     event=event,order_id = order_id
                 )
                 ticket.selected_sub_events.set(selected_sub_events)

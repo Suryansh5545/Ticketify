@@ -44,6 +44,7 @@ class TestCreateTicket(TestCase):
             "customer_name": "Test User",
             "customer_email": "example@example.com",
             "customer_phone": "1234567890",
+            "referral": "Test Referral",
             "event_id": self.event.id,
             "selected_sub_events": [self.sub_event.id],
             "selected_addons": [self.addon.id],
@@ -59,6 +60,7 @@ class TestCreateTicket(TestCase):
         self.assertEqual(ticket.customer_name, request_data["customer_name"])
         self.assertEqual(ticket.customer_email, request_data["customer_email"])
         self.assertEqual(ticket.customer_phone, request_data["customer_phone"])
+        self.assertEqual(ticket.referral, request_data["referral"])
         self.assertEqual(ticket.event_id, request_data["event_id"])
         self.assertEqual(ticket.selected_sub_events.count(), 1)
         self.assertEqual(ticket.selected_addons.count(), 1)

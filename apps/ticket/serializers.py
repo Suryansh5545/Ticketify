@@ -6,6 +6,7 @@ class TicketSerializer(serializers.Serializer):
     customer_name = serializers.CharField()
     customer_email = serializers.EmailField()
     customer_phone = serializers.CharField()
+    referral = serializers.CharField(required=False)
     event_id = serializers.IntegerField()
     selected_sub_events = serializers.ListField(child=serializers.IntegerField(), required=False)
     selected_addons = serializers.ListField(child=serializers.IntegerField(), required=False)

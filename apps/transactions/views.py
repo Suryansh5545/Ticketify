@@ -36,6 +36,7 @@ class HandlePayment(APIView):
                     "name": request.data.get('customer_name'),
                     "email": request.data.get('customer_email'),
                     "phone": request.data.get('customer_phone'),
+                    "referral": request.data.get('referral'),
                     "event_id": request.data.get('event_id'),
                     "selected_sub_events": json.dumps(request.data.get('selected_sub_events')),
                     "selected_addons": json.dumps(request.data.get('selected_addons'))

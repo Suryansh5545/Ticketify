@@ -25,6 +25,7 @@ class Ticket(models.Model):
     order_id = models.CharField(max_length=100, default="", unique=True, null=True)
     ticket_mail_log = models.ManyToManyField('TicketEmailLog', related_name='tickets', blank=True)
     transaction_id = models.OneToOneField(Transaction, on_delete=models.CASCADE, null=True, blank=True, unique=True)
+    referral = models.CharField(max_length=100, null=True, blank=True)
 
     def generate_unique_ticket_id(self):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))

@@ -100,6 +100,7 @@ export class CheckoutComponent {
       var nameInput = document.getElementById("name") as HTMLInputElement;
       var emailInput = document.getElementById("email") as HTMLInputElement;
       var phoneNumberInput = document.getElementById("phone") as HTMLInputElement;
+      var referralInput = document.getElementById("referral") as HTMLInputElement;
       
       if(nameInput.value == '' || emailInput.value == '' || phoneNumberInput.value == '') {
         alert('Please fill all the fields');
@@ -109,11 +110,13 @@ else {
         var name = nameInput.value;
         var email = emailInput.value;
         var phoneNumber = phoneNumberInput.value;
+        var referral = referralInput.value;
       }
       const data = {
         customer_name: name,
         customer_email: email,
         customer_phone: phoneNumber,
+        referral: referral,
         event_id: this.eventdata[0].id,
         selected_sub_events: this.SubEventsSelected.map((subEvent: { id: any; }) => subEvent.id),
         selected_addons: this.AddonsSelected.map((addon: { id: any; }) => addon.id),

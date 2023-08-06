@@ -34,6 +34,7 @@ services:
       - SCALITY_ACCESS_KEY_ID=${SCALITY_ACCESS_KEY_ID}
       - SCALITY_SECRET_ACCESS_KEY=${SCALITY_SECRET_ACCESS_KEY}
       - SSL="FALSE"
+
 volumes:
   postgres-data:
   redis-data:

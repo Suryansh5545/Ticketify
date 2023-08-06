@@ -2,20 +2,21 @@ version: "3"
 services:
   db:
     image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
-    env_file:
-      - docker/dev/docker.env
 
   django:
     hostname: django
-    env_file:
-      - docker/dev/docker.env
     build:
       context: ./
-      dockerfile: docker/dev/django/Dockerfile
+      dockerfile: docker/prod/django/Dockerfile
     ports:
-      - "8000:8000"
+      - "8443:8443"
     depends_on:
       - db
       - redis
@@ -26,27 +27,28 @@ services:
     hostname: nodejs_v1
     build:
       context: ./
-      dockerfile: docker/dev/nodejs_v1/Dockerfile
+      dockerfile: docker/prod/nodejs_v1/Dockerfile
+      args:
+        - NODE_ENV=staging
     environment:
-        ANGULAR_ENV: development 
+        ANGULAR_ENV: staging 
     ports:
-      - "49153:49153"
       - "4200:4200"
+      - "3000:3000"
     volumes:
-    - ./frontend:/code
     - /code/node_modules
 
   redis:
     image: redis:7.2-rc3
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
       - "6379:6379"
 
   celery:
     build:
       context: ./
-      dockerfile: docker/dev/celery/Dockerfile
-    env_file:
-      - docker/dev/docker.env
+      dockerfile: docker/prod/celery/Dockerfile
     volumes:
       - .:/code
     depends_on:

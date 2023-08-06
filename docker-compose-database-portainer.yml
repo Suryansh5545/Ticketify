@@ -1,0 +1,24 @@
+version: "3"
+services:
+  db:
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    container_name: ticketify_db
+
+  redis:
+    image: redis:7.2-rc3
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+
+networks:
+  default:
+    external: true
+    name: scoobydoo

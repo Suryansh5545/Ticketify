@@ -58,3 +58,8 @@ services:
       - db
       - redis
       - django
+
+networks:
+  default:
+    external: true
+    name: scoobydoo

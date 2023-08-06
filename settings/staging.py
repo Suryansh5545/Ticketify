@@ -3,6 +3,8 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
+DEBUG = False
+
 # Email settings if EMAIL_REQUIRED is set to True
 if os.environ.get("EMAIL_REQUIRED") == "True":
     EMAIL_HOST = os.environ.get("EMAIL_HOST", "email_host")

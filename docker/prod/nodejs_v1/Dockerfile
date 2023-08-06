@@ -15,4 +15,4 @@ FROM nginx:1.25.1-alpine
 ARG NODE_ENV
 COPY docker/prod/nodejs_v1/nginx_${NODE_ENV}.conf /etc/nginx/conf.d/default.conf
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /code/dist /usr/share/nginx/html
+COPY --from=builder /code/dist/ticketify /usr/share/nginx/html

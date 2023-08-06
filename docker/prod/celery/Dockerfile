@@ -12,4 +12,4 @@ WORKDIR /code
 ADD requirements/* /code/
 RUN pip install -r prod.txt
 ADD . /code
-CMD ["sh", "/code/docker/prod/django/container-start.sh"]
+CMD ["sh", "/code/docker/prod/celery/container-start.sh"]

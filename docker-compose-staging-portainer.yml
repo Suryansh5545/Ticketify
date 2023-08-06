@@ -13,6 +13,8 @@ services:
 
   django:
     hostname: django
+    env_file:
+      - stack.env
     build:
       context: ./
       dockerfile: docker/prod/django/Dockerfile
@@ -50,6 +52,8 @@ services:
     build:
       context: ./
       dockerfile: docker/prod/celery/Dockerfile
+    env_file:
+      - docker/dev/docker.env
     depends_on:
       - db
       - redis

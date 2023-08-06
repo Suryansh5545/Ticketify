@@ -3,6 +3,8 @@ services:
   db:
     image: postgres:15.3
     restart: always
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -13,9 +15,30 @@ services:
 
   redis:
     image: redis:7.2-rc3
+    volumes:
+      - redis-data:/data
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     expose:
       - "6379"
+
+  s3server:
+    image: scality/s3server:latest
+    container_name: s3server
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    volumes:
+      - s3data:/usr/src/app/localData
+      - s3metadata:/usr/src/app/localMetadata
+    environment:
+      - SCALITY_ACCESS_KEY_ID=${SCALITY_ACCESS_KEY_ID}
+      - SCALITY_SECRET_ACCESS_KEY=${SCALITY_SECRET_ACCESS_KEY}
+      - SSL="FALSE"
+volumes:
+  postgres-data:
+  redis-data:
+  s3data:
+  s3metadata:
 
 networks:
   default:

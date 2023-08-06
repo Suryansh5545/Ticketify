@@ -35,8 +35,8 @@ services:
     environment:
         ANGULAR_ENV: staging 
     ports:
-      - "4200:443"
-      - "3000:80"
+      - "4200:4200"
+      - "3000:3000"
     volumes:
     - /code/node_modules
     container_name: ticketify_nodejs_v1

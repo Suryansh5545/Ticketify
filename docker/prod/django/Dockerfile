@@ -15,4 +15,4 @@ WORKDIR /code
 ADD requirements/* /code/
 RUN pip install -r dev.txt
 
-CMD ["./docker/wait-for-it.sh", "db:5432", "--", "./docker/wait-for-it.sh", "redis:6379", "--", "sh", "/code/docker/dev/django/container-start.sh"]
+CMD ["/code/docker/wait-for-it.sh", "db:5432", "--", "/code/docker/wait-for-it.sh", "redis:6379", "--", "sh", "/code/docker/dev/django/container-start.sh"]

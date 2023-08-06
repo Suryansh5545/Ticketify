@@ -2,17 +2,13 @@ FROM node:18.16.0 as builder
 
 ARG NODE_ENV
 RUN npm install -g @angular/cli@16.0.4
-RUN mkdir /code
-
-# Copy codebase
-COPY . /code
 
 WORKDIR /code
-
-ADD frontend/package.json frontend/yarn.lock /code/
+COPY frontend/package.json frontend/yarn.lock /code/
+RUN npm update
 RUN yarn install
-ENV PATH="/code/node_modules/.bin:$PATH"
-
+ENV PATH="/code/node_modules/.bin:$PATH" 
+COPY frontend/ /code
 RUN ng build --configuration=${NODE_ENV}
 
 FROM nginx:1.25.1-alpine

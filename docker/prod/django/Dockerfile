@@ -14,6 +14,5 @@ WORKDIR /code
 # Install dependencies
 ADD requirements/* /code/
 RUN pip install -r dev.txt
-RUN chmod +x /code/docker/wait-for-it.sh
 
-CMD ["/code/docker/wait-for-it.sh", "db:5432", "--", "/code/docker/wait-for-it.sh", "redis:6379", "--", "sh", "/code/docker/dev/django/container-start.sh"]
+CMD ["sh", "/code/docker/prod/django/container-start.sh"]

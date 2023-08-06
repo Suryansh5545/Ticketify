@@ -31,7 +31,7 @@ DEBUG = True
 
 TEST = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [getenv("ALLOWED_HOSTS", "*")]
 
 
 # Application definition

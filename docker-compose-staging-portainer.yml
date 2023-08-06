@@ -53,7 +53,7 @@ services:
       context: ./
       dockerfile: docker/prod/celery/Dockerfile
     env_file:
-      - docker/dev/docker.env
+      - stack.env
     depends_on:
       - db
       - redis

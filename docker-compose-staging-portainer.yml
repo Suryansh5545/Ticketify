@@ -19,7 +19,7 @@ services:
       context: ./
       dockerfile: docker/prod/django/Dockerfile
     ports:
-      - "8443:8443"
+      - "8001:8001"
     depends_on:
       - db
       - redis

@@ -9,6 +9,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    container_name: ticketify_db
 
   django:
     hostname: django
@@ -20,6 +21,7 @@ services:
     depends_on:
       - db
       - redis
+    container_name: ticketify_django
 
   nodejs_v1:
     hostname: nodejs_v1
@@ -35,6 +37,7 @@ services:
       - "3000:3000"
     volumes:
     - /code/node_modules
+    container_name: ticketify_nodejs_v1
 
   redis:
     image: redis:7.2-rc3

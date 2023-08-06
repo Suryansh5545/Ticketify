@@ -20,8 +20,6 @@ services:
     depends_on:
       - db
       - redis
-    volumes:
-      - .:/code
 
   nodejs_v1:
     hostname: nodejs_v1
@@ -49,8 +47,6 @@ services:
     build:
       context: ./
       dockerfile: docker/prod/celery/Dockerfile
-    volumes:
-      - .:/code
     depends_on:
       - db
       - redis

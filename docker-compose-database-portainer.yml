@@ -17,6 +17,23 @@ services:
     expose:
       - "6379"
 
+  s3server:
+    image: scality/s3server:latest
+    container_name: s3server
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    volumes:
+      - s3data:/usr/src/app/localData
+      - s3metadata:/usr/src/app/localMetadata
+    environment:
+      - SCALITY_ACCESS_KEY_ID=${SCALITY_ACCESS_KEY_ID}
+      - SCALITY_SECRET_ACCESS_KEY=${SCALITY_SECRET_ACCESS_KEY}
+      - SSL="FALSE"
+volumes:
+  s3data:
+  s3metadata:
+
 networks:
   default:
     external: true

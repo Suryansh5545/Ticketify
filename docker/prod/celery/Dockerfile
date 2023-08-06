@@ -10,6 +10,8 @@ WORKDIR /code
 
 # Install dependencies
 ADD requirements/* /code/
-RUN pip install -r dev.txt
+RUN pip install -r prod.txt
+
+ADD . /code
 
 CMD ["sh", "/code/docker/dev/celery/container-start.sh"]

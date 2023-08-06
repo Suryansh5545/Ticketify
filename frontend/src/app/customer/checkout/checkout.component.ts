@@ -28,11 +28,11 @@ export class CheckoutComponent {
 
     ngOnInit() {
       this.EventDetailsService.EventDetails().then(() => {
+        this.eventdata = this.EventDetailsService.event;
+        this.TotalPrice += parseFloat(this.eventdata[0].price);
         this.EventDetailsService.SubEventDetails().then(() => {
+          this.SubEvents = this.EventDetailsService.SubEvent;
           this.EventDetailsService.AddonDetails().then(() => {
-            this.eventdata = this.EventDetailsService.event;
-            this.TotalPrice += parseFloat(this.eventdata[0].price);
-            this.SubEvents = this.EventDetailsService.SubEvent;
             this.Addons = this.EventDetailsService.Addon;
           });
         });

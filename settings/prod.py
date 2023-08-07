@@ -3,6 +3,8 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
+DEBUG = False
+
 # Email settings if EMAIL_REQUIRED is set to True
 if os.environ.get("EMAIL_REQUIRED") == "True":
     EMAIL_HOST = os.environ.get("EMAIL_HOST", "email_host")
@@ -33,6 +35,12 @@ REST_FRAMEWORK = {
     )
 }
 
+CORS_ALLOWED_ORIGINS = [
+    "https://ticketify.tech",
+    "https://sabrang.ticketify.tech",
+    "https://staging.ticketify.tech",
+]
+
 # S3 Bucket settings
 AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME", "aws_storage_bucket_name")
 AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID", "aws_access_key_id")
@@ -43,6 +51,8 @@ STORAGES = {
     "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage" },
     "staticfiles": {"BACKEND": "storages.backends.s3boto3.S3StaticStorage"}
 }
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 if os.environ.get("SENTRY_ENABLED") == "True":
     sentry_sdk.init(dsn=os.environ.get("SENTRY_DSN") ,integrations=[DjangoIntegration()] ,traces_sample_rate=1.0 ,send_default_pii=True)

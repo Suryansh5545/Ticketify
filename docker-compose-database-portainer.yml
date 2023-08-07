@@ -26,7 +26,7 @@ services:
     container_name: s3server
     restart: unless-stopped
     ports:
-      - "8002:8002"
+      - "8002:8000"
     volumes:
       - s3data:/usr/src/app/localData
       - s3metadata:/usr/src/app/localMetadata

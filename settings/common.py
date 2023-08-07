@@ -59,7 +59,8 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'import_export',
-    'dj_rest_auth'
+    'dj_rest_auth',
+    'storages'
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS

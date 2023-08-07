@@ -41,5 +41,16 @@ CORS_ALLOWED_ORIGINS = [
     "https://staging.ticketify.tech",
 ]
 
+# S3 Bucket settings
+AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME", "aws_storage_bucket_name")
+AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID", "aws_access_key_id")
+AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY", "aws_secret_access_key")
+AWS_S3_ENDPOINT_URL = getenv("AWS_S3_ENDPOINT_URL", "aws_s3_endpoint_url")
+
+STORAGES = {
+    "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage" },
+    "staticfiles": {"BACKEND": "storages.backends.s3boto3.S3StaticStorage"}
+}
+
 if os.environ.get("SENTRY_ENABLED") == "True":
     sentry_sdk.init(dsn=os.environ.get("SENTRY_DSN") ,integrations=[DjangoIntegration()] ,traces_sample_rate=1.0 ,send_default_pii=True)

@@ -1,3 +1,4 @@
+import io
 from cryptography.fernet import Fernet
 from celery import shared_task
 from django.template.loader import get_template
@@ -10,6 +11,7 @@ from .serializers import TicketSerializer
 from .models import Ticket, TicketEmailLog
 from event.models import Event
 from django.conf import settings
+from django.core.files import File
 
 
 def create_ticket(request, order_id):
@@ -69,16 +71,13 @@ def generate_ticket_image (ticket_id):
         'zoom': '2.0',
     }
     ticket_name = f"ticket_{encrypted_ticket_id}.jpg"
-    tickets_dir = os.path.join(settings.MEDIA_ROOT, 'tickets')
-    if not os.path.exists(tickets_dir):
-        # Create the 'tickets' directory if it doesn't exist
-        os.makedirs(tickets_dir)
-    image_path = os.path.join(settings.MEDIA_ROOT, 'tickets', ticket_name)
-    imgkit.from_string(html_content, image_path, options=options)
-    ticket.ticket_image_location = image_path
-    ticket.save()
+    img_bytes = imgkit.from_string(html_content, None, options=options)
+    img_io = io.BytesIO(img_bytes)
+    ticket.ticket_image.save(ticket_name, File(img_io), save=True)
     send_ticket(ticket.id)
-    image_url = f"{settings.TICKETIFY_API_SERVER}{settings.MEDIA_URL}{'tickets/'}{ticket_name}"
+    image_url = ticket.ticket_image.url
+    if settings.DEBUG:
+        image_url = settings.TICKETIFY_API_SERVER + image_url
     return image_url
     
 
@@ -103,13 +102,10 @@ def send_ticket(ticket_id):
     ticket = Ticket.objects.get(pk=ticket_id)
     recipient_email = ticket.customer_email
     event_name = ticket.event.name
-    image_path = ticket.ticket_image_location
     # Create the email message
     email = EmailMultiAlternatives(f"Your ticket for {event_name}", "Please find your ticket attached", settings.DEFAULT_FROM_EMAIL, [recipient_email])
-
-    # Attach the image to the email
-    with open(image_path, 'rb') as f:
-        email.attach('ticket_image.jpg', f.read(), 'image/jpeg')
+    image_data = ticket.ticket_image.read()
+    email.attach('ticket_image.jpg', image_data, 'image/jpeg')
 
     # Send the email
     email.send()

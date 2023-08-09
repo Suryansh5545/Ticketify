@@ -21,7 +21,7 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     ticket_image_generated = models.BooleanField(default=False)
-    ticket_image_location = models.TextField(default="", null=True, blank=True)
+    ticket_image = models.ImageField(upload_to='ticket_images', null=True, blank=True)
     order_id = models.CharField(max_length=100, default="", unique=True, null=True)
     transaction_id = models.OneToOneField(Transaction, on_delete=models.CASCADE, null=True, blank=True, unique=True)
     referral = models.CharField(max_length=100, null=True, blank=True)

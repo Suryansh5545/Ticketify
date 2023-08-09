@@ -91,7 +91,7 @@ class TestGenerateTicketImage(TestCase):
         mock_imgkit.from_string.return_value = None
         mock_send_ticket.return_value = None
         generate_ticket_image(self.ticket.id)
-        self.assertNotEqual(self.ticket.ticket_image_location, None)
+        self.assertNotEqual(self.ticket.ticket_image, None)
 
 
 class TestGenerateQRCode(TestCase):

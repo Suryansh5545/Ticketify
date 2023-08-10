@@ -26,25 +26,25 @@
               <label for="referral" class="form-label">Referral (Optional)</label>
               <input type="text" class="form-control" id="referral" aria-describedby="referral" autocomplete="referral" />
             </div>
-            <mat-list class="align-items-center">
+            <mat-list>
               <mat-card class="customer-interface-card" *ngFor="let event of SubEvents">
-                <div class="row d-flex align-items-center justify-content-center">
-                  <div class="col-md-1">
+                <div class="row d-flex align-items-center">
+                  <div class="col-1 order-1">
                     <button mat-icon-button (click)="toggleDescription(event, $event)">
                       <mat-icon>{{
                         event.showDescription ? "remove" : "add"
                         }}</mat-icon>
                     </button>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col order-2">
                     <mat-card-header>
                       <mat-card-title>{{ event.name }}</mat-card-title>
                     </mat-card-header>
                   </div>
-                  <div class="col-md-6 card-image-container">
+                  <div class="col order-4 card-image-container">
                     <img *ngIf="event.image" [src]="event.image" class="card-img" alt="Event Image" />
                   </div>
-                  <div class="col-md-2">
+                  <div class="col select-button order-last">
                     <mat-card-actions>
                       <mat-checkbox (change)="SelectSubEvent($event, event)" color="primary">Select</mat-checkbox>
                     </mat-card-actions>
@@ -57,13 +57,13 @@
                 </mat-card-content>
               </mat-card>
             </mat-list>
-            <mat-card class="customer-interface-card">
+            <mat-card class="customer-interface-card" *ngIf="Addons">
               <mat-card-header>
                 <mat-card-title>Add On</mat-card-title>
               </mat-card-header>
               <mat-card-content>
                 <mat-selection-list #addonlist (selectionChange)="onAddonSelectionChange(addonlist)">
-                  <mat-list-option *ngFor="let addon of Addons" [value]="addon">
+                  <mat-list-option class="addon" *ngFor="let addon of Addons" [value]="addon">
                     <fa-icon [icon]="['fas', addon.icon]"></fa-icon>
                     {{ addon.name }} - {{ addon.price | currency : "INR" }}
                   </mat-list-option>
@@ -75,77 +75,71 @@
       </div>
     </div>
     <div class="col-lg-4">
-      <div class="card text-light mb-3 payment-interface-card">
-        <div class="card-header">
-          <h3>Payment</h3>
-        </div>
-        <div class="card-body">
-          <mat-list>
-            <mat-list-item>
-              <div class="row">
-                <div class="col-md-6">
-                  <h4>Event</h4>
+      <div class="container mt-5 payment-interface-card rounded">
+        <mat-card class="payment-internal-interface-card text-light rounded">
+          <mat-card-header class="bg-success text-light rounded" style="padding: 10px; margin-bottom: 10px ;">
+            <mat-card-title>Payment Summary</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h4>Event</h4>
+              </div>
+              <div class="col-md-6">
+                <p *ngFor="let subevent of SubEventsSelected">{{ subevent.name }}{{ subevent.price  | currency : "INR"  }}</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h4>Addons</h4>
+              </div>
+              <div class="col-md-6">
+                <p>{{ AddonsSelected.length }}</p>
+              </div>
+            </div>
+            <div class="row mb-3" *ngIf="isDiscountApplied">
+              <div class="col-md-6">
+                <h4>Discount</h4>
+              </div>
+              <div class="col-md-6">
+                <p>{{ DiscountValue | currency : "INR" }}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h4>Total</h4>
+              </div>
+              <div class="col-md-6">
+                <p>{{ TotalPrice | currency : "INR" }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Promo Code</h4>
+              </div>
+              <div class="col-md-6" *ngIf="!isDiscountApplied">
+                <div *ngIf="!showCouponInput">
+                  <button mat-raised-button color="primary" (click)="toggleCouponInput()">Apply Coupon</button>
                 </div>
-                <div class="col-md-6">
-                  <p>{{ SubEventsSelected.length }}</p>
+                <div *ngIf="showCouponInput" class="mt-3">
+                  <mat-form-field style="max-width: -moz-available;">
+                    <input matInput type="text" [(ngModel)]="couponCode" placeholder="Coupon code">
+                  </mat-form-field>
+                  <button mat-raised-button color="accent" (click)="applyCoupon(couponCode)">Apply</button>
                 </div>
               </div>
-            </mat-list-item>
-            <mat-list-item>
-              <div class="row">
-                <div class="col-md-6">
-                  <h4>Addons</h4>
-                </div>
-                <div class="col-md-6">
-                  <p>{{ AddonsSelected.length }}</p>
-                </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <button mat-raised-button class="bg-success" style="width: 100%;" (click)="Checkout()">Pay</button>
               </div>
-            </mat-list-item>
-            <mat-list-item *ngIf="isDiscountApplied">
-              <div class="row">
-                <div class="col-md-6">
-                  <h4>Discount</h4>
-                </div>
-                <div class="col-md-6">
-                  <p>{{ DiscountValue | currency : "INR" }}</p>
-                </div>
-              </div>
-            </mat-list-item>
-            <div style="border-bottom: 1px solid #ddd"></div>
-            <mat-list-item>
-              <div class="row">
-                <div class="col-md-6">
-                  <h4>Total</h4>
-                </div>
-                <div class="col-md-6">
-                  <p>{{ TotalPrice | currency : "INR" }}</p>
-                </div>
-              </div>
-            </mat-list-item>
-            <mat-list-item>
-              <div class="row">
-                <div class="col-md-6">
-                  <h4>Promo Code</h4>
-                </div>
-                <div class="col-md-6">
-                  <div>
-                    <a *ngIf="!showCouponInput" href="#" (click)="toggleCouponInput()">Apply Coupon</a>
-                  </div>
-                  <div *ngIf="showCouponInput">
-                    <input type="text" class="form-control" [(ngModel)]="couponCode" />
-                    <button class="btn btn-primary" (click)="applyCoupon(couponCode)">
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </mat-list-item>
-          </mat-list>
-        </div>
-        <button class="btn btn-success" (click)="Checkout()">Pay</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
       </div>
     </div>
-  </div>
 <div class="loading-overlay" [style.display]="loadingService.isLoading ? 'flex' : 'none'">
   <mat-spinner></mat-spinner>
 </div>

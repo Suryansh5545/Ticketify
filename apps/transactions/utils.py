@@ -1,10 +1,11 @@
-from event.models import Event, SubEvent, Addon
+from event.models import Event, SubEvent, Addon, PromoCode
 
 
 def HandlePriceCalculation(request):
     event_id = request.data.get('event_id')
     selected_sub_events = request.data.get('selected_sub_events', []),
     selected_addons = request.data.get('selected_addons', [])
+    couponcode = request.data.get('coupon', '')
     total_sub_event_allowed = Event.objects.get(pk=event_id).sub_events_included_allowed
     sub_event_count = 0
     sub_event_price = 0
@@ -18,4 +19,12 @@ def HandlePriceCalculation(request):
         addon_price += Addon.objects.get(pk=addon).price
     event_price = Event.objects.get(pk=event_id).price
     total_price = event_price + sub_event_price + addon_price
+    if couponcode != '':
+        try:
+            promocode = PromoCode.objects.get(code=couponcode)
+        except promocode.DoesNotExist:
+            promocode = None
+        if promocode:
+            if (total_price- promocode.discount) < 0:
+                    total_price = total_price - promocode.discount
     return int(total_price)

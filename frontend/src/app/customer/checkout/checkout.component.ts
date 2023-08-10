@@ -3,6 +3,7 @@ import { EventDetailsService } from '../../services/event-details/event-details.
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, Renderer2 } from '@angular/core';
 import { LoadingServiceComponent } from '../../loading-service/loading-service.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-checkout',
@@ -21,10 +22,13 @@ export class CheckoutComponent {
   TotalPrice: number = 0;
   showCouponInput: boolean = false;
   couponCode: string = '';
+  appliedCoupon: string = '';
 
   constructor(
     private http: HttpClient,
-    private EventDetailsService: EventDetailsService, private renderer: Renderer2, private elementRef: ElementRef, public loadingService: LoadingServiceComponent) { }
+    private EventDetailsService: EventDetailsService, private renderer: Renderer2, 
+    private elementRef: ElementRef, public loadingService: LoadingServiceComponent,
+    private _snackBar: MatSnackBar) { }
 
     ngOnInit() {
       this.EventDetailsService.EventDetails().then(() => {
@@ -49,13 +53,19 @@ export class CheckoutComponent {
     }
 
     applyCoupon(coupon: any) {
+      if ( this.isDiscountApplied == false ) {
       this.EventDetailsService.SendPromoCode(coupon).then(() => {
         if (this.EventDetailsService.PromoData.discount) {
+          this.appliedCoupon = coupon;
           this.isDiscountApplied = true;
           this.DiscountValue = this.EventDetailsService.PromoData.discount;
           this.TotalPrice = this.TotalPrice - this.DiscountValue;
+          this._snackBar.open('Coupon Applied', 'Close', {
+            duration: 3000,
+          });
         }
     });
+  }
     }
 
     SelectSubEvent(event: any, subEvent: any) {
@@ -92,21 +102,35 @@ export class CheckoutComponent {
     }
 
     Checkout() {
-      this.loadingService.showLoading();
-      setTimeout(() => {
-        // Hide the loading overlay after the operation is complete
-        this.loadingService.hideLoading();
-      }, 20000);
       var nameInput = document.getElementById("name") as HTMLInputElement;
       var emailInput = document.getElementById("email") as HTMLInputElement;
       var phoneNumberInput = document.getElementById("phone") as HTMLInputElement;
       var referralInput = document.getElementById("referral") as HTMLInputElement;
       
       if(nameInput.value == '' || emailInput.value == '' || phoneNumberInput.value == '') {
-        alert('Please fill all the fields');
+        this._snackBar.open('Please fill all the required fields', 'Close', {
+          duration: 3000,
+        });
         return;
       }
-else {
+      else if (phoneNumberInput.value.length != 10 || phoneNumberInput.value.match(/^[0-9]+$/) == null) {
+        this._snackBar.open('Please enter a valid phone number', 'Close', {
+          duration: 3000,
+        });
+        return;
+      }
+      else if (emailInput.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/) == null) {
+        this._snackBar.open('Please enter a valid email address', 'Close', {
+          duration: 3000,
+        });
+        return;
+      }
+      else {
+        this.loadingService.showLoading();
+        setTimeout(() => {
+          // Hide the loading overlay after the operation is complete
+          this.loadingService.hideLoading();
+        }, 20000);
         var name = nameInput.value;
         var email = emailInput.value;
         var phoneNumber = phoneNumberInput.value;
@@ -120,6 +144,7 @@ else {
         event_id: this.eventdata[0].id,
         selected_sub_events: this.SubEventsSelected.map((subEvent: { id: any; }) => subEvent.id),
         selected_addons: this.AddonsSelected.map((addon: { id: any; }) => addon.id),
+        coupon: this.appliedCoupon,
     }
     this.EventDetailsService.SendCheckoutData(data).then(() => {
       const checkoutData = {
@@ -167,5 +192,6 @@ else {
     this.renderer.appendChild(this.elementRef.nativeElement, form);
     form.submit();
   }
+    
 
 }

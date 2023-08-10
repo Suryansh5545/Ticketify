@@ -18,18 +18,32 @@
   
 
 .customer-interface-card {
-    background-color: #121212;
-    width: auto; /* Adjust the width as per your requirements */
-    margin: 10px; /* Adjust the margin as per your requirements */
-    border: 1px solid #ccc; /* Add a border as the bounding box */
-    transition: box-shadow 0.3s ease;
+  background-color: #121212;
+  width: auto; /* Adjust the width as per your requirements */
+  margin: 10px; /* Adjust the margin as per your requirements */
+  border: 1px solid #ccc; /* Add a border as the bounding box */
+  transition: box-shadow 0.3s ease;
 }
 
 .payment-interface-card {
-  background-color: #301E67;
+  background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
   width: auto; /* Adjust the width as per your requirements */
   margin: 10px; /* Adjust the margin as per your requirements */
   position: sticky; 
+  padding: 10px;
+  border-radius: 2px solid #ccc; /* Add a border as the bounding box */
+  transition: box-shadow 0.3s ease;
+  top: 0;
+}
+
+.payment-internal-interface-card {
+  background-color: #000000;
+  width: auto; /* Adjust the width as per your requirements */
+  margin: 10px; /* Adjust the margin as per your requirements */
+  position: sticky; 
+  padding: 10px;
+  border-radius: 2px solid #ccc; /* Add a border as the bounding box */
+  transition: box-shadow 0.3s ease;
   top: 0;
 }
 
@@ -38,8 +52,10 @@
 }
 
 .card-image-container {
+  display: block;
   height: 200px; /* Adjust the maximum height as needed */
   overflow: hidden;
+  width: auto;
 }
 
 .card-img {
@@ -50,4 +66,39 @@
 .checkout {
   width: 100%;
   margin: 10px;
+}
+
+.select-button {
+  padding-left: 30%;
+}
+
+@media (max-width: 1250px) {
+  .select-button {
+    padding-left: 20%; /* Adjust the padding value for screens below 1250px */
+  }
+}
+
+@media (max-width: 780px) {
+  .card-image-container {
+    display: none;
+  }
+  .select-button {
+    padding-left: 0%; /* Adjust the padding value for screens below 1250px */
+  }
+}
+
+fa-icon {
+  display: inline-block;
+}
+
+@media (max-width: 500px) {
+  mat-card-header {
+    padding: 8px 8px 0;
+  mat-card-title {
+    font-size: 0.8rem;
+  }
+}
+fa-icon {
+  display: none;
+}
 }

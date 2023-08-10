@@ -19,7 +19,7 @@ class GetActiveEvent(ListAPIView):
         if self.queryset.exists():
             return super().list(request, *args, **kwargs)
         else:
-            return Response("No Active Event", status=status.HTTP_204_NO_CONTENT)
+            return Response("No Active Event", status=status.HTTP_400_BAD_REQUEST)
 
     
 class GetSubEvent(APIView):
@@ -33,7 +33,7 @@ class GetSubEvent(APIView):
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response("No Active Sub Event", status=status.HTTP_204_NO_CONTENT)
+            return Response("No Active Sub Event", status=status.HTTP_400_BAD_REQUEST)
         
 class GetAddon(APIView):
     def get(self, request, pk, format=None):
@@ -46,7 +46,7 @@ class GetAddon(APIView):
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response("No active Addon", status=status.HTTP_204_NO_CONTENT)
+                return Response("No active Addon", status=status.HTTP_400_BAD_REQUEST)
             
 class ProcessPromoCode(APIView):
     def post(self, request, format=None):

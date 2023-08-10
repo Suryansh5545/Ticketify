@@ -41,7 +41,7 @@
                       <mat-card-title>{{ event.name }}</mat-card-title>
                     </mat-card-header>
                   </div>
-                  <div class="col order-4 card-image-container">
+                  <div class="col order-4 card-image-container" *ngIf="!isMobile">
                     <img *ngIf="event.image" [src]="event.image" class="card-img" alt="Event Image" />
                   </div>
                   <div class="col select-button order-last">

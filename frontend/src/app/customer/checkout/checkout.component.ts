@@ -23,6 +23,7 @@ export class CheckoutComponent {
   showCouponInput: boolean = false;
   couponCode: string = '';
   appliedCoupon: string = '';
+  isMobile: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -31,6 +32,7 @@ export class CheckoutComponent {
     private _snackBar: MatSnackBar) { }
 
     ngOnInit() {
+      this.checkIfMobile();
       this.EventDetailsService.EventDetails().then(() => {
         this.eventdata = this.EventDetailsService.event;
         this.TotalPrice += parseFloat(this.eventdata[0].price);
@@ -41,6 +43,14 @@ export class CheckoutComponent {
           });
         });
       });
+    }
+
+    checkIfMobile() {
+      const mobileBreakpoint = 780; // Adjust this value based on your requirements
+  
+      if (window.innerWidth < mobileBreakpoint) {
+        this.isMobile = true;
+      }
     }
 
     toggleDescription(eventItem: any, event: Event) {

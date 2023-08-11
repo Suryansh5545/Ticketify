@@ -20,6 +20,10 @@ app.conf.beat_schedule = {
         'task': 'transactions.tasks.check_all_transaction_status',
         'schedule': 1800.0,  # 30 minutes
     },
+    'export-all-data': {
+        'task': 'base.tasks.export_all_data',
+        'schedule': 7200.0,  # 60 minutes
+    },
 }
 
 # Load task modules from all registered Django apps.

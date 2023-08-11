@@ -39,4 +39,4 @@ def check_all_transaction_status():
                     ticket.is_active = False
                     ticket.save()
         else:
-            print("Ticket not found for transaction id: ", transaction.id + "(This is not a error but a info)")
+            print("Ticket not found for transaction id: ", transaction.id)

@@ -53,6 +53,14 @@ STORAGES = {
     "staticfiles": {"BACKEND": "storages.backends.s3boto3.S3StaticStorage"}
 }
 
+SFTP_STORAGE_HOST = getenv("SFTP_STORAGE_HOST", "sftp_storage_host")
+SFTP_STORAGE_ROOT = getenv("SFTP_STORAGE_ROOT", "sftp_storage_root")
+SFTP_STORAGE_PARAMS = {
+    'port': getenv("SFTP_STORAGE_PORT", "sftp_storage_port"),
+    'username': getenv("SFTP_STORAGE_USERNAME", "sftp_storage_username"),
+    'password': getenv("SFTP_STORAGE_PASSWORD", "sftp_storage_password"),
+}
+
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 if os.environ.get("SENTRY_ENABLED") == "True":

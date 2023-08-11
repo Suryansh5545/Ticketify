@@ -43,7 +43,7 @@ class TestEvent(TestCase):
         self.event.is_active = False
         self.event.save()
         response = self.client.get(reverse('get_active_event'))
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 400)
 
 
 class TestSubEvent(TestCase):
@@ -92,7 +92,7 @@ class TestSubEvent(TestCase):
         self.sub_event.is_active = False
         self.sub_event.save()
         response = self.client.get(reverse('get_sub_event', kwargs={'pk': self.event.id}))
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 400)
 
 
 class TestAddon(TestCase):
@@ -138,7 +138,7 @@ class TestAddon(TestCase):
         self.addon.is_active = False
         self.addon.save()
         response = self.client.get(reverse('get_addon', kwargs={'pk': self.event.id}))
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 400)
 
 
 class TestPromoCode(TestCase):
@@ -175,13 +175,13 @@ class TestPromoCode(TestCase):
         self.promo_code.is_active = False
         self.promo_code.save()
         response = self.client.post(reverse('process_promo_code'), data={"promo_code": self.promo_code.code, "event_id": self.event.id})
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 400)
 
     def test_get_promo_when_stock_zero(self):
         self.promo_code.stock = 0
         self.promo_code.save()
         response = self.client.post(reverse('process_promo_code'), data={"promo_code": self.promo_code.code, "event_id": self.event.id})
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 400)
 
     def test_get_promo_code_when_invalid(self):
         response = self.client.post(reverse('process_promo_code'), data={"promo_code": "INVALID", "event_id": self.event.id})

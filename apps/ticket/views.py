@@ -52,7 +52,7 @@ class handle_check_in(APIView):
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
             return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
-        operator = request.user.name
+        operator = request.user.username
         if len(ticket_id) == 10:
             method = "QR"
         else:

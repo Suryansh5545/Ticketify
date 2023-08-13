@@ -54,7 +54,7 @@ def payment_gateway(request):
     }
 
     event = Event.objects.get(pk=request.data.get('event_id'))
-    if event.payment_gateway.name == "razorpay":
+    if event.payment_gateway == "razorpay":
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
         order = client.order.create(data=data)
         if "error" in order:

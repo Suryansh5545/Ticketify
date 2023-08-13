@@ -3,7 +3,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from event.models import Event, SubEvent, Addon
 from base.utils import get_file_content
-from transactions.models import PaymentAggregator
 from django.core.files.base import ContentFile
 
 def check_database():
@@ -159,14 +158,6 @@ def create_addon(event):
     )
     print("Addon 1 was created")
 
-def create_payment_aggregator():
-    payment_aggregator = PaymentAggregator.objects.create(
-        name="razorpay",
-        is_active=True,
-    )
-    print("Payment Aggregator was created")
-    return payment_aggregator
-
 
 def run(*args):
     try:
@@ -181,7 +172,6 @@ def run(*args):
         event = create_event()
         create_sub_event(event)
         create_addon(event)
-        create_payment_aggregator()
         print("Database successfully seeded.")
     except Exception as e:
         print(e)

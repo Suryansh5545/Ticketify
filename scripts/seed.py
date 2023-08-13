@@ -70,6 +70,7 @@ def create_event():
         sub_events_included_allowed=3,
         is_active=True,
         event_page="",
+        payment_gateway="razorpay",
     )
     print("Sabrang was created")
     return event

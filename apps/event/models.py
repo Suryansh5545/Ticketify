@@ -16,7 +16,7 @@ class Event(models.Model):
         ('razorpay', 'Razorpay'),
         ('paytm', 'Paytm'),
     )
-    payment_gateway = models.CharField(max_length=100, choices=pg_options, default='razorpay')
+    payment_gateway = models.CharField(max_length=100, choices=pg_options, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

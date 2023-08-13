@@ -15,6 +15,4 @@ dj-rest-auth==4.0.1
 djangorestframework-simplejwt==5.2.2
 django-storages==1.13.2
 paramiko==3.3.1
-
---extra-index-url https://phonepe.mycloudrepo.io/public/repositories/phonepe-pg-sdk-python
-phonepe_sdk==0.0.2
+phonepe==1.0.1

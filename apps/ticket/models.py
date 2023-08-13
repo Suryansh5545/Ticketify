@@ -65,7 +65,7 @@ class CheckIn(models.Model):
         ordering = ["-check_in_time"]
 
     def __str__(self):
-        return self.ticket, self.check_in_time
+        return self.ticket.customer_name
     
 
 class TicketEmailLog(models.Model):

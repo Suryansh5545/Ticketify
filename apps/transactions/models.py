@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Transaction(models.Model):
+    PaymentAggregator = models.ForeignKey('transactions.PaymentAggregator', on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=100, blank=True)
     payment_status = models.CharField(max_length=100)
     order_id = models.CharField(max_length=100, default="")
@@ -18,3 +19,23 @@ class Transaction(models.Model):
 
     def __str__(self):
         return self.order_id
+    
+
+class PaymentAggregator(models.Model):
+    options = (
+        ('razorpay', 'Razorpay'),
+        ('paytm', 'Paytm'),
+        ('phonepe', 'Phonepe'),
+        ('zaakpay', 'Zaakpay'),
+    )
+    name = models.CharField(max_length=100, choices=options)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = "payment_aggregator"
+        ordering = ["-id"]
+
+    def __str__(self):
+        return self.name

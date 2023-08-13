@@ -1,4 +1,5 @@
 from django.db import models
+from transactions.models import PaymentAggregator
 
 
 class Event(models.Model):
@@ -12,6 +13,7 @@ class Event(models.Model):
     sub_events_included_allowed = models.IntegerField(default=0)
     is_active = models.BooleanField(default=False)
     event_page = models.URLField(max_length=200, blank=True)
+    payment_gateway = models.ForeignKey(PaymentAggregator, default="razorpay", on_delete=models.SET_DEFAULT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

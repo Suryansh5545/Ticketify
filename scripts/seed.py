@@ -162,7 +162,6 @@ def create_addon(event):
 
 def run(*args):
     try:
-        NUMBER_OF_CHALLENGES = int(args[0])
         status = check_database()
         if status is False:
             print("Seeding aborted.")

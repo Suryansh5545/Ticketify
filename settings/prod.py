@@ -5,6 +5,11 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 DEBUG = False
 
+# Admin settings
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "password")
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "example@example.com")
+
 # Email settings if EMAIL_REQUIRED is set to True
 if os.environ.get("EMAIL_REQUIRED") == "True":
     EMAIL_HOST = os.environ.get("EMAIL_HOST", "email_host")

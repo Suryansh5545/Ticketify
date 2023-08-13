@@ -30,15 +30,24 @@ def create_user(is_admin, username=""):
     """
     Creates superuser, participant user, host user and returns it.
     """
-    if is_admin:
-        username = "admin"
-        email = "admin@example.com"
+    if settings.DEBUG:
+        if is_admin:
+            username = "admin"
+            email = "admin@example.com"
+            password = "password"
+        else:
+            email = "%s@example.com" % (username)
+            password = "password"
     else:
-        email = "%s@example.com" % (username)
+        if is_admin:
+            username = settings.ADMIN_USERNAME
+            email = settings.ADMIN_EMAIL
+            password = settings.ADMIN_PASSWORD
+
     user = User.objects.create_user(
         email=email,
         username=username,
-        password="password",
+        password=password,
         is_staff=is_admin,
         is_superuser=is_admin,
     )

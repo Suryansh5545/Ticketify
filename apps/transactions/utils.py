@@ -1,11 +1,14 @@
 from event.models import Event, SubEvent, Addon, PromoCode
 import os, razorpay, json
+from ticket.models import Ticket
 from transactions.models import Transaction
-from ticket.utils import create_ticket
+from ticket.utils import create_ticket, generate_ticket_image
 from base.utils import get_url_from_hostname
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
+
+client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
 
 
 def HandlePriceCalculation(request):
@@ -55,7 +58,6 @@ def payment_gateway(request):
 
     event = Event.objects.get(pk=request.data.get('event_id'))
     if event.payment_gateway == "razorpay":
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
         order = client.order.create(data=data)
         if "error" in order:
             return Response({"message": "Backend Error"}, status=status.HTTP_400_BAD_REQUEST)
@@ -75,3 +77,30 @@ def payment_gateway(request):
                             "image": "https://sabrang.jklu.edu.in/wp-content/uploads/2022/10/sabrang-cover-text-e1664621537950.png"}
             
             return payment_info
+        
+
+def verify_payment_razorpay(request):
+    razorpay_payment_id = request.data.get('razorpay_payment_id')
+    razorpay_order_id = request.data.get('razorpay_order_id')
+    razorpay_signature = request.data.get('razorpay_signature')
+    if razorpay_payment_id == None or razorpay_order_id == None or razorpay_signature == None:
+            error_reason = request.data.get('error[reason]')
+            html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: {error_reason}</p></body></html>"
+            return html_response
+    params_dict = {
+        'razorpay_payment_id': razorpay_payment_id,
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_signature': razorpay_signature
+    }
+    payment_complete = client.utility.verify_payment_signature(params_dict)
+    if payment_complete:
+        transaction = Transaction.objects.get(order_id=razorpay_order_id)
+        transaction.payment_id = razorpay_payment_id
+        payment_details = client.payment.fetch(transaction.payment_id)
+        transaction.payment_status = payment_details['status']
+        transaction.payment_method = payment_details['method']
+        transaction.save()
+        return transaction
+    else:
+        html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: Signature Verification Failed</p></body></html>"
+        return html_response

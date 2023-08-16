@@ -16,14 +16,14 @@ def check_all_transaction_status():
             payment = client.order.payments(ticket.order_id)
             payment_status = payment["items"][0]["status"]
             if payment_status != ticket.payment_status:
-                ticket.payment_status = payment_status
+                ticket.transaction_id.payment_status = payment_status
                 ticket.save()
-            if ticket.is_active == False and ticket.payment_status == "captured":
+            if ticket.is_active == False and ticket.transaction_id.payment_status == "captured":
                 ticket.is_active = True
                 if ticket.ticket_image_generated == False:
                     generate_ticket_image(ticket)
                 ticket.save()
-            elif ticket.is_active == True and ticket.payment_status != "captured":
+            elif ticket.is_active == True and ticket.transaction_id.payment_status != "captured":
                 ticket.is_active = False
                 ticket.save()
         else:

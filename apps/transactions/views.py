@@ -7,10 +7,11 @@ from django.conf import settings
 from .models import Transaction
 from ticket.utils import create_ticket, generate_ticket_image
 from ticket.models import Ticket
+from event.models import Event
 from django.http import HttpResponse
 import os, razorpay, json
 from base.utils import EmailService
-from .utils import payment_gateway
+from .utils import payment_gateway, verify_payment_razorpay
 
 
 client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
@@ -34,53 +35,37 @@ class HandlePayment(APIView):
 
 class HandlePaymentSuccess(APIView):
     def post(self, request):
-        razorpay_payment_id = request.data.get('razorpay_payment_id')
-        razorpay_order_id = request.data.get('razorpay_order_id')
-        razorpay_signature = request.data.get('razorpay_signature')
-        if razorpay_payment_id == None or razorpay_order_id == None or razorpay_signature == None:
-                error_reason = request.data.get('error[reason]')
-                html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: {error_reason}</p></body></html>"
-                return HttpResponse(html_response, status=400)
-        params_dict = {
-            'razorpay_payment_id': razorpay_payment_id,
-            'razorpay_order_id': razorpay_order_id,
-            'razorpay_signature': razorpay_signature
-        }
-        payment_complete = client.utility.verify_payment_signature(params_dict)
-        if payment_complete:
-            transaction = Transaction.objects.get(order_id=razorpay_order_id)
-            transaction.payment_id = razorpay_payment_id
-            payment_details = client.payment.fetch(transaction.payment_id)
-            transaction.payment_status = payment_details['status']
-            transaction.payment_method = payment_details['method']
-            transaction.save()
-        if transaction.payment_status == "captured":
-            ticket = Ticket.objects.get(order_id = transaction.order_id)
-            ticket.transaction_id = transaction
-            ticket.is_active = True
-            if ticket.ticket_image_generated == False:
-                ticket_url = generate_ticket_image.delay(ticket.id)
-                ticket.ticket_image_generated = True
-            else:
-                html_response = "<html><body><h1>Payment Already Done</h1><p>This Payment is already Handled and ticket mailed.</p></body></html>"
-                return HttpResponse(html_response, status=400)
-            ticket.save()
-            # Wait for the Celery task to complete using the get() method with a timeout
-            try:
-                task_id = ticket_url.id
-                # ticket_url = ticket_url.get(timeout=60)  # Adjust the timeout value as needed
-            except TimeoutError:
-                html_response = "<html><body><h1>Ticket Generation Pending</h1><p>Payment Done , Your Ticket will be mailed to your email.</p></body></html>"
-                return HttpResponse(html_response, status=400)
+        event = Event.objects.get(is_active=True)
+        if event.payment_gateway == "razorpay":
+            transaction = verify_payment_razorpay(request)
+        if isinstance(transaction, Transaction):
+            if transaction.payment_status == "captured":
+                ticket = Ticket.objects.get(order_id = transaction.order_id)
+                ticket.transaction_id = transaction
+                ticket.is_active = True
+                if ticket.ticket_image_generated == False:
+                    ticket_url = generate_ticket_image.delay(ticket.id)
+                    ticket.ticket_image_generated = True
+                else:
+                    html_response = "<html><body><h1>Payment Already Done</h1><p>This Payment is already Handled and ticket mailed.</p></body></html>"
+                    return HttpResponse(html_response, status=400)
+                ticket.save()
+                try:
+                    task_id = ticket_url.id
+                except TimeoutError:
+                    html_response = "<html><body><h1>Ticket Generation Pending</h1><p>Payment Done , Your Ticket will be mailed to your email.</p></body></html>"
+                    return HttpResponse(html_response, status=400)
 
-            if task_id:
-                return redirect(get_url_from_hostname(settings.FRONTEND_URL) + "/delivery/" + task_id)
+                if task_id:
+                    return redirect(get_url_from_hostname(settings.FRONTEND_URL) + "/delivery/" + task_id)
+                else:
+                    html_response = "<html><body><h1>Invalid Payment</h1><p>This Payment ID doesn't match our database, if you believe this is a error contact us at our support mail at our homepage.</p></body></html>"
+                    return HttpResponse(html_response, status=400)
             else:
-                html_response = "<html><body><h1>Invalid Payment</h1><p>This Payment ID doesn't match our database, if you believe this is a error contact us at our support mail at our homepage.</p></body></html>"
+                html_response = "<html><body><h1>Invalid Payment</h1><p>The Payment failed, if you believe this is a error contact us at our support mail at our homepage.</p></body></html>"
                 return HttpResponse(html_response, status=400)
         else:
-            html_response = "<html><body><h1>Invalid Payment</h1><p>The Payment failed, if you believe this is a error contact us at our support mail at our homepage.</p></body></html>"
-            return HttpResponse(html_response, status=400)
+            return Response({"message": transaction}, status=status.HTTP_400_BAD_REQUEST)
             
 
 class PaymentWebhook(APIView):

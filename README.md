@@ -64,7 +64,13 @@ If you are facing any issue during installation, please feel free to reach out t
 ![image](https://github.com/Suryansh5545/Ticketify/assets/34577232/6f20f547-0a2a-4f52-a20b-af1c35f439de)
 
 
+## License
 
+This project is licensed under the [MIT License](LICENSE.txt).
+
+Copyright (c) 2023 Suryansh Pathak
+
+See [LICENSE](LICENSE) for more details.
 
 
 

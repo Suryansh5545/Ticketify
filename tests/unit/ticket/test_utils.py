@@ -70,7 +70,8 @@ class TestCreateTicket(TestCase):
 class TestGenerateTicketImage(TestCase):
     @patch("ticket.utils.imgkit")
     @patch("ticket.utils.send_ticket")
-    def test_generate_ticket_image(self, mock_imgkit, mock_send_ticket):
+    @patch("ticket.utils.io.BytesIO")
+    def test_generate_ticket_image(self, mock_imgkit, mock_send_ticket, mock_bytes_io):
         self.event = Event.objects.create(
             name="Event",
             description="Test Event",
@@ -90,6 +91,7 @@ class TestGenerateTicketImage(TestCase):
         )
         mock_imgkit.from_string.return_value = None
         mock_send_ticket.return_value = None
+        mock_bytes_io.return_value = None
         generate_ticket_image(self.ticket.id)
         self.assertNotEqual(self.ticket.ticket_image, None)
 

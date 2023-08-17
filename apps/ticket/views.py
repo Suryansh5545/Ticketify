@@ -11,6 +11,15 @@ from celery.result import AsyncResult
     
 
 class get_tickets_by_filter(APIView):
+    """
+    Get tickets by email, phone or name
+    Query Parameters:
+    email: Email of the customer
+    phone: Phone number of the customer
+    name: Name of the customer
+    or 
+    ticket_id: ID of the ticket
+    """
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
@@ -46,6 +55,11 @@ class get_tickets_by_filter(APIView):
     
 
 class handle_check_in(APIView):
+    """
+    Check in a ticket
+    Query Parameters:
+    ticket_id: ID of the ticket
+    """
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
@@ -82,6 +96,11 @@ class handle_check_in(APIView):
             
 
 class get_check_in_data(APIView):
+    """
+    Get check in data of a ticket
+    Query Parameters:
+    ticket_id: ID of the ticket
+    """
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
@@ -104,6 +123,11 @@ class get_check_in_data(APIView):
         
 
 class resend_email(APIView):
+    """
+    Resend ticket email
+    Query Parameters:
+    ticket_id: ID of the ticket
+    """
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
@@ -122,6 +146,11 @@ class resend_email(APIView):
         
 
 class get_ticket_by_subevents(APIView):
+    """
+    Get tickets by sub events
+    Query Parameters:
+    list_id: ID of the sub event
+    """
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):
@@ -142,6 +171,11 @@ class get_ticket_by_subevents(APIView):
         
 
 class get_ticket_by_addons(APIView):
+    """
+    Get tickets by addons
+    Query Parameters:
+    list_id: ID of the addon
+    """
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication]
     def post(self, request):

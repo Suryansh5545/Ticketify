@@ -17,6 +17,9 @@ from .utils import payment_gateway, verify_payment_razorpay
 client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
 
 class HandlePayment(APIView):
+    """
+    Handle Payment
+    """
     def post(self, request):
         if (os.environ.get("PAYMENT_ENV") == "development"):
             transaction = Transaction.objects.create(payment_method="card", payment_status="success", payment_id="1234567890", payment_amount=1000, payment_currency="NGN")
@@ -34,6 +37,9 @@ class HandlePayment(APIView):
 
 
 class HandlePaymentSuccess(APIView):
+    """
+    Handle Payment Success
+    """
     def post(self, request):
         event = Event.objects.get(is_active=True)
         if event.payment_gateway == "razorpay":
@@ -69,6 +75,9 @@ class HandlePaymentSuccess(APIView):
             
 
 class PaymentWebhook(APIView):
+    """
+    Handle Payment Webhook
+    """
     def post(self, request):
         payload_body = json.dumps(request.data, separators=(',', ':'))
         webhook_signature = request.headers.get("X-Razorpay-Signature")

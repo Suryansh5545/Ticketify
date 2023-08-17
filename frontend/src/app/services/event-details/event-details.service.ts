@@ -209,7 +209,7 @@ export class EventDetailsService {
         resolve();
       }, error => {
         reject(error);
-        this._snackBar.open(error.error.message, 'Close', {
+        this._snackBar.open(error.error.non_field_errors, 'Close', {
           duration: 4000,
           });
       });

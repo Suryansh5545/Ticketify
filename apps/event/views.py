@@ -12,6 +12,9 @@ from rest_framework.response import Response
 from rest_framework import status
 
 class GetActiveEvent(ListAPIView):
+    """
+    Get all active events
+    """
     queryset = Event.objects.filter(is_active=True)
     serializer_class = EventSerializer
 
@@ -23,6 +26,9 @@ class GetActiveEvent(ListAPIView):
 
     
 class GetSubEvent(APIView):
+    """
+    Get all active sub events
+    """
     def get(self, request, pk, format=None):
         event = Event.objects.get(pk=pk)
         sub_event = event.subevent_set.filter(is_active=True)
@@ -36,6 +42,9 @@ class GetSubEvent(APIView):
             return Response("No Active Sub Event", status=status.HTTP_400_BAD_REQUEST)
         
 class GetAddon(APIView):
+    """
+    Get all active addons
+    """
     def get(self, request, pk, format=None):
             event = Event.objects.get(pk=pk)
             addon = event.addon_set.filter(is_active=True)
@@ -49,6 +58,9 @@ class GetAddon(APIView):
                 return Response("No active Addon", status=status.HTTP_400_BAD_REQUEST)
             
 class ProcessPromoCode(APIView):
+    """
+    Process Promo Code
+    """
     def post(self, request, format=None):
         try:
             promo_code = request.data.get("promo_code")
@@ -68,6 +80,9 @@ class ProcessPromoCode(APIView):
         
 
 class get_max_ticket_sales(APIView):
+    """
+    Get max ticket sales
+    """
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.SessionAuthentication]
     def get(self, request, pk):
@@ -81,6 +96,9 @@ class get_max_ticket_sales(APIView):
 
 
 class get_sub_event_sales(APIView):
+    """
+    Get sub event sales
+    """
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.SessionAuthentication]
     def get(self, request, pk):
@@ -96,6 +114,9 @@ class get_sub_event_sales(APIView):
     
 
 class get_addon_sales(APIView):
+    """
+    Get addon sales
+    """
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.SessionAuthentication]
     def get(self, request, pk):

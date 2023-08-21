@@ -60,7 +60,8 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'import_export',
     'dj_rest_auth',
-    'storages'
+    'storages',
+    'drf_yasg'
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS

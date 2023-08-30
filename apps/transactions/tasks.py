@@ -15,7 +15,7 @@ def check_all_transaction_status():
         if order["status"] == "paid":
             payment = client.order.payments(ticket.order_id)
             payment_status = payment["items"][0]["status"]
-            if payment_status != ticket.payment_status:
+            if payment_status != ticket.transaction_id.payment_status:
                 ticket.transaction_id.payment_status = payment_status
                 ticket.save()
             if ticket.is_active == False and ticket.transaction_id.payment_status == "captured":

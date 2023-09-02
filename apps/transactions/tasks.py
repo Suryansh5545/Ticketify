@@ -27,7 +27,6 @@ def check_all_transaction_status():
                 ticket.is_active = False
                 ticket.save()
         else:
-            ticket.transaction_id.payment_status = order["status"]
             ticket.save()
             if ticket.is_active == True:
                 ticket.is_active = False

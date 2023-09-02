@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
-import { EventDetailsService } from '../services/event-details/event-details.service';
+import { EventDetailsService } from '../../services/event-details/event-details.service';
 
 @Component({
   selector: 'side-bar',

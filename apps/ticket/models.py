@@ -11,6 +11,11 @@ def generate_id():
 class Ticket(models.Model):
     id = models.CharField(primary_key=True, default=generate_id, editable=False, max_length=7)
     check_in = models.CharField(editable=False, max_length=10, unique=True)
+    type_options = (
+        ('REGULAR', 'Regular'),
+        ('STUDENT', 'Student'),
+    )
+    ticket_type = models.CharField(max_length=100, choices=type_options, default='REGULAR')
     customer_name = models.CharField(max_length=100)
     customer_email = models.EmailField()
     customer_phone = models.CharField(max_length=100)
@@ -30,7 +35,7 @@ class Ticket(models.Model):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
 
     def save(self, *args, **kwargs):
-        if self.transaction_id == None:
+        if self.transaction_id == None and self.ticket_type == 'REGULAR':
             self.is_active = False
         if not self.check_in:
             # Generate a unique check_in value if it doesn't exist

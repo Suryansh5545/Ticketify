@@ -87,7 +87,7 @@ class get_max_ticket_sales(APIView):
     authentication_classes = [authentication.SessionAuthentication]
     def get(self, request, pk):
         event = Event.objects.get(pk=pk)
-        tickets = Ticket.objects.filter(event=event, is_active=True)
+        tickets = Ticket.objects.filter(event=event, is_active=True, ticket_type='REGULAR')
         total_amount = 0
         for ticket in tickets:
             total_amount += ticket.transaction_id.payment_amount

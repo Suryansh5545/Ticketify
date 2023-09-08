@@ -18,6 +18,7 @@ export class CheckoutComponent {
   isDiscountApplied = false;
   DiscountValue: number = 0;
   SubEventsSelected: any = [];
+  SubEventsIncluded: number = 0;
   AddonsSelected: any = [];
   TotalPrice: number = 0;
   showCouponInput: boolean = false;
@@ -80,17 +81,40 @@ export class CheckoutComponent {
 
     SelectSubEvent(event: any, subEvent: any) {
       if (event.checked) {
-        this.SubEventsSelected.push(subEvent);
-        if (this.SubEventsSelected.length > this.EventDetailsService.event[0].sub_events_included_allowed) {
+        if (this.SubEventsIncluded+1 > this.EventDetailsService.event[0].sub_events_included_allowed || subEvent.type == 'premium') {
         this.TotalPrice += parseFloat(subEvent.price);
+        subEvent.given = false;
+        this.SubEventsSelected.push(subEvent);
+        }
+        else {
+          subEvent.given = true;
+          this.SubEventsSelected.push(subEvent);
+          this.SubEventsIncluded += 1;
         }
       } else {
-        if (this.SubEventsSelected.length > this.EventDetailsService.event[0].sub_events_included_allowed) {
+        if (subEvent.given == false || this.SubEventsIncluded > this.EventDetailsService.event[0].sub_events_included_allowed) {
           this.TotalPrice -= parseFloat(subEvent.price);
+        }
+        this.SubEventsSelected.splice(this.SubEventsSelected.indexOf(subEvent), 1);
+        let executed = 0;
+        for (let i = 0; i < this.SubEventsSelected.length && executed < 3; i++) {
+          if (this.SubEventsSelected[i].type != 'premium') {
+          executed += 1;
+          if (this.SubEventsSelected[i].given == false) {
+            this.TotalPrice -= parseFloat(this.SubEventsSelected[i].price);
+            this.SubEventsSelected[i].given = true;
           }
-          this.SubEventsSelected.splice(this.SubEventsSelected.indexOf(subEvent), 1);
-      }
+        }
+        }
+        let count = 0;
+        this.SubEventsSelected.forEach((subEvent: any) => {
+          if (subEvent.given == true) {
+            count += 1;
+          }
+        });
+        this.SubEventsIncluded = count;
     }
+  }
 
     onAddonSelectionChange(addonlist: any) {
       const previouslySelectedAddons = this.AddonsSelected;

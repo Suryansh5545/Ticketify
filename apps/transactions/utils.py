@@ -20,11 +20,16 @@ def HandlePriceCalculation(request):
     sub_event_count = 0
     sub_event_price = 0
     addon_price = 0
+    # Check for premium sub events
     for sub_event in selected_sub_events[0]:
-        if sub_event_count < total_sub_event_allowed:
+        if SubEvent.objects.get(pk=sub_event).type == 'premium':
+            sub_event_price += SubEvent.objects.get(pk=sub_event).price
+    for sub_event in selected_sub_events[0]:
+        if SubEvent.objects.get(pk=sub_event).type == 'standard' and sub_event_count < total_sub_event_allowed:
             sub_event_count += 1
         else:
-            sub_event_price += SubEvent.objects.get(pk=sub_event).price
+            if SubEvent.objects.get(pk=sub_event).type == 'standard':
+                sub_event_price += SubEvent.objects.get(pk=sub_event).price
     for addon in selected_addons:
         addon_price += Addon.objects.get(pk=addon).price
     event_price = Event.objects.get(pk=event_id).price

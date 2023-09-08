@@ -10,7 +10,7 @@ class EventSerializer(serializers.ModelSerializer):
 class SubEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubEvent
-        fields = ("id", "name", "description", "start_date", "end_date", "image", "event", "price")
+        fields = ("id", "name", "description", "start_date", "end_date", "image", "event", "price", "type")
     
 class AddonSerializer(serializers.ModelSerializer):
     class Meta:

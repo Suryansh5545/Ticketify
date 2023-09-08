@@ -28,6 +28,9 @@
             </div>
             <mat-list>
               <mat-card class="customer-interface-card" *ngFor="let event of SubEvents">
+                <div class="ribbon" *ngIf="event.type == 'premium'">
+                  <span>Premium</span>
+                </div>
                 <div class="row d-flex align-items-center">
                   <div class="col-1 order-1">
                     <button mat-icon-button (click)="toggleDescription(event, $event)">
@@ -86,7 +89,17 @@
                 <h4>Event</h4>
               </div>
               <div class="col-md-6">
-                <p *ngFor="let subevent of SubEventsSelected">{{ subevent.name }}{{ subevent.price  | currency : "INR"  }}</p>
+                <p *ngFor="let subevent of SubEventsSelected">
+                  <ng-container *ngIf="subevent.given">
+                    <div class="event-details">
+                      {{ subevent.name }}
+                      <span class="free-tag">Free</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="!subevent.given">
+                    {{ subevent.name }} {{ subevent.price | currency : 'INR' }}
+                  </ng-container>
+                </p>                
               </div>
             </div>
             <div class="row mb-3">

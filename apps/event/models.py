@@ -43,6 +43,11 @@ class SubEvent(models.Model):
     end_date = models.DateField()
     image = models.ImageField(upload_to='sub_event', blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    type_options = (
+        ('standard', 'Standard'),
+        ('premium', 'Premium'),
+    )
+    type = models.CharField(max_length=100, choices=type_options, default='standard')
     event = models.ForeignKey('event.Event', on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

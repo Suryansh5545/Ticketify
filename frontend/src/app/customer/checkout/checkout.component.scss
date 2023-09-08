@@ -102,3 +102,38 @@ fa-icon {
   display: none;
 }
 }
+
+.ribbon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e91e63; /* Ribbon background color */
+  color: #fff; /* Ribbon text color */
+  padding: 5px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  transform: translate(50%, -50%);
+  z-index: 1;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+}
+
+
+.ribbon span {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.event-details {
+  display: flex; /* Display its children inline */
+  align-items: center; /* Vertically align children */
+}
+
+.free-tag {
+  margin-left: 5px; /* Add space between the main content and "Free" tag */
+  padding: 5px 10px; /* Add padding to "Free" tag for better appearance */
+  background-color: green; /* Customize the background color */
+  color: white; /* Set the text color */
+  border-radius: 5px; /* Add rounded corners */
+}

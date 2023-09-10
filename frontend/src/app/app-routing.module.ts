@@ -6,9 +6,6 @@ import { MaintenanceComponent } from './customer/maintenance/maintenance.compone
 import { DeliveryComponent } from './customer/delivery/delivery.component';
 import { CheckoutComponent } from './customer/checkout/checkout.component';
 
-// Services
-import { isAuthGuard } from './services/authentication/authguard.guard';
-
 const routes: Routes = [
   { path: '', redirectTo: 'checkout', pathMatch: 'full' },
   { path: 'checkout', component: CheckoutComponent },
@@ -17,8 +14,7 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () =>
-      import('./admin/admin.module').then((m) => m.AdminModule),
-    canActivate: [isAuthGuard], // Apply the AuthGuard to the entire admin path
+      import('./admin/admin.module').then((m) => m.AdminModule)
   },
 ];
 

@@ -28,15 +28,11 @@ import {MatSelectModule} from '@angular/material/select';
 // NPM Module
 import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
 
-// Services
-import { isAuthGuard } from '../services/authentication/authguard.guard';
-
 const adminRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '',
     component: SideBarComponent,
-    canActivate: [isAuthGuard], // Apply the AuthGuard to the entire admin path
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: DashboardComponent },

@@ -180,6 +180,7 @@ export class CheckoutComponent {
         selected_addons: this.AddonsSelected.map((addon: { id: any; }) => addon.id),
         coupon: this.appliedCoupon,
     }
+    if (this.eventdata[0].payment_gateway == 'razorpay') {
     this.EventDetailsService.SendCheckoutData(data).then(() => {
       const checkoutData = {
         "key_id": this.EventDetailsService.CheckoutData.id,
@@ -198,8 +199,18 @@ export class CheckoutComponent {
 
     });
   }
+  else if (this.eventdata[0].payment_gateway == 'billdesk') {
+    this.EventDetailsService.SendCheckoutData(data).then(() => {
+      const checkoutData = this.EventDetailsService.CheckoutData;
+      const form = this.createForm(checkoutData);
+      this.submitFormElement(form);
+
+    });
+  }
+}
 
   private createForm(formData: { [key: string]: any }): HTMLFormElement {
+  if (this.eventdata[0].payment_gateway == 'razorpay') {
     const form = this.renderer.createElement('form');
     form.method = 'POST';
     form.action = 'https://api.razorpay.com/v1/checkout/embedded';
@@ -217,8 +228,19 @@ export class CheckoutComponent {
   
       this.renderer.appendChild(form, input);
     });
-  
     return form;
+  }
+    else {
+      const form = this.renderer.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://pgi.billdesk.com/pgidsk/PGIMerchantPayment';
+      const inputMsg = this.renderer.createElement('input');
+      inputMsg.type = 'hidden';
+      inputMsg.name = 'msg';
+      inputMsg.value = formData.toString();
+      form.appendChild(inputMsg);
+      return form;
+    }
   }
   
 

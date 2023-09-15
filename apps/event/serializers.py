@@ -5,7 +5,7 @@ from django.conf import settings
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ("id", "name", "description", "start_date", "end_date", "image" , "location", "event_page", "price", "sub_events_included_allowed")
+        fields = ("id", "name", "description", "start_date", "end_date", "image" , "location", "event_page", "price", "sub_events_included_allowed", "payment_gateway")
 
 class SubEventSerializer(serializers.ModelSerializer):
     class Meta:

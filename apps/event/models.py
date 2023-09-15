@@ -14,7 +14,7 @@ class Event(models.Model):
     event_page = models.URLField(max_length=200, blank=True)
     pg_options = (
         ('razorpay', 'Razorpay'),
-        ('paytm', 'Paytm'),
+        ('billdesk', 'Billdesk'),
     )
     payment_gateway = models.CharField(max_length=100, choices=pg_options, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

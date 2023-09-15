@@ -7,6 +7,7 @@ from base.utils import get_url_from_hostname
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
+from django_billdesk import ResponseMessage, GetMessage
 
 client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
 
@@ -80,8 +81,18 @@ def payment_gateway(request):
                             "Business": "JKLU",
                             "callback_url": get_url_from_hostname(settings.HOSTNAME) + "/api/transactions/handle-payment-success/",
                             "image": "https://sabrang.jklu.edu.in/wp-content/uploads/2022/10/sabrang-cover-text-e1664621537950.png"}
-            
             return payment_info
+            
+    if event.payment_gateway == "billdesk":
+            ticket = create_ticket(request)
+            Transaction.objects.create(payment_status="created", 
+                                       order_id=ticket.id, 
+                                        payment_amount=Total_amount,
+                                        payment_currency="INR")
+            ticket.order_id = ticket.id
+            ticket.save()
+            msg = GetMessage().message(ticket.id, Total_amount, request.data.get('customer_email'), request.data.get('customer_phone'), request.data.get('customer_name'), ticket.check_in)
+            return msg
         
 
 def verify_payment_razorpay(request):
@@ -109,3 +120,56 @@ def verify_payment_razorpay(request):
     else:
         html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: Signature Verification Failed</p></body></html>"
         return html_response
+    
+
+def verify_payment_billdesk(values):
+    if not values is False and values['MID'] == settings.MID:
+        transaction = Transaction.objects.get(order_id=values['OrderID'])
+        tstat,amnt,txnid,dnt,mode = values['TStat'],values['AMNT'], values['TaxnNo'],values['DnT'],values['TMode']
+        transaction.payment_id = txnid
+        if tstat == '0300' and transaction.payment_amount== float(amnt):
+            transaction.payment_status = "captured"
+            transaction.payment_method = mode
+            transaction.save()
+            return transaction
+        elif tstat == '0300' and transaction.payment_amount!= float(amnt):
+            transaction.payment_status = "Mismatch"
+            transaction.payment_method = mode
+            transaction.save()
+            html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: Amount Mismatch</p></body></html>"
+            return html_response
+        elif tstat == '0002':
+            transaction.payment_status = "Pending"
+            transaction.payment_method = mode
+            transaction.save()
+            html_response = f"<html><body><h1>Payment Failed</h1><p>Billdesk is waiting for the trasaction status from your bank. Will update you as soon as we have any response</p></body></html>"
+            return html_response
+        elif tstat != '0300':
+            if tstat == '0399':
+                transaction.payment_status = "Failed"
+                transaction.payment_method = mode
+                transaction.save()
+                html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: Invalid Authentication at Bank</p></body></html>"
+            elif tstat == "NA":
+                transaction.payment_status = "Cancel"
+                transaction.payment_method = mode
+                transaction.save()
+                html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: Invalid Input in the Request Message</p></body></html>"
+            elif tstat == "0001":
+                transaction.payment_status = "Cancel"
+                transaction.payment_method = mode
+                transaction.save()
+                html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: error at billdesk</p></body></html>"
+            else:
+                transaction.payment_status = "Failed"
+                transaction.payment_method = mode
+                transaction.save()
+                html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed.</p></body></html>"
+        else:
+            transaction.payment_status = "Failed"
+            transaction.payment_method = mode
+            transaction.save()
+            html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed.</p></body></html>"
+    else:
+        html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: Looked liked someone tried tampering your payment</p></body></html>"
+

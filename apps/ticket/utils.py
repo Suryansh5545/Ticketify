@@ -14,7 +14,7 @@ from django.conf import settings
 from django.core.files import File
 
 
-def create_ticket(request, order_id):
+def create_ticket(request, order_id=None):
         if request.method == "POST":
             serializer = TicketSerializer(data=request.data)
             if serializer.is_valid():
@@ -39,6 +39,7 @@ def create_ticket(request, order_id):
                 ticket.save()
             else:
                 raise Exception(serializer.errors)
+        return ticket
 
 
 @shared_task(name="generate_ticket_image")

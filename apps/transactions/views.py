@@ -11,7 +11,8 @@ from event.models import Event
 from django.http import HttpResponse
 import os, razorpay, json
 from base.utils import EmailService
-from .utils import payment_gateway, verify_payment_razorpay
+from .utils import payment_gateway, verify_payment_billdesk, verify_payment_razorpay
+from django_billdesk import ResponseMessage
 
 
 client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
@@ -44,6 +45,10 @@ class HandlePaymentSuccess(APIView):
         event = Event.objects.get(is_active=True)
         if event.payment_gateway == "razorpay":
             transaction = verify_payment_razorpay(request)
+        elif event.payment_gateway == "billdesk":
+            response = request.POST
+            values = ResponseMessage().respMsg(response)
+            transaction = verify_payment_billdesk(values)
         if isinstance(transaction, Transaction):
             if transaction.payment_status == "captured":
                 ticket = Ticket.objects.get(order_id = transaction.order_id)

@@ -28,14 +28,14 @@ services:
     - /code/node_modules
     container_name: ticketify_nodejs_v1
 
-  # celery:
-  #   build:
-  #     context: ./
-  #     dockerfile: docker/prod/celery/Dockerfile
-  #   env_file:
-  #     - stack.env
-  #   depends_on:
-  #     - django
+  celery:
+    build:
+      context: ./
+      dockerfile: docker/prod/celery/Dockerfile
+    env_file:
+      - stack.env
+    depends_on:
+      - django
 
 networks:
   default:

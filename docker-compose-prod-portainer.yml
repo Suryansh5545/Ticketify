@@ -1,0 +1,43 @@
+version: "3"
+services:
+
+  django:
+    hostname: django
+    env_file:
+      - stack.env
+    build:
+      context: ./
+      dockerfile: docker/prod/django/Dockerfile
+    ports:
+      - "8001:8001"
+    container_name: ticketify_django
+
+  nodejs_v1:
+    hostname: nodejs_v1
+    build:
+      context: ./
+      dockerfile: docker/prod/nodejs_v1/Dockerfile
+      args:
+        - NODE_ENV=production
+    environment:
+        ANGULAR_ENV: production 
+    ports:
+      - "4200:4200"
+      - "3000:3000"
+    volumes:
+    - /code/node_modules
+    container_name: ticketify_nodejs_v1
+
+  # celery:
+  #   build:
+  #     context: ./
+  #     dockerfile: docker/prod/celery/Dockerfile
+  #   env_file:
+  #     - stack.env
+  #   depends_on:
+  #     - django
+
+networks:
+  default:
+    external: true
+    name: scoobydoo

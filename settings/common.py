@@ -211,4 +211,4 @@ SEC_ID = os.environ.get("BILLDESK_SECRET", "")
 BILL_URL = os.environ.get("BILL_URL", "")
 CONF_BILL_URL = os.environ.get("CONF_BILL_URL", "")
 CHECKSUM_KEY = os.environ.get("CHECKSUM_KEY", "")
-REVERSE_URL = TICKETIFY_API_SERVER + "/api/transactions/handle-payment-success/"
+REVERSE_URL = os.environ.get("REVERSE_URL", "")

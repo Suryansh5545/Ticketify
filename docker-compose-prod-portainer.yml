@@ -18,9 +18,9 @@ services:
       context: ./
       dockerfile: docker/prod/nodejs_v1/Dockerfile
       args:
-        - NODE_ENV=production
+        - NODE_ENV=staging
     environment:
-        ANGULAR_ENV: production 
+        ANGULAR_ENV: staging 
     ports:
       - "4200:4200"
       - "3000:3000"

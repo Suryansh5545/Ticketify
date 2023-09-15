@@ -8,5 +8,5 @@
  */
 export const environment = {
   production: true,
-  api_endpoint: 'https://staging.ticketify.tech/api/',
+  api_endpoint: 'https://sabrang.ticketify.tech/api/',
 };

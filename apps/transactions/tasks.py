@@ -55,12 +55,14 @@ def check_all_transaction_status():
                             ticket.save()
                             if ticket.ticket_image_generated == False:
                                 generate_ticket_image(ticket.pk)
+                                print(ticket.id)
                     elif  tstat == '0300':
                         if ticket.is_active == False:
                             ticket.is_active = True
                             ticket.save()
                             if ticket.ticket_image_generated == False:
                                 generate_ticket_image(ticket.pk)
+                                print(ticket.id)
                     elif transaction.payment_id is None and tstat == '0002':
                         transaction.payment_status = "Pending"
                         transaction.save()
@@ -87,7 +89,7 @@ def check_all_transaction_status():
                         ticket.save()
                         transaction.payment_status = "Failed"
                         transaction.save()
-        else:
+        elif ticket.ticket_type == "STUDENT":
             if ticket.ticket_image_generated == False:
                 generate_ticket_image(ticket.pk)
                 ticket.ticket_image_generated = True

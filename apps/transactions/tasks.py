@@ -38,11 +38,11 @@ def check_all_transaction_status():
                         ticket.is_active = False
                         ticket.save()
             elif event.payment_gateway == "billdesk":
-                # msg = GetMessage().schedule_msg(ticket.order_id)
-                # url = settings.CONF_BILL_URL
-                # response = requests.post(url, data={'msg': msg})
-                # # value = ResponseMessage().schedule_resp(response)
-                # print(response.text)
+                msg = GetMessage().schedule_msg(ticket.order_id)
+                url = settings.CONF_BILL_URL
+                response = requests.post(url, data={'msg': msg})
+                # value = ResponseMessage().schedule_resp(response)
+                print(response.text)
                 break
         else:
             if ticket.ticket_image_generated == False:

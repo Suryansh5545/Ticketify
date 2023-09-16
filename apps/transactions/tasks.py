@@ -42,6 +42,8 @@ def check_all_transaction_status():
                 url = settings.CONF_BILL_URL
                 response = requests.post(url, data={'msg': msg})
                 values = ResponseMessage().schedule_resp(response)
+                print(values)
+                print(response.text)
                 if not values is False and values['MID'] == settings.MID:
                     transaction = Transaction.objects.get(order_id=values['OrderID'])
                     tstat,txnid = values['TStat'], values['TaxnNo']

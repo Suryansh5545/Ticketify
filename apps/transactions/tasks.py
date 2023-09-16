@@ -41,8 +41,8 @@ def check_all_transaction_status():
                 msg = GetMessage().schedule_msg(ticket.order_id)
                 url = settings.CONF_BILL_URL
                 response = requests.post(url, data={'msg': msg})
-                # value = ResponseMessage().schedule_resp(response)
-                print(response.text)
+                value = ResponseMessage().schedule_resp(response)
+                print(value)
         else:
             if ticket.ticket_image_generated == False:
                 generate_ticket_image(ticket.pk)

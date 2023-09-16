@@ -13,6 +13,7 @@ client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
 
 
 def HandlePriceCalculation(request):
+    promo_applied = False
     event_id = request.data.get('event_id')
     selected_sub_events = request.data.get('selected_sub_events', []),
     selected_addons = request.data.get('selected_addons', [])
@@ -43,11 +44,14 @@ def HandlePriceCalculation(request):
         if promocode:
             if (total_price- promocode.discount) < 0:
                     total_price = total_price - promocode.discount
-    return int(total_price)
+                    promo_applied = True
+                    promocode.stock -= 1
+                    promocode.save()
+    return int(total_price), promo_applied
 
 
 def payment_gateway(request):
-    Total_amount = HandlePriceCalculation(request)
+    Total_amount, promo_applied = HandlePriceCalculation(request)
     data = {
         "amount": Total_amount * 100,
         "currency": "INR",
@@ -72,7 +76,7 @@ def payment_gateway(request):
                                     order_id=order['id'], 
                                     payment_amount=order['amount']/100, 
                                     payment_currency=order['currency'])
-            create_ticket(request, order['id'])
+            create_ticket(request, order['id'], promo_applied)
             payment_info = {"message": "Order Created", 
                             "payment_id": order['id'],
                             "amount": order['amount'],
@@ -84,7 +88,7 @@ def payment_gateway(request):
             return payment_info
             
     if event.payment_gateway == "billdesk":
-            ticket = create_ticket(request)
+            ticket = create_ticket(request, None, promo_applied)
             Transaction.objects.create(payment_status="created", 
                                        order_id=ticket.id, 
                                         payment_amount=Total_amount,

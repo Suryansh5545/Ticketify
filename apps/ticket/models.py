@@ -30,6 +30,7 @@ class Ticket(models.Model):
     order_id = models.CharField(max_length=100, default="", unique=True, null=True)
     transaction_id = models.OneToOneField(Transaction, on_delete=models.CASCADE, null=True, blank=True, unique=True)
     referral = models.CharField(max_length=100, null=True, blank=True)
+    promo_applied = models.BooleanField(default=False)
 
     def generate_unique_ticket_id(self):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))

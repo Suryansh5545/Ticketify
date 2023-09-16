@@ -14,7 +14,7 @@ from django.conf import settings
 from django.core.files import File
 
 
-def create_ticket(request, order_id=None):
+def create_ticket(request, order_id=None, promo_applied=False):
         if request.method == "POST":
             serializer = TicketSerializer(data=request.data)
             if serializer.is_valid():
@@ -32,7 +32,8 @@ def create_ticket(request, order_id=None):
                     customer_email=customer_email,
                     customer_phone=customer_phone,
                     referral=referral,
-                    event=event,order_id = order_id
+                    event=event,order_id = order_id,
+                    promo_applied=promo_applied
                 )
                 ticket.selected_sub_events.set(selected_sub_events)
                 ticket.selected_addons.set(selected_addons)
@@ -49,6 +50,12 @@ def generate_ticket_image (ticket_id):
     qr_code_image = generate_qr_code(ticket.check_in)
     qr_code_image_base64 = base64.b64encode(qr_code_image).decode('utf-8')
     sub_events = ticket.selected_sub_events.all().values_list('name', flat=True)
+    if ticket.ticket_type == "STUDENT":
+        student = "Student"
+    elif ticket.promo_applied:
+        student = "JKLAKSHUNI"
+    else:
+        student = ""
     ticket_data = {
             "spam": "",
             "ticketNumber": ticket.id,
@@ -58,18 +65,20 @@ def generate_ticket_image (ticket_id):
             "day": ticket.event.start_date.strftime("%A"),
             "date": ticket.event.start_date.strftime("%B %d") + " - " + ticket.event.end_date.strftime("%d"),
             "year": ticket.event.start_date.strftime("%Y"),
-            "timeSlot": ticket.event.start_date.strftime("%I:%M %p") + " TO " + ticket.event.end_date.strftime("%I:%M %p"),
+            "timeSlot": ticket.event.start_date.strftime("%I:%M %p"),
             "doors": sub_events,
             "barcodeImageURL": f"data:image/png;base64,{qr_code_image_base64}",
+            "ticketType": student,
         }
 
-    template = get_template('ticket/ticket_template.html')
+    template = get_template('ticket/sabrang/index.html')
     html_content = template.render(ticket_data)
     options = {
-        'width': '802',
-        'height': '250',
         'quality': 100,
-        'zoom': '2.0',
+        'crop-w': '300',
+        'crop-y': '40',
+        'crop-x': '305',
+        'crop-h': '600',
     }
     ticket_name = f"ticket_{encrypted_ticket_id}.jpg"
     img_bytes = imgkit.from_string(html_content, None, options=options)

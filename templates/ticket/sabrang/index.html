@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Ticket</title>
+</head>
+<style>
+  .cardWrap {
+    width: 34em;
+    height: 30em; /* Adjust the height to match the rotated width */
+    margin-right: auto;
+    margin-bottom: 3em;
+    margin-left: auto;
+    font-family: sans-serif;
+    position: relative;
+    transform-origin: 50% 50%;
+    transform: translateX(-10%) translateY(10%) rotate(90deg);
+    background: #000000;
+  }
+  
+  
+  .card {
+    background: #fff;
+    height: 13em;
+    float: left;
+    position: relative;
+    padding: 1em;
+    margin-top: 120px;
+  }
+  
+  .cardLeft {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    width: 16em;
+    margin-left: 40px;
+  }
+  
+  .cardRight {
+    width: 7em;
+    border-left: 0.18em dashed #000000;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  .cardRight:before, .cardRight:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0.9em;
+    height: 0.9em;
+    background: #000000;
+    border-radius: 50%;
+    left: -0.5em;
+  }
+  .cardRight:before {
+    top: -0.4em;
+  }
+  .cardRight:after {
+    bottom: -0.4em;
+  }
+  
+  h1 {
+    transform: translateX(-45%) translateY(90%) rotate(270deg);
+  }
+  .title {
+    transform: rotate(270deg);
+    font-size: 0.55em;
+    position: absolute;
+    top: 61px;
+    right: 91px;
+    width: 100%;
+  }
+  
+  .name {
+    transform: rotate(270deg);
+    font-size: 0.7em;
+    position: absolute;
+    right: 61px;
+    top: 59px;
+    width: 100%;
+  }
+  
+  .event {
+    transform: rotate(270deg);
+    font-size: 0.65em;
+    position: absolute;
+    top: 48px;
+    width: 80%;
+    margin: 5%;
+    height: 100px; /* Set a fixed height */
+    overflow: hidden; /* Hide overflowing content */
+  }
+  
+  .student {
+    transform: rotate(270deg);
+    font-size: 0.6em;
+    position: absolute;
+    right: -114px;
+    top: 45px;
+    margin: 5%;
+    width: 100%;
+  }
+  
+  .location {
+    transform: rotate(270deg);
+    font-size: 0.6em;
+    position: absolute;
+    right: -134px;
+    top: 49px;
+    margin: 5%;
+    width: 100%;
+  }
+  
+  .time {
+    transform: rotate(270deg);
+    font-size: 0.6em;
+    position: absolute;
+    right: -134px;
+    top: -93px;
+    margin: 5%;
+    width: 100%;
+  }
+  .image-bar-left {
+    transform: rotate(270deg);
+    position: relative;
+    left: 3%;
+    top: 65%;
+    width: 7%;
+  }
+  .image-bar-right {
+    position: relative;
+    left: 1.5%;
+    top: 14%;
+    transform: rotate(270deg);
+    width: 10%;
+  }
+  .image-bar-sponsor1 {
+    position: relative;
+    left: 1.5%;
+    top: 14%;
+    transform: rotate(270deg);
+    width: 10%;
+  }
+  
+  .image-bar-sponsor2 {
+    position: relative;
+    left: 1.5%;
+    top: 14%;
+    transform: rotate(270deg);
+    width: 10%;
+  }
+  
+  .number {
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .number h3 {
+    color: #e84c3d;
+    margin: 2em 0 0 0;
+    font-size: 1.3em;
+  }
+  
+  .qrcode {
+    rotate: 270deg;
+    height: 120px;
+  }
+  
+  .qrcode img {
+    height: 100%;
+  }
+
+</style>
+<body>
+<!-- partial:index.partial.html -->
+<div class="cardWrap">
+  <div class="card cardLeft">
+    <h1><img src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/sabrang%20word_black.svg"></h1>
+    <div class="title">
+      <h2>{{date}}</h2>
+    </div>
+    <div class="name">
+      <h2>{{artistName}}</h2>
+    </div>
+    <div class="event">
+      <h2>{% for sub_event in doors %}
+			  {{ sub_event }}{% if not forloop.last %}, {% endif %}
+			  {% if forloop.counter|divisibleby:4 %}<br>{% endif %}
+			{% endfor %}</h2>
+    </div>
+    <div class="student">
+      <h2>{{ticketType}}</h2>
+    </div>
+    <div class="location">
+      <h2>{{location}}</h2>
+    </div>
+    <div class="time">
+      <h2>11:00 AM</h2>
+    </div>
+  </div>
+  <div class="card cardRight">
+    <div class="qrcode">
+      <img src="{{barcodeImageURL}}">
+    </div>
+    <div class="number">
+      <h3>{{ticketNumber}}</h3>
+    </div>
+  </div>
+
+    <img class="image-bar-left" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/jklu_logo.png">
+    <img class="image-bar-right" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/sabrang%20peacock%20white.svg">
+    <img class="image-bar-sponsor1" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/Capture.PNG">
+    <img class="image-bar-sponsor2" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/Capture2.PNG">
+</div>
+<!-- partial -->
+  
+</body>
+</html>

@@ -34,6 +34,8 @@ def HandlePriceCalculation(request):
                 sub_event_price += SubEvent.objects.get(pk=sub_event).price
     for addon in selected_addons:
         addon_price += Addon.objects.get(pk=addon).price
+        Addon.objects.get(pk=addon).stock -= 1
+        Addon.objects.get(pk=addon).save()
     event_price = Event.objects.get(pk=event_id).price
     total_price = event_price + sub_event_price + addon_price
     if couponcode != '':

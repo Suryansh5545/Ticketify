@@ -50,6 +50,7 @@ def check_all_transaction_status():
                         transaction.payment_currency = "INR"
                         transaction.payment_status = "captured"
                         transaction.save()
+                        ticket.transaction_id = transaction
                         if ticket.is_active == False:
                             ticket.is_active = True
                             ticket.save()
@@ -60,6 +61,7 @@ def check_all_transaction_status():
                                 ticket.save()
                     elif  tstat == '0300':
                         if ticket.is_active == False:
+                            ticket.transaction_id = transaction
                             ticket.is_active = True
                             ticket.save()
                             if ticket.ticket_image_generated == False:

@@ -42,68 +42,51 @@ def check_all_transaction_status():
                 url = settings.CONF_BILL_URL
                 response = requests.post(url, data={'msg': msg})
                 values = ResponseMessage().schedule_resp(response)
-                print(values)
-                print(response.text)
-                # if not values is False and values['MID'] == settings.MID:
-                #     transaction = Transaction.objects.get(order_id=values['OrderID'])
-                #     tstat,amnt,txnid,dnt,mode = values['TStat'],values['AMNT'], values['TaxnNo'],values['DnT'],values['TMode']
-                #     if transaction.payment_id is None and tstat == '0300' and transaction.payment_amount== float(amnt):
-                #         transaction.payment_id = txnid
-                #         transaction.payment_amount = amnt
-                #         transaction.payment_currency = "INR"
-                #         transaction.payment_method = mode
-                #         transaction.payment_status = "captured"
-                #         transaction.save()
-                #         if ticket.is_active == False:
-                #             ticket.is_active = True
-                #             ticket.save()
-                #             if ticket.ticket_image_generated == False:
-                #                 generate_ticket_image(ticket.pk)
-                #     elif  tstat == '0300' and transaction.payment_amount== float(amnt):
-                #         if ticket.is_active == False:
-                #             ticket.is_active = True
-                #             ticket.save()
-                #             if ticket.ticket_image_generated == False:
-                #                 generate_ticket_image(ticket.pk)
-                #     elif transaction.payment_id is None and tstat == '0300' and transaction.payment_amount!= float(amnt):
-                #         transaction.payment_id = txnid
-                #         transaction.payment_amount = amnt
-                #         transaction.payment_currency = "INR"
-                #         transaction.payment_method = mode
-                #         transaction.payment_status = "Mismatch"
-                #         transaction.save()
-                #         if ticket.is_active == True:
-                #             ticket.is_active = False
-                #             ticket.save()
-                #     elif transaction.payment_id is None and tstat == '0002':
-                #         transaction.payment_status = "Pending"
-                #         transaction.save()
-                #         if ticket.is_active == True:
-                #             ticket.is_active = False
-                #             ticket.save()
-                #     elif tstat != '0300':
-                #         ticket.is_active = False
-                #         ticket.save()
-                #         if tstat == '0399':
-                #             transaction.payment_status = "Failed"
-                #             transaction.payment_method = mode
-                #             transaction.save()
-                #         elif tstat == "NA":
-                #             transaction.payment_status = "Cancel"
-                #             transaction.payment_method = mode
-                #             transaction.save()
-                #         elif tstat == "0001":
-                #             transaction.payment_status = "Cancel"
-                #             transaction.payment_method = mode
-                #             transaction.save()
-                #         else:
-                #             transaction.payment_status = "Failed"
-                #             transaction.payment_method = mode
-                #             transaction.save()
-                #     else:
-                #         transaction.payment_status = "Failed"
-                #         transaction.payment_method = mode
-                #         transaction.save()
+                if not values is False and values['MID'] == settings.MID:
+                    transaction = Transaction.objects.get(order_id=values['OrderID'])
+                    tstat,txnid = values['TStat'], values['TaxnNo']
+                    if transaction.payment_id is None and tstat == '0300':
+                        transaction.payment_id = txnid
+                        transaction.payment_currency = "INR"
+                        transaction.payment_status = "captured"
+                        transaction.save()
+                        if ticket.is_active == False:
+                            ticket.is_active = True
+                            ticket.save()
+                            if ticket.ticket_image_generated == False:
+                                generate_ticket_image(ticket.pk)
+                    elif  tstat == '0300':
+                        if ticket.is_active == False:
+                            ticket.is_active = True
+                            ticket.save()
+                            if ticket.ticket_image_generated == False:
+                                generate_ticket_image(ticket.pk)
+                    elif transaction.payment_id is None and tstat == '0002':
+                        transaction.payment_status = "Pending"
+                        transaction.save()
+                        if ticket.is_active == True:
+                            ticket.is_active = False
+                            ticket.save()
+                    elif tstat != '0300':
+                        ticket.is_active = False
+                        ticket.save()
+                        if tstat == '0399':
+                            transaction.payment_status = "Failed"
+                            transaction.save()
+                        elif tstat == "NA":
+                            transaction.payment_status = "Cancel"
+                            transaction.save()
+                        elif tstat == "0001":
+                            transaction.payment_status = "Cancel"
+                            transaction.save()
+                        else:
+                            transaction.payment_status = "Failed"
+                            transaction.save()
+                    else:
+                        ticket.is_active = False
+                        ticket.save()
+                        transaction.payment_status = "Failed"
+                        transaction.save()
         else:
             if ticket.ticket_image_generated == False:
                 generate_ticket_image(ticket.pk)

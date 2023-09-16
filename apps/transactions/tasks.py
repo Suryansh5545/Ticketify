@@ -55,14 +55,18 @@ def check_all_transaction_status():
                             ticket.save()
                             if ticket.ticket_image_generated == False:
                                 generate_ticket_image(ticket.pk)
-                                print(ticket.id)
+                                print(response.text)
+                                ticket.ticket_image_generated = True
+                                ticket.save()
                     elif  tstat == '0300':
                         if ticket.is_active == False:
                             ticket.is_active = True
                             ticket.save()
                             if ticket.ticket_image_generated == False:
                                 generate_ticket_image(ticket.pk)
-                                print(ticket.id)
+                                print(response.text)
+                                ticket.ticket_image_generated = True
+                                ticket.save()
                     elif transaction.payment_id is None and tstat == '0002':
                         transaction.payment_status = "Pending"
                         transaction.save()

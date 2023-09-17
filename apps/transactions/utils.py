@@ -133,6 +133,7 @@ def verify_payment_billdesk(values):
         transaction = Transaction.objects.get(order_id=values['OrderID'])
         tstat,amnt,txnid,dnt,mode = values['TStat'],values['AMNT'], values['TaxnNo'],values['DnT'],values['TMode']
         transaction.payment_id = txnid
+        Ticket.objects.filter(order_id=values['OrderID']).update(transaction_id=transaction)
         if tstat == '0300' and transaction.payment_amount== float(amnt):
             transaction.payment_status = "captured"
             transaction.payment_method = mode
@@ -171,11 +172,13 @@ def verify_payment_billdesk(values):
                 transaction.payment_method = mode
                 transaction.save()
                 html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed.</p></body></html>"
+            return html_response
         else:
             transaction.payment_status = "Failed"
             transaction.payment_method = mode
             transaction.save()
             html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed.</p></body></html>"
+            return html_response
     else:
         html_response = f"<html><body><h1>Payment Failed</h1><p>Sorry, your payment has failed. Reason: Looked liked someone tried tampering your payment</p></body></html>"
-
+        return html_response

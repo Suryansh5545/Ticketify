@@ -40,6 +40,8 @@ class Ticket(models.Model):
             self.is_active = False
         elif self.transaction_id.payment_id == None:
             self.is_active = False
+        elif self.transaction_id.payment_status != 'captured':
+            self.is_active = False
         if not self.check_in:
             # Generate a unique check_in value if it doesn't exist
             self.check_in = self.generate_unique_ticket_id()

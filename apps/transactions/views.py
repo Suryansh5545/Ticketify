@@ -76,7 +76,7 @@ class HandlePaymentSuccess(APIView):
                 html_response = "<html><body><h1>Invalid Payment</h1><p>The Payment failed, if you believe this is a error contact us at our support mail at our homepage.</p></body></html>"
                 return HttpResponse(html_response, status=400)
         else:
-            return Response({"message": transaction}, status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse(transaction, status=status.HTTP_400_BAD_REQUEST)
             
 
 class PaymentWebhook(APIView):

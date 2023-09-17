@@ -17,6 +17,7 @@ class Event(models.Model):
         ('billdesk', 'Billdesk'),
     )
     payment_gateway = models.CharField(max_length=100, choices=pg_options, null=True, blank=True)
+    terms_url = models.URLField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -49,6 +50,8 @@ class SubEvent(models.Model):
     )
     type = models.CharField(max_length=100, choices=type_options, default='standard')
     event = models.ForeignKey('event.Event', on_delete=models.CASCADE)
+    coordinator = models.CharField(max_length=100, blank=True)
+    coordinator_phone = models.CharField(max_length=100, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

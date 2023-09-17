@@ -12,6 +12,7 @@ from .models import Ticket, TicketEmailLog
 from event.models import Event
 from django.conf import settings
 from django.core.files import File
+from django.template.loader import render_to_string
 
 
 def create_ticket(request, order_id=None, promo_applied=False):
@@ -112,8 +113,15 @@ def send_ticket(ticket_id):
     ticket = Ticket.objects.get(pk=ticket_id)
     recipient_email = ticket.customer_email
     event_name = ticket.event.name
-    # Create the email message
+    sub_events = ticket.selected_sub_events.all().values_list('name', 'coordinator', 'coordinator_phone')
+    email_data = {
+        "recipient_name": ticket.customer_name,
+        "doors": sub_events,
+        "terms": ticket.event.terms_url,
+    }
+    html_content = render_to_string('email/email_template.html', email_data)
     email = EmailMultiAlternatives(f"Your ticket for {event_name}", "Please find your ticket attached", settings.DEFAULT_FROM_EMAIL, [recipient_email])
+    email.attach_alternative(html_content, "text/html")
     image_data = ticket.ticket_image.read()
     email.attach('ticket_image.jpg', image_data, 'image/jpeg')
 

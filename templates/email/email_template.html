@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SABRANG 2023 Registration</title>
+    <style>
+        /* Add your inline CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        a {
+            color: #007bff;
+            text-decoration: underline;
+        }
+        .contact-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hi {{ recipient_name }},</h1>
+        <h1>Congratulations!</h1>
+        <p>We are reaching out to thank you for registering for SABRANG 2023. It will surely be a memorable experience for you. Gear up yourself to compete with the top candidates. Let the roller coaster ride begin!!</p>
+        <p>Your E Ticket is attached with this email.</p>
+        <p>Below is the list of the events that you have registered for and its coordinators' names with their phone numbers:</p>
+        <ol>
+            {% for sub_event in doors %}
+            <li>{{ sub_event.0 }} - Coordinator: {{ sub_event.1 }} (Contact: {{ sub_event.2 }})</li>
+            {% endfor %}
+        </ol>
+        <p>Your presence at the event will definitely make an everlasting impact. Mark your calendars and brush up your skills. Give it your best shot.</p>
+        <p>Please go through our <a href="{{terms}}">terms and conditions</a>.</p>
+        <p>Note: Entry will be closed by 07:00 pm</p>
+        <p class="contact-info">For more details or any other queries, please visit <a href="https://sabrang.jklu.edu.in/">https://sabrang.jklu.edu.in/</a> or contact the undersigned:</p>
+        <p>Devesh Gupta - Registration Head SABRANG'23<br>Contact: 9351358235</p>
+        <p>Akanksha Singh – Registrations Head SABRANG’23<br>Contact: 8306860901</p>
+    </div>
+</body>
+</html>

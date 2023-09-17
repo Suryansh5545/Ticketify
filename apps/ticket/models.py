@@ -38,6 +38,8 @@ class Ticket(models.Model):
     def save(self, *args, **kwargs):
         if self.transaction_id == None and self.ticket_type == 'REGULAR':
             self.is_active = False
+        elif self.transaction_id.payment_id == None:
+            self.is_active = False
         if not self.check_in:
             # Generate a unique check_in value if it doesn't exist
             self.check_in = self.generate_unique_ticket_id()

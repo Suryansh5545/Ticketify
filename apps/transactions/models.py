@@ -17,4 +17,4 @@ class Transaction(models.Model):
         ordering = ["-id"]
 
     def __str__(self):
-        return self.order_id
+        return self.payment_id

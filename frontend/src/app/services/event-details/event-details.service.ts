@@ -143,7 +143,7 @@ export class EventDetailsService {
       }, error => {
         reject(error);
         this._snackBar.open(error.error.message, 'Close', {
-          duration: 2000,
+          duration: 6000,
           });
       });
     });

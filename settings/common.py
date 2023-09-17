@@ -103,6 +103,7 @@ REST_FRAMEWORK = {
    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ],
     "DEFAULT_THROTTLE_CLASSES": (
         "rest_framework.throttling.AnonRateThrottle",
@@ -112,6 +113,12 @@ REST_FRAMEWORK = {
         "anon": "60/minute",
         "user": "150/minute",
     },
+}
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'ticketify-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'ticketify-refresh-token',
 }
 
 WSGI_APPLICATION = 'ticketify.wsgi.application'

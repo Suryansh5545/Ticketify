@@ -131,9 +131,19 @@ fa-icon {
 }
 
 .free-tag {
-  margin-left: 5px; /* Add space between the main content and "Free" tag */
-  padding: 5px 10px; /* Add padding to "Free" tag for better appearance */
-  background-color: green; /* Customize the background color */
-  color: white; /* Set the text color */
-  border-radius: 5px; /* Add rounded corners */
+  margin-left: 5px; 
+  padding: 5px 10px; 
+  background-color: green; 
+  color: white;
+  border-radius: 5px;
+}
+
+.terms-link {
+  text-decoration: underline;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.terms-link:hover {
+  text-decoration: underline;
 }

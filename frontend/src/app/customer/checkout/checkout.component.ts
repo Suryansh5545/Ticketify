@@ -25,6 +25,7 @@ export class CheckoutComponent {
   couponCode: string = '';
   appliedCoupon: string = '';
   isMobile: boolean = false;
+  agreeToTerms: boolean = false;
 
   constructor(
     private http: HttpClient,

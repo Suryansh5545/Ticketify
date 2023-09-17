@@ -5,6 +5,12 @@ RUN npm install -g @angular/cli@16.0.4
 
 WORKDIR /code
 COPY frontend/package.json frontend/yarn.lock /code/
+
+# Install fonts
+RUN mkdir -p /usr/share/fonts/truetype/helvetica
+ADD templates/fonts/* /usr/share/fonts/truetype/helvetica/
+RUN fc-cache -f -v
+
 RUN npm update
 RUN yarn install
 ENV PATH="/code/node_modules/.bin:$PATH" 

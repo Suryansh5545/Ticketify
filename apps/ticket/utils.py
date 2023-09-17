@@ -64,7 +64,7 @@ def generate_ticket_image (ticket_id):
             "showName": ticket.event.name,
             "location": ticket.event.location,
             "day": ticket.event.start_date.strftime("%A"),
-            "date": ticket.event.start_date.strftime("%B %d") + " - " + ticket.event.end_date.strftime("%d"),
+            "date": ticket.event.start_date.strftime("%d %B %Y") + " - " + ticket.event.end_date.strftime("%d %B %Y"),
             "year": ticket.event.start_date.strftime("%Y"),
             "timeSlot": ticket.event.start_date.strftime("%I:%M %p"),
             "doors": sub_events,

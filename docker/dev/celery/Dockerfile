@@ -12,4 +12,9 @@ WORKDIR /code
 ADD requirements/* /code/
 RUN pip install -r dev.txt
 
+# Install fonts
+RUN mkdir -p /usr/share/fonts/truetype/helvetica
+ADD templates/fonts/* /usr/share/fonts/truetype/helvetica/
+RUN fc-cache -f -v
+
 CMD ["sh", "/code/docker/dev/celery/container-start.sh"]

@@ -44,7 +44,7 @@ def HandlePriceCalculation(request):
         except promocode.DoesNotExist:
             promocode = None
         if promocode:
-            if (total_price- promocode.discount) < 0:
+            if not ((total_price- promocode.discount) <= 0):
                     total_price = total_price - promocode.discount
                     promo_applied = True
                     promocode.stock -= 1

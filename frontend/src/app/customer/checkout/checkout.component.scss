@@ -1,3 +1,14 @@
+/* Use "HelveticaNowDisplay Bold" for headlines */
+.headline {
+  font-family: "HelveticaNowDisplay Bold";
+}
+
+/* Use "HelveticaNowDisplay Regular" for normal text */
+.normal-text {
+  font-family: "HelveticaNowDisplay Regular";
+}
+
+
 .loading-overlay {
   position: fixed;
   top: 0;

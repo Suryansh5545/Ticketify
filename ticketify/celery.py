@@ -24,6 +24,10 @@ app.conf.beat_schedule = {
         'task': 'base.tasks.export_all_data',
         'schedule': 7200.0,  # 60 minutes
     },
+    'check_old_tickets': {
+        'task': 'ticket.tasks.check_old_tickets',
+        'schedule': 86400.0,  # 24 hours
+    },
 }
 
 # Load task modules from all registered Django apps.

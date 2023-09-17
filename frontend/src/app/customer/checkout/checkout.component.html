@@ -11,19 +11,19 @@
         <div class="card-body">
           <form>
             <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
+              <label for="name" class="form-label normal-text">Name</label>
               <input type="text" class="form-control" id="name" aria-describedby="nameHelp" autocomplete="name" />
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
+              <label for="email" class="form-label normal-text">Email address</label>
               <input type="email" class="form-control" id="email" aria-describedby="emailHelp" autocomplete="email" />
             </div>
             <div class="mb-3">
-              <label for="phone" class="form-label">Phone Number</label>
+              <label for="phone" class="form-label normal-text">Phone Number</label>
               <input type="text" class="form-control" id="phone" aria-describedby="phoneHelp" autocomplete="tel" />
             </div>
             <div class="mb-3">
-              <label for="referral" class="form-label">Referral (Optional)</label>
+              <label for="referral" class="form-label normal-text">Referral (Optional)</label>
               <input type="text" class="form-control" id="referral" aria-describedby="referral" autocomplete="referral" />
             </div>
             <mat-list>
@@ -41,7 +41,7 @@
                   </div>
                   <div class="col order-2">
                     <mat-card-header>
-                      <mat-card-title>{{ event.name }}</mat-card-title>
+                      <mat-card-title class="headline">{{ event.name }}</mat-card-title>
                     </mat-card-header>
                   </div>
                   <div class="col order-4 card-image-container" *ngIf="!isMobile">
@@ -55,7 +55,7 @@
                 </div>
                 <mat-card-content [hidden]="!event.showDescription">
                   <div class="expandable-section">
-                    <p>{{ event.description }}</p>
+                    <p class="normal-text">{{ event.description }}</p>
                   </div>
                 </mat-card-content>
               </mat-card>
@@ -81,17 +81,17 @@
       <div class="container mt-5 payment-interface-card rounded">
         <mat-card class="payment-internal-interface-card text-light rounded">
           <mat-card-header class="bg-success text-light rounded" style="padding: 10px; margin-bottom: 10px ;">
-            <mat-card-title>Payment Summary</mat-card-title>
+            <mat-card-title class="headline">Payment Summary</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <div class="row mb-3">
-              <div class="col-md-6">
-                <h4>Event</h4>
+              <div class="col-md-6 ">
+                <h4 class="normal-text">Event</h4>
               </div>
               <div class="col-md-6">
                 <p *ngFor="let subevent of SubEventsSelected">
                   <ng-container *ngIf="subevent.given">
-                    <div class="event-details">
+                    <div class="event-details normal-text">
                       {{ subevent.name }}
                       <span class="free-tag">Free</span>
                     </div>
@@ -104,7 +104,7 @@
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
-                <h4>Addons</h4>
+                <h4 class="normal-text">Addons</h4>
               </div>
               <div class="col-md-6">
                 <p>{{ AddonsSelected.length }}</p>
@@ -112,7 +112,7 @@
             </div>
             <div class="row mb-3" *ngIf="isDiscountApplied">
               <div class="col-md-6">
-                <h4>Discount</h4>
+                <h4 class="normal-text">Discount</h4>
               </div>
               <div class="col-md-6">
                 <p>{{ DiscountValue | currency : "INR" }}</p>
@@ -121,7 +121,7 @@
             <hr>
             <div class="row mb-3">
               <div class="col-md-6">
-                <h4>Total</h4>
+                <h4 class="normal-text">Total</h4>
               </div>
               <div class="col-md-6">
                 <p>{{ TotalPrice | currency : "INR" }}</p>
@@ -129,7 +129,7 @@
             </div>
             <div class="row">
               <div class="col-md-6">
-                <h4>Promo Code</h4>
+                <h4 class="normal-text">Promo Code</h4>
               </div>
               <div class="col-md-6" *ngIf="!isDiscountApplied">
                 <div *ngIf="!showCouponInput">
@@ -146,7 +146,7 @@
             <hr>
             <div class="row mb-3">
               <div class="col-md-12">
-                <mat-checkbox [(ngModel)]="agreeToTerms">
+                <mat-checkbox [(ngModel)]="agreeToTerms" *ngIf="eventdata && eventdata.length > 0">
                   I agree to the <a href="{{eventdata[0].terms_url}}" class="terms-link">terms and conditions</a>
                 </mat-checkbox>
               </div>
@@ -161,7 +161,7 @@
       </div>
       </div>
       <footer class="bottom-header bg-primary text-light text-center p-3">
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        <div class="text-center p-3 headline" style="background-color: rgba(0, 0, 0, 0.2);">
           © 2023 Ticketify. Created By 
           <a class="text-dark" href="https://github.com/Suryansh5545">Suryansh Pathak</a>
         </div>

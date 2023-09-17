@@ -73,6 +73,9 @@ export class EventDetailsService {
         resolve();
       }, error => {
         reject(error);
+        this._snackBar.open(error.error.message, 'Close', {
+          duration: 2000,
+          });
       });
     });
   }

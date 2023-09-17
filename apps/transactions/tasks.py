@@ -42,61 +42,24 @@ def check_all_transaction_status():
                 url = settings.CONF_BILL_URL
                 response = requests.post(url, data={'msg': msg})
                 values = ResponseMessage().schedule_resp(response)
-                print(values)
-                print(response.text)
-                if not values is False and values['MID'] == settings.MID:
-                    transaction = Transaction.objects.get(order_id=values['OrderID'])
-                    tstat,txnid = values['TStat'], values['TaxnNo']
-                    if transaction.payment_id is None and tstat == '0300':
+                tstat,txnid = values['TStat'], values['TaxnNo']
+                if ticket.is_active == False:
+                    if tstat == "0300":
+                        transaction = Transaction.objects.get(order_id=values['OrderID'])
                         transaction.payment_id = txnid
-                        transaction.payment_currency = "INR"
                         transaction.payment_status = "captured"
+                        transaction.payment_method = "Unknown"
                         transaction.save()
                         ticket.transaction_id = transaction
-                        if ticket.is_active == False:
-                            ticket.is_active = True
-                            ticket.save()
-                            if ticket.ticket_image_generated == False:
-                                generate_ticket_image(ticket.pk)
-                                print(response.text)
-                                ticket.ticket_image_generated = True
-                                ticket.save()
-                    elif  tstat == '0300':
-                        if ticket.is_active == False:
-                            ticket.transaction_id = transaction
-                            ticket.is_active = True
-                            ticket.save()
-                            if ticket.ticket_image_generated == False:
-                                generate_ticket_image(ticket.pk)
-                                print(response.text)
-                                ticket.ticket_image_generated = True
-                                ticket.save()
-                    elif transaction.payment_id is None and tstat == '0002':
-                        transaction.payment_status = "Pending"
-                        transaction.save()
-                        if ticket.is_active == True:
-                            ticket.is_active = False
-                            ticket.save()
-                    elif tstat != '0300':
-                        ticket.is_active = False
+                        ticket.is_active = True
                         ticket.save()
-                        if tstat == '0399':
-                            transaction.payment_status = "Failed"
-                            transaction.save()
-                        elif tstat == "NA":
-                            transaction.payment_status = "Cancel"
-                            transaction.save()
-                        elif tstat == "0001":
-                            transaction.payment_status = "Cancel"
-                            transaction.save()
-                        else:
-                            transaction.payment_status = "Failed"
-                            transaction.save()
+                        if ticket.ticket_image_generated == False:
+                            generate_ticket_image(ticket.pk)
+                            ticket.ticket_image_generated = True
+                            ticket.save()
                     else:
                         ticket.is_active = False
                         ticket.save()
-                        transaction.payment_status = "Failed"
-                        transaction.save()
         elif ticket.ticket_type == "STUDENT":
             if ticket.ticket_image_generated == False:
                 generate_ticket_image(ticket.pk)

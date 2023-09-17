@@ -208,4 +208,15 @@ class get_ticket_by_task(APIView):
             return Response(result.result, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Task is not complete"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class total_check_in_today(APIView):
+    """
+    Get total check ins today"""
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
+    def post(self, request):
+        time = datetime.datetime.now()
+        total = CheckIn.objects.filter(check_in_time__date=time.date()).count()
+        return Response({"total": total}, status=status.HTTP_200_OK)
 

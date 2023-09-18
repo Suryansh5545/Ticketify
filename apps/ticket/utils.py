@@ -86,6 +86,8 @@ def generate_ticket_image (ticket_id):
     img_bytes = imgkit.from_string(html_content, None, options=options)
     img_io = io.BytesIO(img_bytes)
     ticket.ticket_image.save(ticket_name, File(img_io), save=True)
+    ticket.ticket_image_generated = True
+    ticket.save()
     send_ticket(ticket.id)
     image_url = ticket.ticket_image.url
     if settings.DEBUG:

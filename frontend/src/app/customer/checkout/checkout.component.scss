@@ -1,5 +1,15 @@
-@import url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Bold.woff2);
-@import url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Regular.woff2);
+@font-face {
+  font-family: 'HelveticaNowDisplay';
+  src: url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Bold.woff2);
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'HelveticaNowDisplay';
+  src: url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Regular.woff2);
+  font-weight: normal;
+  font-style: normal;
+}
 .headline {
   font-family: 'HelveticaNowDisplay', Arial, Helvetica, sans-serif;
   font-weight: bold;

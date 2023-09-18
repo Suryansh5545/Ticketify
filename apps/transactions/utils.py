@@ -19,19 +19,25 @@ def HandlePriceCalculation(request):
     selected_addons = request.data.get('selected_addons', [])
     couponcode = request.data.get('coupon', '')
     total_sub_event_allowed = Event.objects.get(pk=event_id).sub_events_included_allowed
+    flagship_event_included_allowed = Event.objects.get(pk=event_id).flagship_event_included_allowed
+    premium_sub_event_count = 0
     sub_event_count = 0
     sub_event_price = 0
     addon_price = 0
     # Check for premium sub events
     for sub_event in selected_sub_events[0]:
         if SubEvent.objects.get(pk=sub_event).type == 'premium':
-            sub_event_price += SubEvent.objects.get(pk=sub_event).price
-    for sub_event in selected_sub_events[0]:
-        if SubEvent.objects.get(pk=sub_event).type == 'standard' and sub_event_count < total_sub_event_allowed:
-            sub_event_count += 1
-        else:
-            if SubEvent.objects.get(pk=sub_event).type == 'standard':
+            if premium_sub_event_count < flagship_event_included_allowed:
+                premium_sub_event_count += 1
+            else:
                 sub_event_price += SubEvent.objects.get(pk=sub_event).price
+    for sub_event in selected_sub_events[0]:
+        if SubEvent.objects.get(pk=sub_event).type == 'standard':
+            if sub_event_count < total_sub_event_allowed:
+                sub_event_count += 1
+            else:
+                if SubEvent.objects.get(pk=sub_event).type == 'standard':
+                    sub_event_price += SubEvent.objects.get(pk=sub_event).price
     for addon in selected_addons:
         addon_price += Addon.objects.get(pk=addon).price
         Addon.objects.get(pk=addon).stock -= 1

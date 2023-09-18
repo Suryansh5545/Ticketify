@@ -10,6 +10,7 @@ class Event(models.Model):
     location = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     sub_events_included_allowed = models.IntegerField(default=0)
+    flagship_event_included_allowed = models.IntegerField(default=0)
     is_active = models.BooleanField(default=False)
     event_page = models.URLField(max_length=200, blank=True)
     pg_options = (

@@ -80,6 +80,7 @@ def generate_ticket_image (ticket_id):
         'crop-y': '40',
         'crop-x': '305',
         'crop-h': '600',
+        'zoom': '2',
     }
     ticket_name = f"ticket_{encrypted_ticket_id}.jpg"
     img_bytes = imgkit.from_string(html_content, None, options=options)

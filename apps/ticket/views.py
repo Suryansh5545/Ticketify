@@ -5,7 +5,7 @@ from rest_framework.views import APIView, Response
 from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer
 from django.db.models import Q
 from rest_framework import permissions, status, authentication
-from .utils import send_ticket
+from .utils import generate_ticket_image, send_ticket
 from celery.result import AsyncResult
 
     
@@ -139,7 +139,10 @@ class resend_email(APIView):
         except Ticket.DoesNotExist:
             return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         if ticket.is_active:
-            send_ticket.delay(ticket.id)
+            if ticket.ticket_image:
+                send_ticket.delay(ticket.id)
+            else:
+                generate_ticket_image.delay(ticket.id)
             return Response({"message": "Ticket email sent successfully"}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Ticket is not active"}, status=status.HTTP_400_BAD_REQUEST)

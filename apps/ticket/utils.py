@@ -54,7 +54,7 @@ def generate_ticket_image (ticket_id):
     if ticket.ticket_type == "STUDENT":
         student = "Student"
     elif ticket.promo_applied:
-        student = "JKLAKSHUNI"
+        student = "JKLU"
     else:
         student = ""
     ticket_data = {

@@ -1,11 +1,16 @@
-/* Use "HelveticaNowDisplay Bold" for headlines */
+@import url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Bold.woff);
+@import url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Regular.woff);
 .headline {
-  font-family: "HelveticaNowDisplay Bold";
+  font-family: 'HelveticaNowDisplay', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-style: normal;
 }
 
 /* Use "HelveticaNowDisplay Regular" for normal text */
 .normal-text {
-  font-family: "HelveticaNowDisplay Regular";
+  font-family: 'HelveticaNowDisplay', Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-style: normal;
 }
 
 

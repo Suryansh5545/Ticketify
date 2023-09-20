@@ -9,7 +9,7 @@ import os, qrcode, imgkit
 from io import BytesIO
 from .serializers import TicketSerializer
 from .models import Ticket, TicketEmailLog
-from event.models import Event
+from event.models import Event, PromoCode
 from django.conf import settings
 from django.core.files import File
 from django.template.loader import render_to_string
@@ -36,6 +36,9 @@ def create_ticket(request, order_id=None, promo_applied=False):
                     event=event,order_id = order_id,
                     promo_applied=promo_applied
                 )
+                if promo_applied:
+                    promo = PromoCode.objects.get(code=validated_data['promocode'])
+                    ticket.promocode = promo
                 ticket.selected_sub_events.set(selected_sub_events)
                 ticket.selected_addons.set(selected_addons)
                 ticket.save()

@@ -46,7 +46,7 @@ def HandlePriceCalculation(request):
     total_price = event_price + sub_event_price + addon_price
     if couponcode != '':
         try:
-            promocode = PromoCode.objects.get(code=couponcode)
+            promocode = PromoCode.objects.get(code__iexact=couponcode)
         except promocode.DoesNotExist:
             promocode = None
         if promocode and promocode.stock > 0:

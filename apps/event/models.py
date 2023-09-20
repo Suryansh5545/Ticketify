@@ -1,3 +1,5 @@
+import random
+import string
 from django.db import models
 
 
@@ -80,14 +82,20 @@ class Addon(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+def generate_id():
+    # Generate a random 10-digit alphanumeric string
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
 
 class PromoCode(models.Model):
-    code = models.CharField(max_length=30)
+    name = models.CharField(max_length=100, blank=True)
+    code = models.CharField(max_length=10, unique=True, default=generate_id)
     event = models.ForeignKey('event.Event', on_delete=models.CASCADE)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    email = models.EmailField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    stock = models.IntegerField(default=0)
+    stock = models.IntegerField(default=1)
+    email_sended = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

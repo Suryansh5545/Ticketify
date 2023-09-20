@@ -20,16 +20,16 @@ class AddonAdmin(admin.ModelAdmin):
 class CustomTicketResource(resources.ModelResource):
     class Meta:
         model = PromoCode
-        import_id_fields = ('code', 'stock')
-        exclude = ('id',)
-        fields = ('code', 'event', 'stock', 'is_active')
-        export_order = ('code', 'event', 'stock', 'is_active')
+        import_id_fields = ('email', 'name')
+        exclude = ('id','code')
+        fields = ('code','event', 'stock', 'is_active', 'email', 'name', 'discount')
+        export_order = ('event', 'stock', 'is_active', 'email', 'name', 'discount')
 
 
 class PromoCodeAdmin(ImportExportModelAdmin):
     resource_class = CustomTicketResource
-    list_display = ('code', 'event', 'stock', 'is_active')
-    search_fields = ('code', )
+    list_display = ('code', 'event', 'stock', 'is_active', 'name', 'email', 'email_sended')
+    search_fields = ('code', 'name', 'email')
 
 
 admin.site.register(Event, EventAdmin)

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Promo Code</title>
+    <style>
+        /* Add your inline CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        a {
+            color: #007bff;
+            text-decoration: underline;
+        }
+        .promo-code {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .recipient-name {
+            font-weight: bold;
+        }
+        .signature {
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        .signature p {
+            font-size: 14px;
+        }
+        
+        .signature strong {
+            font-weight: bold;
+        }
+        
+        .signature a {
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hi <span class="recipient-name">{{ recipient_name }}</span>,</h1>
+        <p>As a member of our college community, we are excited to offer you an exclusive promo code:</p>
+        <div class="promo-code">{{ promo_code }}</div>
+        <p>This promo code can be used for special discounts on SABRANG'23 Ticket. Enjoy the Event!</p>
+        <p>If you have any questions or need more information, please visit our <a href="https://sabrang.jklu.edu.in/">https://sabrang.jklu.edu.in/</a> or contact the following individuals:</p>
+        <p>Devesh Gupta - Registration Head SABRANG'23<br>Contact: 9351358235</p>
+        <p>Akanksha Singh – Registrations Head SABRANG’23<br>Contact: 8306860901</p>
+    </div>
+    <div class="signature">
+        <p>
+          <strong>Team SABRANG'23</strong><br>
+          <em>27 October 2023 at 09:00 am – 29 October 2023 at 11:59 pm IST</em><br>
+          JK Lakshmipat University, Near Mahindra SEZ, Ajmer Road, Mahapura, Jaipur, Rajasthan, 302026, India<br>
+          <a href="https://maps.app.goo.gl/itAdY4H37fBJaP1i9">Venue Location</a><br>
+          E: sabrang2023@jklu.edu.in | M: +91-9351358235 | M: +91-8306860901
+        </p>
+    </div>
+</body>
+</html>

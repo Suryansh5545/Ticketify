@@ -37,7 +37,7 @@ def create_ticket(request, order_id=None, promo_applied=False):
                     promo_applied=promo_applied
                 )
                 if promo_applied:
-                    promo = PromoCode.objects.get(code=validated_data['promocode'])
+                    promo = PromoCode.objects.get(code__iexact=validated_data['promocode'])
                     ticket.promocode = promo
                 ticket.selected_sub_events.set(selected_sub_events)
                 ticket.selected_addons.set(selected_addons)

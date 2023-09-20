@@ -28,6 +28,10 @@ app.conf.beat_schedule = {
         'task': 'ticket.tasks.check_old_tickets',
         'schedule': 86400.0,  # 24 hours
     },
+    'check_promo': {
+        'task': 'event.tasks.check_promo',
+        'schedule': 3600.0,  # 1 hour
+    },
 }
 
 # Load task modules from all registered Django apps.

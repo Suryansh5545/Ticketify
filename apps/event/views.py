@@ -65,7 +65,7 @@ class ProcessPromoCode(APIView):
         try:
             promo_code = request.data.get("promo_code")
             event_id = request.data.get("event_id")
-            promo_code = PromoCode.objects.get(code=promo_code,is_active=True)
+            promo_code = PromoCode.objects.get(code__iexact=promo_code,is_active=True)
             if promo_code.stock == 0:
                 return Response({"error": "Promo code out of stock"}, status=status.HTTP_400_BAD_REQUEST)
             else:

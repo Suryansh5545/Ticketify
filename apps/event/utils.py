@@ -18,7 +18,7 @@ def send_promo_email(promo_pk):
         "promo_code": promo.code,
     }
     html_content = render_to_string('email/promo_template.html', email_data)
-    email = EmailMultiAlternatives(f"Your Promo Code for {event_name}", "Please find your ticket attached", settings.DEFAULT_FROM_EMAIL, [recipient_email])
+    email = EmailMultiAlternatives(f"UNIQUE CODE FOR {event_name} REGISTRATION", "Please find your unique code attached", settings.DEFAULT_FROM_EMAIL, [recipient_email])
     email.attach_alternative(html_content, "text/html")
     # Send the email
     email.send()

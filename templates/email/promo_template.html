@@ -61,14 +61,37 @@
             text-decoration: none;
             color: #007bff;
         }
+        .register-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: none; /* Remove underline */
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Hi <span class="recipient-name">{{ recipient_name }}</span>,</h1>
-        <p>As a member of our college community, we are excited to offer you an exclusive promo code:</p>
+        <h1>We have exciting news for you!</h1>
+        <p>SABRANG’23, the most awaited jaw-dropping 3 days of the year, is just around the corner, and we couldn't be happier!</p>
+        <p>But as we gear up to welcome all our registrations, we give the utmost priority to our own JKLU students.</p>
+        <p>In fact, we've created a unique 10-character code for each one of you for a huge discount!</p>
         <div class="promo-code">{{ promo_code }}</div>
-        <p>This promo code can be used for special discounts on SABRANG'23 Ticket. Enjoy the Event!</p>
+        <p><strong>Instructions on how to use the code:</strong></p>
+        <ol>
+            <li>Go to the form page.</li>
+            <li>Enter your name, email, and phone number. Make sure the formats are correct for the phone number and email.</li>
+            <li>On the right side, you will see an "Apply Coupon" button. Click it.</li>
+            <li>Paste your code into the provided field and click "Apply."</li>
+        </ol>
+        <p><strong>The form link:</strong><a href="https://event.jklu.edu.in/"> https://event.jklu.edu.in/</a></p>
+        <p>PS. You are always welcome to attend the event; this fee is to participate in 5 mind-blowing experiences!</p>
+        <!-- Register button as a link -->
+        <a href="https://event.jklu.edu.in/" class="register-button">REGISTER NOW!!!</a>
         <p>If you have any questions or need more information, please visit our <a href="https://sabrang.jklu.edu.in/">https://sabrang.jklu.edu.in/</a> or contact the following individuals:</p>
         <p>Devesh Gupta - Registration Head SABRANG'23<br>Contact: 9351358235</p>
         <p>Akanksha Singh – Registrations Head SABRANG’23<br>Contact: 8306860901</p>

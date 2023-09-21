@@ -26,6 +26,9 @@
               <label for="referral" class="form-label normal-text">Referral (Optional)</label>
               <input type="text" class="form-control" id="referral" aria-describedby="referral" autocomplete="referral" />
             </div>
+            <div class="my-5 text-center">
+              <p class="section-description"> Upto {{eventdata[0].sub_events_included_allowed}} Events included in Ticket Price</p>
+            </div>
             <mat-list>
               <mat-card class="customer-interface-card" *ngFor="let event of SubEvents">
                 <div class="ribbon" *ngIf="event.type == 'premium'">
@@ -169,4 +172,4 @@
     </div>
 <div class="loading-overlay" [style.display]="loadingService.isLoading ? 'flex' : 'none'">
   <mat-spinner></mat-spinner>
-</div>
+</div>loc

@@ -2,14 +2,19 @@ from rest_framework import serializers
 from event.serializers import SubEventSerializer, AddonSerializer
 from transactions.serializers import TransactionSerializer
 
+class SelectedSubEventSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
 class TicketSerializer(serializers.Serializer):
     customer_name = serializers.CharField()
     customer_email = serializers.EmailField()
     customer_phone = serializers.CharField()
     referral = serializers.CharField(required=False, allow_blank=True)
     event_id = serializers.IntegerField()
-    selected_sub_events = serializers.ListField(child=serializers.IntegerField(), required=False)
+    selected_sub_events = SelectedSubEventSerializer(many=True, required=False)
     selected_addons = serializers.ListField(child=serializers.IntegerField(), required=False)
+    coupon = serializers.CharField(required=False, allow_blank=True)
+
 
 
 class AdminTicketSerializer(serializers.Serializer):

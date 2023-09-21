@@ -26,7 +26,9 @@ def create_ticket(request, order_id=None, promo_applied=False):
                 referral = validated_data.get('referral', None)
                 event_id = validated_data['event_id']
                 selected_sub_events = validated_data.get('selected_sub_events', [])
+                selected_sub_events = [sub_event['id'] for sub_event in selected_sub_events]
                 selected_addons = validated_data.get('selected_addons', [])
+                promo_code = validated_data.get('coupon', None)
                 event = Event.objects.get(pk=event_id)
                 ticket = Ticket.objects.create(
                     customer_name=customer_name,
@@ -36,6 +38,9 @@ def create_ticket(request, order_id=None, promo_applied=False):
                     event=event,order_id = order_id,
                     promo_applied=promo_applied
                 )
+                if promo_applied:
+                    promo = PromoCode.objects.get(code__iexact=promo_code)
+                    ticket.promocode = promo
                 ticket.selected_sub_events.set(selected_sub_events)
                 ticket.selected_addons.set(selected_addons)
                 ticket.save()

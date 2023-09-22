@@ -1,6 +1,7 @@
 # Ticketify
 
 [![build](https://github.com/Suryansh5545/Ticketify/actions/workflows/django.yml/badge.svg)](https://github.com/Suryansh5545/Ticketify/actions/workflows/django.yml)
+![download](https://github.com/Suryansh5545/Ticketify/assets/34577232/56101b5e-8dde-4b7e-9017-005419cb7077)
 
 A System Made to Sell Event Tickets
 

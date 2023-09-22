@@ -107,7 +107,7 @@ class get_sub_event_sales(APIView):
         sub_events_sales = []
         sub_events_names = []
         for sub_event in sub_events:
-            sub_event.ticket_count = Ticket.objects.filter(event=event, selected_sub_events=sub_event).count()
+            sub_event.ticket_count = Ticket.objects.filter(event=event, selected_sub_events=sub_event, is_active=True).count()
             sub_events_sales.append(sub_event.ticket_count)
             sub_events_names.append(sub_event.name)
         return Response({"data": sub_events_sales, "label": sub_events_names}, status=status.HTTP_200_OK)

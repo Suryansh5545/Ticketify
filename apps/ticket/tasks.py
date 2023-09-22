@@ -9,7 +9,8 @@ def check_old_tickets():
     for ticket in tickets:
         if ticket.promo_applied == True:
             promo = ticket.promocode
-            promo.stock += 1
-            promo.save()
+            if promo is not None:
+                promo.stock += 1
+                promo.save()
         ticket.delete()
     print('Deleted old tickets')

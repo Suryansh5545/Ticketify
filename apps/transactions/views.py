@@ -59,6 +59,8 @@ class HandlePaymentSuccess(APIView):
                         ticket.promocode.stock -= 1
                         ticket.promocode.save()
                     else:
+                        ticket.is_active = False
+                        ticket.save()
                         html_response = "<html><body><h1>Abuse Detected</h1><p>The Ticket generation failed because of abuse of Promo Code, if you believe this is a error contact us at our support mail at our homepage.</p></body></html>"
                         return HttpResponse(html_response, status=400)
                 if ticket.ticket_image_generated == False:

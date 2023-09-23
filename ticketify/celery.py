@@ -26,7 +26,7 @@ app.conf.beat_schedule = {
     },
     'check_old_tickets': {
         'task': 'ticket.tasks.check_old_tickets',
-        'schedule': 21600.0,  # 6 hours
+        'schedule': 1800.0,  # 1 hours
     },
     'check_promo': {
         'task': 'event.tasks.check_promo',

@@ -21,6 +21,7 @@ class Event(models.Model):
     )
     payment_gateway = models.CharField(max_length=100, choices=pg_options, null=True, blank=True)
     terms_url = models.URLField(max_length=200, blank=True)
+    rules_url = models.URLField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

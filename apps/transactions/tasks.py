@@ -53,6 +53,9 @@ def check_all_transaction_status():
                         ticket.transaction_id = transaction
                         ticket.is_active = True
                         ticket.save()
+                        if ticket.promo_applied == True and ticket.promocode:
+                            ticket.promocode.stock -= 1
+                            ticket.promocode.save()
                         if ticket.ticket_image_generated == False:
                             generate_ticket_image(ticket.pk)
                             ticket.ticket_image_generated = True

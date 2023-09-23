@@ -53,8 +53,6 @@ def HandlePriceCalculation(request):
             if not ((total_price- promocode.discount) <= 0):
                     total_price = total_price - promocode.discount
                     promo_applied = True
-                    promocode.stock -= 1
-                    promocode.save()
     return int(total_price), promo_applied
 
 

@@ -71,7 +71,6 @@ class ProcessPromoCode(APIView):
             else:
                 event = Event.objects.get(pk=event_id)
                 if promo_code.event == event:
-                    promo_code.stock -= 1
                     return Response({"discount": promo_code.discount}, status=status.HTTP_200_OK)
                 else:
                     return Response({"error": "Promo code not valid for this event"}, status=status.HTTP_400_BAD_REQUEST)

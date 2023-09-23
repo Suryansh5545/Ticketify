@@ -54,6 +54,9 @@ class HandlePaymentSuccess(APIView):
                 ticket = Ticket.objects.get(order_id = transaction.order_id)
                 ticket.transaction_id = transaction
                 ticket.is_active = True
+                if ticket.promo_applied == True and ticket.promocode:
+                    ticket.promocode.stock -= 1
+                    ticket.promocode.save()
                 if ticket.ticket_image_generated == False:
                     ticket_url = generate_ticket_image.delay(ticket.id)
                     ticket.ticket_image_generated = True

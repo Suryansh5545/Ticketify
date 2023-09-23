@@ -5,7 +5,7 @@ from django.utils import timezone
 
 @shared_task
 def check_old_tickets():
-    tickets = Ticket.objects.filter(is_active=False, created_at__lt=timezone.now() - timedelta(hours=1), ticket_type='REGULAR', transaction_id=None)
+    tickets = Ticket.objects.filter(is_active=False, created_at__lt=timezone.now() - timedelta(minutes=30), ticket_type='REGULAR', transaction_id=None)
     for ticket in tickets:
         if ticket.promo_applied == True:
             promo = ticket.promocode

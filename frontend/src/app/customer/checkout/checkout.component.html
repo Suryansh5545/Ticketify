@@ -29,7 +29,7 @@
             <div class="my-5 text-center">
               <p class="section-description"> Upto {{eventdata[0].sub_events_included_allowed}} Events included in Ticket Price</p>
             </div>
-            <div class="text-center">
+            <div class="text-center" *ngIf="eventdata && eventdata[0].rules_url.length > 0">
               <button class="btn btn-primary">
                 <a href="{{eventdata[0].rules_url}}" target="_blank" class="text-white text-decoration-none">Download Rule Book</a>
               </button>

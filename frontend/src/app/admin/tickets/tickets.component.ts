@@ -13,18 +13,20 @@ export class TicketsComponent {
   email: any;
   phone: any;
   name: any;
+  referral: any;
   TicketData: any;
-  displayedColumns: string[] = ['id', 'customer_email', 'customer_phone', 'customer_name', 'selected_sub_event', 'selected_addon', 'ticket_view'];
+  displayedColumns: string[] = ['id', 'customer_email', 'customer_phone', 'customer_name', 'referral', 'selected_sub_event', 'selected_addon', 'ticket_view'];
   constructor(private EventDetailsService: EventDetailsService, private dialog: MatDialog, private _snackBar: MatSnackBar) { }
   search() {
-    if (this.email == undefined && this.phone == undefined && this.name == undefined) {
+    if (this.email == undefined && this.phone == undefined && this.name == undefined && this.referral == undefined) {
       this._snackBar.open("Please enter any one of the field", "Close")
       return;
     }
     const data = {
       'email': this.email,
       'phone': this.phone,
-      'name': this.name
+      'name': this.name,
+      'referral': this.referral
     }
     this.EventDetailsService.GetTicketData(data).then(() => {
       this.TicketData = this.EventDetailsService.TicketData;

@@ -26,6 +26,7 @@ class get_tickets_by_filter(APIView):
         email = request.data.get('email')
         phone = request.data.get('phone')
         name = request.data.get('name')
+        referral = request.data.get('referral')
         ticket_id = request.data.get('ticket_id')
         if ticket_id:
             try:
@@ -35,8 +36,8 @@ class get_tickets_by_filter(APIView):
             serializer = AdminTicketSerializer(ticket)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            if not email and not phone and not name:
-                return Response({"message": "At least one of email, phone or name is required"}, status=status.HTTP_400_BAD_REQUEST)
+            if not email and not phone and not name and not referral:
+                return Response({"message": "At least one of email, phone or name or referral is required"}, status=status.HTTP_400_BAD_REQUEST)
             query = Q()
             if email:
                 query &= Q(customer_email__icontains=email)
@@ -46,6 +47,9 @@ class get_tickets_by_filter(APIView):
 
             if name:
                 query &= Q(customer_name__icontains=name)
+            
+            if referral:
+                query &= Q(referral__icontains=referral)
 
             tickets = Ticket.objects.filter(query, is_active=True)
             if not tickets.exists():

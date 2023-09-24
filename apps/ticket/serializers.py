@@ -26,6 +26,7 @@ class AdminTicketSerializer(serializers.Serializer):
     selected_sub_events = SubEventSerializer(many=True, required=False)
     selected_addons = AddonSerializer(many=True, required=False)
     transaction_id = TransactionSerializer(required=True)
+    referral = serializers.CharField(required=False, allow_blank=True)
 
 
 class CheckInSerializer(serializers.Serializer):

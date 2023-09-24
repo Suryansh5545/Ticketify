@@ -1,3 +1,5 @@
+from django.utils import timezone
+from datetime import timedelta
 import razorpay
 from celery import shared_task
 from .models import Transaction
@@ -69,3 +71,9 @@ def check_all_transaction_status():
                 ticket.ticket_image_generated = True
                 ticket.save()
     print("All Transactions Checked")
+
+
+@shared_task
+def check_old_transactions():
+    Transaction.objects.filter(payment_status="created", created_at__lt=timezone.now() - timedelta(days=3)).delete()
+    print('Deleted old transactions')

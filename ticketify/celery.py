@@ -32,6 +32,10 @@ app.conf.beat_schedule = {
         'task': 'event.tasks.check_promo',
         'schedule': 3600.0,  # 1 hour
     },
+    'check_old_transactions': {
+        'task': 'transactions.tasks.check_old_transactions',
+        'schedule': 86400.0,  # 1 day
+    },
 }
 
 # Load task modules from all registered Django apps.

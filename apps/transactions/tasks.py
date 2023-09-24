@@ -70,5 +70,5 @@ def check_all_transaction_status():
 
 @shared_task
 def check_old_transactions():
-    Transaction.objects.filter(payment_status="created", created_at__lt=timezone.now() - timedelta(days=3)).delete()
+    Transaction.objects.filter(payment_status="created", created_at__lt=timezone.now() - timedelta(days=6)).delete()
     print('Deleted old transactions')

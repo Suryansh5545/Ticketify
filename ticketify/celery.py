@@ -18,7 +18,7 @@ app.config_from_object("django.conf:settings", namespace='CELERY')
 app.conf.beat_schedule = {
     'check-all-transaction-status': {
         'task': 'transactions.tasks.check_all_transaction_status',
-        'schedule': 1800.0,  # 30 minutes
+        'schedule': 900.0,  # 15 minutes
     },
     'export-all-data': {
         'task': 'base.tasks.export_all_data',

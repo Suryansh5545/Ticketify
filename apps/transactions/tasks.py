@@ -40,12 +40,12 @@ def check_all_transaction_status():
                         ticket.is_active = False
                         ticket.save()
             elif event.payment_gateway == "billdesk":
-                msg = GetMessage().schedule_msg(ticket.order_id)
-                url = settings.CONF_BILL_URL
-                response = requests.post(url, data={'msg': msg})
-                values = ResponseMessage().schedule_resp(response)
-                tstat,txnid = values['TStat'], values['TaxnNo']
                 if ticket.is_active == False:
+                    msg = GetMessage().schedule_msg(ticket.order_id)
+                    url = settings.CONF_BILL_URL
+                    response = requests.post(url, data={'msg': msg})
+                    values = ResponseMessage().schedule_resp(response)
+                    tstat,txnid = values['TStat'], values['TaxnNo']
                     if tstat == "0300":
                         transaction = Transaction.objects.get(order_id=values['OrderID'])
                         transaction.payment_id = txnid

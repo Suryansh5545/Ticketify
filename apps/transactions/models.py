@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Transaction(models.Model):
-    payment_method = models.CharField(max_length=100, blank=True)
+    payment_method = models.CharField(max_length=100, blank=True, null=True)
     payment_status = models.CharField(max_length=100)
     order_id = models.CharField(max_length=100, default="")
     payment_id = models.CharField(max_length=100, blank=True, unique=True, null=True)

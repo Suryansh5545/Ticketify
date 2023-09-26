@@ -19,6 +19,12 @@ class Ticket(models.Model):
     customer_name = models.CharField(max_length=100)
     customer_email = models.EmailField()
     customer_phone = models.CharField(max_length=100)
+    types = (
+        ('SCHOOL', 'School'),
+        ('COLLEGE', 'College'),
+    )
+    customer_type = models.CharField(max_length=100, choices=types, default='COLLEGE')
+    college_name = models.CharField(max_length=100, blank=True, null=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     selected_sub_events = models.ManyToManyField(SubEvent, blank=True)
     selected_addons = models.ManyToManyField(Addon, blank=True)

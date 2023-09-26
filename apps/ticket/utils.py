@@ -23,6 +23,8 @@ def create_ticket(request, order_id=None, promo_applied=False):
                 customer_name = validated_data['customer_name']
                 customer_email = validated_data['customer_email']
                 customer_phone = validated_data['customer_phone']
+                customer_type = validated_data['customer_type']
+                college_name = validated_data.get('college_name', None)
                 referral = validated_data.get('referral', None)
                 event_id = validated_data['event_id']
                 selected_sub_events = validated_data.get('selected_sub_events', [])
@@ -34,6 +36,8 @@ def create_ticket(request, order_id=None, promo_applied=False):
                     customer_name=customer_name,
                     customer_email=customer_email,
                     customer_phone=customer_phone,
+                    customer_type=customer_type,
+                    college_name=college_name,
                     referral=referral,
                     event=event,order_id = order_id,
                     promo_applied=promo_applied

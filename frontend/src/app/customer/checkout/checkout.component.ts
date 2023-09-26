@@ -184,6 +184,9 @@ export class CheckoutComponent {
       var emailInput = document.getElementById("email") as HTMLInputElement;
       var phoneNumberInput = document.getElementById("phone") as HTMLInputElement;
       var referralInput = document.getElementById("referral") as HTMLInputElement;
+      var institutenameInput = document.getElementById("institutename") as HTMLInputElement;
+      var studentTypeInput = document.querySelector('input[name="studentType"]:checked') as HTMLInputElement;
+      const studentType = studentTypeInput ? studentTypeInput.value : '';
       
       if(nameInput.value == '' || emailInput.value == '' || phoneNumberInput.value == '') {
         this._snackBar.open('Please fill all the required fields', 'Close', {
@@ -203,6 +206,12 @@ export class CheckoutComponent {
         });
         return;
       }
+      else if (institutenameInput.value == '' || studentType === '') {
+        this._snackBar.open('Please fill all the required fields', 'Close', {
+          duration: 3000,
+        });
+        return;
+      }
       else {
         this.loadingService.showLoading();
         setTimeout(() => {
@@ -213,11 +222,14 @@ export class CheckoutComponent {
         var email = emailInput.value;
         var phoneNumber = phoneNumberInput.value;
         var referral = referralInput.value;
+        var institutename = institutenameInput.value;
       }
       const data = {
         customer_name: name,
         customer_email: email,
         customer_phone: phoneNumber,
+        customer_type: studentType,
+        college_name: institutename,
         referral: referral,
         event_id: this.eventdata[0].id,
         selected_sub_events: this.SubEventsSelected.map((subEvent: { id: any; given: any; }) => ({

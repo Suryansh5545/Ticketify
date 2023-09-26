@@ -8,7 +8,7 @@ class CustomTicketResource(resources.ModelResource):
         model = Ticket
         import_id_fields = ('customer_email', 'customer_phone')
         exclude = ('id',)
-        fields = ('id', 'ticket_type', 'customer_name', 'customer_email', 'customer_phone', 'event', 'selected_sub_events', 'selected_addons', 'is_active', 'order_id', 'referral')
+        fields = ('id', 'ticket_type', 'customer_name', 'customer_email', 'customer_phone', 'customer_type', 'college_name','event', 'selected_sub_events', 'selected_addons', 'is_active', 'order_id', 'referral')
 
 
 class TicketAdmin(ImportExportModelAdmin):

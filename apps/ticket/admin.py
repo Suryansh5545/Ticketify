@@ -8,13 +8,13 @@ class CustomTicketResource(resources.ModelResource):
         model = Ticket
         import_id_fields = ('customer_email', 'customer_phone')
         exclude = ('id',)
-        fields = ('id', 'ticket_type', 'customer_name', 'customer_email', 'customer_phone', 'customer_type', 'college_name','event', 'selected_sub_events', 'selected_addons', 'is_active', 'order_id', 'referral')
+        fields = ('id', 'ticket_type', 'customer_name', 'customer_email', 'customer_phone', 'customer_type', 'college_name','event', 'selected_sub_events', 'selected_addons', 'is_active', 'order_id', 'referral', 'promocode')
 
 
 class TicketAdmin(ImportExportModelAdmin):
     resource_class = CustomTicketResource
-    list_display = ('id', 'check_in', 'customer_name', 'customer_email', 'customer_phone', 'is_active', 'ticket_image_generated', 'ticket_type', 'event', 'order_id', 'transaction_id', 'created_at', 'updated_at',)
-    search_fields = ('id', 'check_in', 'customer_name', 'customer_email', 'customer_phone', 'ticket_type' , 'order_id')
+    list_display = ('id', 'check_in', 'customer_name', 'customer_email', 'customer_phone', 'is_active', 'ticket_image_generated', 'ticket_type', 'event', 'order_id', 'transaction_id', 'created_at', 'updated_at', 'promocode',)
+    search_fields = ('id', 'check_in', 'customer_name', 'customer_email', 'customer_phone', 'ticket_type' , 'order_id', 'promocode__code')
     list_filter = ('event', 'selected_sub_events' , 'selected_addons', 'ticket_type' ,'is_active', 'ticket_image_generated')
 
     def get_list_display(self, request):

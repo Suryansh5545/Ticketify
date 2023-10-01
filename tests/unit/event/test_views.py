@@ -81,6 +81,7 @@ class TestSubEvent(TestCase):
                 "image": None,
                 "event": self.sub_event.event.id,
                 "price": format(self.sub_event.price, ".2f"),
+                "type": self.sub_event.type,
             }
         ]
 

@@ -15,6 +15,7 @@ export class SideBarComponent {
     { path: '/admin/dashboard', label: 'Dashboard', icon: 'dashboard' },
     { path: '/admin/scan', label: 'Scan', icon: 'qr_code_scanner' },
     { path: '/admin/tickets', label: 'Tickets', icon: 'confirmation_number' },
+    { path: '/admin/verify', label: 'Verify', icon: 'verified' },
     { path: '/admin/events', label: 'Events', icon: 'event' },
     { path: '/admin/addon', label: 'Addons', icon: 'add_circle' },
   ];

@@ -23,6 +23,8 @@ export class EventDetailsService {
   TicketID: any;
   Ticket_by_list: any;
   task_result: any;
+  unverfiedticket: any;
+  VerifyResponse: any;
 
   constructor(private HttpService: ApiService, private router: Router, private _snackBar: MatSnackBar) {
   }
@@ -170,6 +172,9 @@ export class EventDetailsService {
         resolve();
       }, error => {
         reject(error);
+        this._snackBar.open(error.error.message, 'Close', {
+          duration: 2000,
+          });
       });
     });
   }
@@ -240,6 +245,36 @@ export class EventDetailsService {
       }
       , error => {
         reject(error);
+      });
+    });
+  }
+
+  UnverifiedTicket(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this.event[0].id) {
+        this.HttpService.get<Event[]>('ticket/get_unverified_ticket_by_time/').subscribe(data => {
+          this.unverfiedticket = data;
+          resolve();
+        }, error => {
+          reject(error);
+          this._snackBar.open(error.error.message, 'Close', {
+            duration: 4000,
+            });
+        });
+      }
+    });
+  }
+
+  SendVerify(data: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.HttpService.post<Event[]>('ticket/verify_ticket/', data).subscribe(data => {
+        this.VerifyResponse = data;
+        resolve();
+      }, error => {
+        reject(error);
+        this._snackBar.open(error.error.message, 'Close', {
+          duration: 6000,
+          });
       });
     });
   }

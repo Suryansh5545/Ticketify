@@ -11,6 +11,7 @@ class TicketSerializer(serializers.Serializer):
     customer_phone = serializers.CharField()
     customer_type = serializers.CharField()
     college_name = serializers.CharField(required=False, allow_blank=True)
+    verification_id = serializers.CharField(required=False, allow_blank=True)
     referral = serializers.CharField(required=False, allow_blank=True)
     event_id = serializers.IntegerField()
     selected_sub_events = SelectedSubEventSerializer(many=True, required=False)
@@ -40,3 +41,15 @@ class CheckInSerializer(serializers.Serializer):
 class TicketListSerializer(serializers.Serializer):
     customer_name = serializers.CharField()
     customer_phone = serializers.CharField()
+
+class TicketVerify(serializers.Serializer):
+    id = serializers.CharField()
+    customer_name = serializers.CharField()
+    customer_email = serializers.EmailField()
+    customer_phone = serializers.CharField()
+    event_id = serializers.IntegerField()
+    selected_sub_events = SubEventSerializer(many=True, required=False)
+    selected_addons = AddonSerializer(many=True, required=False)
+    transaction_id = TransactionSerializer(required=True)
+    referral = serializers.CharField(required=False, allow_blank=True)
+    verification_id = serializers.ImageField()

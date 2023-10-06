@@ -2,7 +2,7 @@ import datetime
 from event.models import SubEvent, Addon
 from .models import Ticket, CheckIn
 from rest_framework.views import APIView, Response
-from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer
+from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer, TicketVerify
 from django.db.models import Q
 from rest_framework import permissions, status, authentication
 from .utils import generate_ticket_image, send_ticket
@@ -145,6 +145,11 @@ class resend_email(APIView):
         if ticket.is_active:
             if ticket.ticket_image:
                 send_ticket.delay(ticket.id)
+            elif ticket.customer_type == "SCHOOL":
+                if ticket.id_verified == True:
+                    generate_ticket_image.delay(ticket.id)
+                else:
+                    return Response({"message": "Ticket is not verified"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 generate_ticket_image.delay(ticket.id)
             return Response({"message": "Ticket email sent successfully"}, status=status.HTTP_200_OK)
@@ -215,6 +220,44 @@ class get_ticket_by_task(APIView):
             return Response(result.result, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Task is not complete"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class get_unverified_ticket_by_time(APIView):
+    """
+    Get unverified tickets in time order
+    """
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication]
+    def get(self, request):
+        tickets = Ticket.objects.filter(is_active=True, customer_type="SCHOOL", id_verified=False).order_by('created_at')
+        if not tickets:
+            return Response({"message": "No unverified tickets left"}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = TicketVerify(tickets, many=True, context={"request": request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class verify_ticket(APIView):
+    """
+    Verify a ticket
+    Query Parameters:
+    ticket_id: ID of the ticket
+    """
+    def post(self,request):
+        ticket_id = request.data.get('ticket_id')
+        if not ticket_id:
+            return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            ticket = Ticket.objects.get(id=ticket_id, is_active=True)
+        except Ticket.DoesNotExist:
+            return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        if ticket.is_active:
+            ticket.id_verified = True
+            ticket.save()
+            if ticket.ticket_image_generated == False:
+                generate_ticket_image.delay(ticket.id)
+            return Response({"message": "Ticket verified successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Ticket is not active"}, status=status.HTTP_400_BAD_REQUEST)
         
 
 class total_check_in_today(APIView):

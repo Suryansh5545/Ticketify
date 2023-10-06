@@ -27,6 +27,7 @@ import {MatSelectModule} from '@angular/material/select';
 
 // NPM Module
 import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
+import { VerifyComponent } from './verify/verify.component';
 
 const adminRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -37,6 +38,7 @@ const adminRoutes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'tickets', component: TicketsComponent },
+      { path: 'verify', component: VerifyComponent },
       { path: 'scan', component: ScanComponent },
       { path: 'events', component: ListComponent },
       { path: 'addon', component: ListComponent },
@@ -57,6 +59,7 @@ const adminRoutes: Routes = [
     TransactionsComponent,
     ListComponent,
     LoginComponent,
+    VerifyComponent,
   ],
   imports: [
     CommonModule,

@@ -27,12 +27,20 @@ export class CheckoutComponent {
   appliedCoupon: string = '';
   isMobile: boolean = false;
   agreeToTerms: boolean = false;
+  studentType: string = 'COLLEGE';
+  selectedFile: File | null = null;
+  selectedImageSrc: string = '';
+  ImageFile: Blob | undefined;
+  ImageBase64: string | undefined;
+  
 
   constructor(
     private http: HttpClient,
     private EventDetailsService: EventDetailsService, private renderer: Renderer2, 
     private elementRef: ElementRef, public loadingService: LoadingServiceComponent,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar) {
+      this.selectedFile = null;
+    }
 
     ngOnInit() {
       this.checkIfMobile();
@@ -46,6 +54,38 @@ export class CheckoutComponent {
           });
         });
       });
+    }
+
+    onFileChange(event: any) {
+      this.selectedFile = event.target.files[0]; 
+      if (this.selectedFile) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.selectedImageSrc  = e.target.result;
+          if (this.selectedImageSrc) {
+            this.blobToBase64(this.dataURItoBlob(this.selectedImageSrc), (base64String) => {
+              this.ImageBase64 = base64String;
+            });
+          } else {
+            this.ImageFile = undefined;
+          }
+        };
+        reader.readAsDataURL(this.selectedFile);
+      }
+    }
+
+    onStudentTypeChange(event: any) {
+      if (event.target.value != this.studentType) {
+        if (event.target.value == "SCHOOL") {
+          this.TotalPrice -= parseFloat(this.eventdata[0].price);
+          this.TotalPrice += parseFloat(this.eventdata[0].student_price);
+        }
+        else {
+          this.TotalPrice -= parseFloat(this.eventdata[0].student_price);
+          this.TotalPrice += parseFloat(this.eventdata[0].price);
+        }
+      }
+      this.studentType = event.target.value;
     }
 
     checkIfMobile() {
@@ -212,6 +252,12 @@ export class CheckoutComponent {
         });
         return;
       }
+      else if (this.studentType == 'SCHOOL' && this.ImageBase64 == null) {
+        this._snackBar.open('Please upload a valid School ID proof', 'Close', {
+          duration: 3000,
+        });
+        return;
+      }
       else {
         this.loadingService.showLoading();
         setTimeout(() => {
@@ -230,6 +276,7 @@ export class CheckoutComponent {
         customer_phone: phoneNumber,
         customer_type: studentType,
         college_name: institutename,
+        verification_id: this.ImageBase64,
         referral: referral,
         event_id: this.eventdata[0].id,
         selected_sub_events: this.SubEventsSelected.map((subEvent: { id: any; given: any; }) => ({
@@ -266,6 +313,31 @@ export class CheckoutComponent {
 
     });
   }
+}
+
+dataURItoBlob(dataURI: string): Blob {
+  const byteString = atob(dataURI.split(',')[1]);
+  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ab], { type: mimeString });
+}
+
+blobToBase64(blob: Blob, callback: (arg0: any) => void) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const result = reader.result;
+    if (typeof result === 'string') {
+      const base64String = result.split(',')[1];
+      callback(base64String);
+    } else {
+      throw new Error('Unexpected result type');
+    }
+  };
+  reader.readAsDataURL(blob);
 }
 
   private createForm(formData: { [key: string]: any }): HTMLFormElement {

@@ -42,7 +42,23 @@ export class TicketDialogComponent {
       data: { transaction: this.data.ticket.transaction_id }
     });
   }
-    
+
+  OpenVerification() {
+    window.open(this.data.ticket.verification_id, "_blank");
+  }
+
+  confirmVerification() {
+    const isConfirmed = window.confirm('Are you sure you want to verify this ticket? This action cannot be undone.');
+    if (isConfirmed) {
+      this.Verify(); // Call your Verify() function if the user confirmed.
+    }
+  }
+
+  Verify() {
+    this.EventDetailsService.SendVerify(this.ticket_id).then(() => {
+      this._snackBar.open(this.EventDetailsService.VerifyResponse.message, 'Close');
+    });
+  }
 
   confirmCheckin() {
     const isConfirmed = window.confirm('Are you sure you want to check in this ticket? This action cannot be undone. Please use QR Scanner if available.');

@@ -11,6 +11,7 @@ class Event(models.Model):
     image = models.ImageField(upload_to='event', blank=True)
     location = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    student_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     sub_events_included_allowed = models.IntegerField(default=0)
     flagship_event_included_allowed = models.IntegerField(default=0)
     is_active = models.BooleanField(default=False)

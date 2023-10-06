@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 // Components
 import { CheckoutComponent } from './checkout/checkout.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { DeliveryStudentComponent } from './delivery-student/delivery-student.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 // Angular Material
@@ -26,6 +27,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 const customerRoutes = [
   { path: 'maintenance', component: MaintenanceComponent },
   { path: 'delivery/:ticketId', component: DeliveryComponent },
+  { path: 'delivery-student', component: DeliveryStudentComponent },
+
   { path: 'checkout', component: CheckoutComponent },
 ];
 
@@ -35,7 +38,8 @@ const customerRoutes = [
   declarations: [
     CheckoutComponent,
     DeliveryComponent,
-    MaintenanceComponent
+    MaintenanceComponent,
+    DeliveryStudentComponent
   ],
   imports: [
     CommonModule,
@@ -53,6 +57,7 @@ const customerRoutes = [
   exports: [
     CheckoutComponent,
     DeliveryComponent,
+    DeliveryStudentComponent,
     MaintenanceComponent,
     RouterModule
   ]

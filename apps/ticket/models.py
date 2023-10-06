@@ -37,6 +37,8 @@ class Ticket(models.Model):
     transaction_id = models.OneToOneField(Transaction, on_delete=models.CASCADE, null=True, blank=True, unique=True)
     referral = models.CharField(max_length=100, null=True, blank=True)
     promo_applied = models.BooleanField(default=False)
+    verification_id = models.ImageField(upload_to='verification_images', null=True, blank=True)
+    id_verified = models.BooleanField(default=False)
     promocode = models.ForeignKey('event.PromoCode', on_delete=models.SET_NULL, null=True, blank=True)
 
     def generate_unique_ticket_id(self):

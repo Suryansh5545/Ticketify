@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 // Components
 import { MaintenanceComponent } from './customer/maintenance/maintenance.component';
 import { DeliveryComponent } from './customer/delivery/delivery.component';
+import { DeliveryStudentComponent } from './customer/delivery-student/delivery-student.component';
 import { CheckoutComponent } from './customer/checkout/checkout.component';
 
 const routes: Routes = [
@@ -11,6 +12,8 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'maintenance', component: MaintenanceComponent },
   { path: 'delivery/:ticketId', component: DeliveryComponent },
+  { path: 'delivery-student', component: DeliveryStudentComponent },
+
   {
     path: 'admin',
     loadChildren: () =>

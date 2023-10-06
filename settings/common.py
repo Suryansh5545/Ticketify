@@ -61,7 +61,8 @@ THIRD_PARTY_APPS = [
     'import_export',
     'dj_rest_auth',
     'storages',
-    'drf_yasg'
+    'drf_yasg',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS

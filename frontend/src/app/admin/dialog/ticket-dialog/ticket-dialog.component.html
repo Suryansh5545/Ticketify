@@ -16,6 +16,12 @@
             <button mat-raised-button color="accent" (click)="ResendEmail()">Resend Email</button>
           </div>
         </div>
+        <div class="col-md-6" *ngIf="data.ticket.verification_id">
+          <p><strong>Verification ID:-  </strong><button mat-raised-button color="warn" (click)="OpenVerification()">Reveal</button></p>
+          <div class="button-container">
+            <button mat-raised-button color="primary" (click)="confirmVerification()">Verify</button>
+          </div>
+        </div>
       </div>
     </mat-card-content>
     <div class="row mt-4" *ngIf="CheckInData">

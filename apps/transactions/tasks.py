@@ -60,7 +60,11 @@ def check_all_transaction_status():
                                 ticket.promocode.stock -= 1
                                 ticket.promocode.save()
                             if ticket.ticket_image_generated == False:
-                                generate_ticket_image(ticket.pk)
+                                if ticket.customer_type == "STUDENT":
+                                    if ticket.id_verified == True:
+                                        generate_ticket_image.delay(ticket.id)
+                                else:
+                                    generate_ticket_image.delay(ticket.id)
         elif ticket.ticket_type == "STUDENT":
             if ticket.ticket_image_generated == False:
                 generate_ticket_image(ticket.pk)

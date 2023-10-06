@@ -13,6 +13,7 @@ from event.models import Event, PromoCode
 from django.conf import settings
 from django.core.files import File
 from django.template.loader import render_to_string
+from django.core.files.base import ContentFile
 
 
 def create_ticket(request, order_id=None, promo_applied=False):
@@ -25,6 +26,7 @@ def create_ticket(request, order_id=None, promo_applied=False):
                 customer_phone = validated_data['customer_phone']
                 customer_type = validated_data['customer_type']
                 college_name = validated_data.get('college_name', None)
+                verification_id = validated_data.get('verification_id', None)
                 referral = validated_data.get('referral', None)
                 event_id = validated_data['event_id']
                 selected_sub_events = validated_data.get('selected_sub_events', [])
@@ -45,6 +47,11 @@ def create_ticket(request, order_id=None, promo_applied=False):
                 if promo_applied:
                     promo = PromoCode.objects.get(code__iexact=promo_code)
                     ticket.promocode = promo
+                if verification_id:
+                    image_data = base64.b64decode(verification_id)
+                    image_name = f"verification_{customer_name}.jpg"
+                    image_file = ContentFile(image_data, name=image_name)
+                    ticket.verification_id.save(image_file.name, image_file, save=True)
                 ticket.selected_sub_events.set(selected_sub_events)
                 ticket.selected_addons.set(selected_addons)
                 ticket.save()
@@ -64,6 +71,8 @@ def generate_ticket_image (ticket_id):
         student = "Student"
     elif ticket.promo_applied:
         student = "JKLU"
+    elif ticket.customer_type == "SCHOOL":
+        student = "School"
     else:
         student = ""
     ticket_data = {

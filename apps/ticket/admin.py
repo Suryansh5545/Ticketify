@@ -10,6 +10,9 @@ class CustomTicketResource(resources.ModelResource):
         exclude = ('id',)
         fields = ('id', 'ticket_type', 'customer_name', 'customer_email', 'customer_phone', 'customer_type', 'college_name','event', 'selected_sub_events', 'selected_addons', 'is_active', 'order_id', 'referral', 'promocode')
 
+class CustomTicketExportResource(CustomTicketResource):
+    class Meta:
+        fields = ('id', 'ticket_type', 'customer_name', 'customer_email', 'customer_phone', 'customer_type', 'college_name','event', 'selected_sub_events', 'selected_addons', 'is_active', 'order_id', 'referral', 'promocode', 'transaction_id__payment_id', 'transaction_id__payment_amount')
 
 class TicketAdmin(ImportExportModelAdmin):
     resource_class = CustomTicketResource
@@ -27,13 +30,15 @@ class TicketAdmin(ImportExportModelAdmin):
         else:
             # For normal staff, remove 'check_in' from the list_display
             return [field for field in superuser_list_display if field != 'check_in']
+    def get_export_resource_class(self):
+        return CustomTicketExportResource
         
 
 class TicketResource(resources.ModelResource):
     class Meta:
         model = Ticket
-        fields = ('id', 'customer_name', 'customer_email', 'customer_phone','event', 'is_active', 'order_id', 'transaction_id__payment_id', 'created_at', 'updated_at',)
-        export_order = ('id', 'customer_name', 'customer_email', 'customer_phone','event', 'is_active', 'order_id', 'transaction_id__payment_id', 'created_at', 'updated_at',)
+        fields = ('id', 'customer_name', 'customer_email', 'customer_phone','event', 'is_active', 'order_id', 'transaction_id__payment_id', 'transaction_id__payment_amount','created_at', 'updated_at',)
+        export_order = ('id', 'customer_name', 'customer_email', 'customer_phone','event', 'is_active', 'order_id', 'transaction_id__payment_id', 'transaction_id__payment_amount','created_at', 'updated_at',)
 
 
 admin.site.register(Ticket, TicketAdmin)

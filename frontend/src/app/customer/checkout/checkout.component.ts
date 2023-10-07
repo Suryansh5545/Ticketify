@@ -75,7 +75,7 @@ export class CheckoutComponent {
     }
 
     onStudentTypeChange(event: any) {
-      if (event.target.value != this.studentType) {
+      if (event.target.value != this.studentType && this.isDiscountApplied == false) {
         if (event.target.value == "SCHOOL") {
           this.TotalPrice -= parseFloat(this.eventdata[0].price);
           this.TotalPrice += parseFloat(this.eventdata[0].student_price);
@@ -106,7 +106,7 @@ export class CheckoutComponent {
     }
 
     applyCoupon(coupon: any) {
-      if ( this.isDiscountApplied == false ) {
+      if ( this.isDiscountApplied == false &&  this.studentType != 'SCHOOL') {
       this.EventDetailsService.SendPromoCode(coupon).then(() => {
         if (this.EventDetailsService.PromoData.discount) {
           this.appliedCoupon = coupon;

@@ -171,7 +171,7 @@
                 <p>{{ TotalPrice | currency : "INR" }}</p>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="studentType != 'SCHOOL'">
               <div class="col-md-6">
                 <h4 class="normal-text">Promo Code</h4>
               </div>

@@ -74,7 +74,7 @@
             </div>
             <mat-list>
               <div *ngFor="let event of SubEvents">
-              <mat-card class="customer-interface-card" *ngIf="event.type == 'student'">
+              <mat-card class="customer-interface-card" *ngIf="event.type == 'student' && studentType === 'SCHOOL'">
                 <div class="ribbon">
                   <span class="light-text">School Exclusive</span>
                 </div>

@@ -77,6 +77,9 @@
                 <div class="ribbon" *ngIf="event.type == 'premium'">
                   <span class="light-text">Flagship</span>
                 </div>
+                <div class="ribbon" *ngIf="event.type == 'student'">
+                  <span class="light-text">School Exclusive</span>
+                </div>
                 <div class="row d-flex align-items-center">
                   <div class="col-1 order-1">
                     <button mat-icon-button (click)="toggleDescription(event, $event)">

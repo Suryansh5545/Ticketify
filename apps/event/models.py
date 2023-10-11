@@ -53,6 +53,7 @@ class SubEvent(models.Model):
     type_options = (
         ('standard', 'Standard'),
         ('premium', 'Premium'),
+        ('student', 'Student')
     )
     type = models.CharField(max_length=100, choices=type_options, default='standard')
     event = models.ForeignKey('event.Event', on_delete=models.CASCADE)

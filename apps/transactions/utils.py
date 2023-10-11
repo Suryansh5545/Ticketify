@@ -32,11 +32,11 @@ def HandlePriceCalculation(request):
     #         else:
     #             sub_event_price += SubEvent.objects.get(pk=sub_event).price
     for sub_event in selected_sub_events[0]:
-        if SubEvent.objects.get(pk=sub_event['id']).type == 'standard':
+        if SubEvent.objects.get(pk=sub_event['id']):
             if sub_event_count < total_sub_event_allowed and sub_event['given']:
                 sub_event_count += 1
             else:
-                if SubEvent.objects.get(pk=sub_event['id']).type == 'standard':
+                if SubEvent.objects.get(pk=sub_event['id']):
                     sub_event_price += SubEvent.objects.get(pk=sub_event['id']).price
     for addon in selected_addons:
         addon_price += Addon.objects.get(pk=addon).price

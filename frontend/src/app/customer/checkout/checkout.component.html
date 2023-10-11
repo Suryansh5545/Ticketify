@@ -73,11 +73,9 @@
               </button>
             </div>
             <mat-list>
-              <mat-card class="customer-interface-card" *ngFor="let event of SubEvents">
-                <div class="ribbon" *ngIf="event.type == 'premium'">
-                  <span class="light-text">Flagship</span>
-                </div>
-                <div class="ribbon" *ngIf="event.type == 'student'">
+              <div *ngFor="let event of SubEvents">
+              <mat-card class="customer-interface-card" *ngIf="event.type == 'student'">
+                <div class="ribbon">
                   <span class="light-text">School Exclusive</span>
                 </div>
                 <div class="row d-flex align-items-center">
@@ -108,6 +106,43 @@
                   </div>
                 </mat-card-content>
               </mat-card>
+              </div>
+            </mat-list>
+            <mat-list>
+              <div *ngFor="let event of SubEvents">
+              <mat-card class="customer-interface-card" *ngIf="event.type != 'student'">
+                <div class="ribbon" *ngIf="event.type == 'premium'">
+                  <span class="light-text">Flagship</span>
+                </div>
+                <div class="row d-flex align-items-center">
+                  <div class="col-1 order-1">
+                    <button mat-icon-button (click)="toggleDescription(event, $event)">
+                      <mat-icon>{{
+                        event.showDescription ? "remove" : "add"
+                        }}</mat-icon>
+                    </button>
+                  </div>
+                  <div class="col order-2">
+                    <mat-card-header>
+                      <mat-card-title class="headline">{{ event.name }}</mat-card-title>
+                    </mat-card-header>
+                  </div>
+                  <div class="col order-4 card-image-container" *ngIf="!isMobile">
+                    <img *ngIf="event.image" [src]="event.image" class="card-img" alt="Event Image" />
+                  </div>
+                  <div class="col select-button order-last">
+                    <mat-card-actions>
+                      <mat-checkbox (change)="SelectSubEvent($event, event)" color="primary" class="light-text">Select</mat-checkbox>
+                    </mat-card-actions>
+                  </div>
+                </div>
+                <mat-card-content [hidden]="!event.showDescription">
+                  <div class="expandable-section">
+                    <p class="light-text">{{ event.description }}</p>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              </div>
             </mat-list>
             <mat-card class="customer-interface-card" *ngIf="Addons">
               <mat-card-header>

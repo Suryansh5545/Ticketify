@@ -24,6 +24,7 @@ class Event(models.Model):
     terms_url = models.URLField(max_length=200, blank=True)
     rules_url = models.URLField(max_length=200, blank=True)
     additional_info = models.TextField(blank=True)
+    sponsor_logo = models.ImageField(upload_to='event', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -67,9 +67,7 @@ def generate_ticket_image (ticket_id):
     qr_code_image = generate_qr_code(ticket.check_in)
     qr_code_image_base64 = base64.b64encode(qr_code_image).decode('utf-8')
     sub_events = ticket.selected_sub_events.all().values_list('name', flat=True)
-    if ticket.ticket_type == "STUDENT":
-        student = "Student"
-    elif ticket.promo_applied:
+    if ticket.promo_applied:
         student = "JKLU"
     elif ticket.customer_type == "SCHOOL":
         student = "School"

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import  get_tickets_by_filter, handle_check_in, get_check_in_data, resend_email, get_ticket_by_subevents, get_ticket_by_addons, get_ticket_by_task, total_check_in_today, get_unverified_ticket_by_time, verify_ticket
+from .views import  get_tickets_by_filter, handle_check_in, get_check_in_data, resend_email, get_ticket_by_subevents, get_ticket_by_addons, get_ticket_by_task, total_check_in_today, get_unverified_ticket_by_time, verify_ticket, get_ticket_by_subevents_excel_download
 
 urlpatterns = [
     path('get_tickets_by_filter/', get_tickets_by_filter.as_view(), name='get_tickets_by_filter'),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('total_check_in_today/', total_check_in_today.as_view(), name='total_check_in_today'),
     path('get_unverified_ticket_by_time/', get_unverified_ticket_by_time.as_view(), name='get_unverified_ticket_by_time'),
     path('verify_ticket/', verify_ticket.as_view(), name='verify_ticket'),
+    path('get_ticket_by_subevents_excel_download/<int:pk>/', get_ticket_by_subevents_excel_download.as_view(), name='get_ticket_by_subevents_excel_download'),
 ]

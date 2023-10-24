@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { EventDetailsService } from '../../services/event-details/event-details.service';
 import { Router } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select';
+import { environment } from 'src/environments/environment';
 
 interface List {
   name: string;
@@ -17,6 +18,7 @@ export class ListComponent {
   Listitems: List[] = [];
   title = 'Event';
   TableData: any;
+  selectedValue: any;
   currentURL = this.router.url;
   displayedColumns: string[] = ['customer_name', 'customer_phone'];
   constructor(private EventDetailsService: EventDetailsService, private router: Router,) {
@@ -37,6 +39,7 @@ export class ListComponent {
 
    change_detection(event: MatSelectChange): void {
     const newValue = event.value;
+    this.selectedValue = newValue;
     const data = {
       list_id: newValue
     }
@@ -53,6 +56,17 @@ export class ListComponent {
       }).catch((error) => {
         this.TableData = [];
       });
+    }
+   }
+
+   downloadexcel(): void {
+    
+    const url = `${environment.api_endpoint}ticket/get_ticket_by_subevents_excel_download/`;
+    const data = {
+      list_id: this.selectedValue
+    }
+    if (this.currentURL.includes('admin/events')) {
+      window.open(url + this.selectedValue, '_blank');
     }
    }
 

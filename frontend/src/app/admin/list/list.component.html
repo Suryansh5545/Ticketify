@@ -10,6 +10,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <button *ngIf="selectedValue" mat-raised-button color="primary" style="margin: 10px;" (click)="downloadexcel()">Download Excel</button>
           </div>
         </div>
     </div>

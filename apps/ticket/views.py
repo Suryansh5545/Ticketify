@@ -2,11 +2,14 @@ import datetime
 from event.models import SubEvent, Addon
 from .models import Ticket, CheckIn
 from rest_framework.views import APIView, Response
-from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer, TicketVerify
+from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer, TicketListSerializerExcel, TicketVerify
 from django.db.models import Q
 from rest_framework import permissions, status, authentication
 from .utils import generate_ticket_image, send_ticket
 from celery.result import AsyncResult
+from django.http import HttpResponse
+from openpyxl import Workbook
+from io import BytesIO
 
     
 
@@ -269,4 +272,50 @@ class total_check_in_today(APIView):
         time = datetime.datetime.now()
         total = CheckIn.objects.filter(check_in_time__date=time.date()).count()
         return Response({"total": total}, status=status.HTTP_200_OK)
+    
+
+class get_ticket_by_subevents_excel_download(APIView):
+    """
+    Get tickets by sub events
+    Query Parameters:
+    list_id: ID of the sub event
+    """
+    def get(self, request, pk):
+        if not pk:
+            return Response({"message": "ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        elif SubEvent.objects.filter(id=pk, is_active=True).exists() == False:
+            return Response({"message": "Sub Event does not exist or is not active"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            tickets = Ticket.objects.filter(selected_sub_events__in=[pk], is_active=True)
+            sub_event_name = SubEvent.objects.get(id=pk).name
+        except Ticket.DoesNotExist:
+            return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        if tickets.exists():
+            serializer = TicketListSerializerExcel(tickets, many=True)
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Tickets"
+
+            # Iterate through the serialized data and write it to the worksheet
+            for index, data in enumerate(serializer.data):
+                if index == 0:
+                    # Write header row
+                    headers = list(data.keys())
+                    ws.append(headers)
+                row_data = list(data.values())
+                ws.append(row_data)
+
+            excel_data = BytesIO()
+            wb.save(excel_data)
+
+            # Create a response with the Excel file
+            response = HttpResponse(
+                content=excel_data.getvalue(),
+                content_type="application/ms-excel",
+            )
+            response["Content-Disposition"] = "attachment; filename=sub_event_"+sub_event_name+"_tickets.xlsx"
+
+            return response
+        else:
+            return Response({"message": "No tickets found"}, status=status.HTTP_400_BAD_REQUEST)
 

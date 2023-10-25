@@ -33,6 +33,9 @@ class HandlePayment(APIView):
             else:
                 return Response({"message": "Payment failed"}, status=status.HTTP_400_BAD_REQUEST)
         else:
+            if Event.objects.get(is_active=True).maintaince_mode == True:
+                return Response({"message": "Maintaince Mode"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            else:
                 return_data = payment_gateway(request)
                 return Response(return_data, status=status.HTTP_200_OK)
 

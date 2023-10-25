@@ -44,7 +44,7 @@ export class CheckoutComponent {
 
     ngOnInit() {
       this.checkIfMobile();
-      this.EventDetailsService.EventDetails().then(() => {
+      this.EventDetailsService.EventDetailsCustomer().then(() => {
         this.eventdata = this.EventDetailsService.event;
         this.TotalPrice += parseFloat(this.eventdata[0].price);
         this.EventDetailsService.SubEventDetails().then(() => {

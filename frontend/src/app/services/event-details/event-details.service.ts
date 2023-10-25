@@ -42,6 +42,21 @@ export class EventDetailsService {
     });
   }
 
+  EventDetailsCustomer(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.HttpService.get<Event[]>('event/get_event').subscribe(data => {
+        this.event = data;
+        if(this.event[0].maintaince_mode == true){
+          this.router.navigate(['/maintenance']);
+        }
+        resolve();
+      }, error => {
+        this.router.navigate(['/maintenance']);
+        reject(error); 
+      });
+    });
+  }
+
   SubEventDetails(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (this.event[0].id) {

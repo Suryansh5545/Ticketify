@@ -43,9 +43,11 @@ class TicketListSerializer(serializers.Serializer):
     customer_phone = serializers.CharField()
 
 class TicketListSerializerExcel(serializers.Serializer):
+    id = serializers.CharField()
     customer_name = serializers.CharField()
     customer_email = serializers.EmailField()
     customer_phone = serializers.CharField()
+    referral = serializers.CharField(required=False, allow_blank=True)
 
 class TicketVerify(serializers.Serializer):
     id = serializers.CharField()

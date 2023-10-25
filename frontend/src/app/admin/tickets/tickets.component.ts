@@ -3,6 +3,7 @@ import { EventDetailsService } from 'src/app/services/event-details/event-detail
 import { TicketDialogComponent, TicketDialogData  } from '../dialog/ticket-dialog/ticket-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tickets',
@@ -44,5 +45,11 @@ export class TicketsComponent {
       data: dialogData,
     });
   }
+
+  downloadexcel(): void {
+    
+    const url = `${environment.api_endpoint}ticket/get_all_tickets_excel/`;
+      window.open(url, '_blank');
+   }
 
 }

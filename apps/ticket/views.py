@@ -323,4 +323,42 @@ class get_ticket_by_subevents_excel_download(APIView):
             return response
         else:
             return Response({"message": "No tickets found"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class get_all_tickets_excel(APIView):
+    """
+    Get all tickets
+    """
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
+    def get(self, request):
+        tickets = Ticket.objects.filter(is_active=True)
+        if tickets.exists():
+            serializer = TicketListSerializerExcel(tickets, many=True)
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Tickets"
+
+            # Iterate through the serialized data and write it to the worksheet
+            for index, data in enumerate(serializer.data):
+                if index == 0:
+                    # Write header row
+                    headers = list(data.keys())
+                    ws.append(headers)
+                row_data = list(data.values())
+                ws.append(row_data)
+
+            excel_data = BytesIO()
+            wb.save(excel_data)
+
+            # Create a response with the Excel file
+            response = HttpResponse(
+                content=excel_data.getvalue(),
+                content_type="application/ms-excel",
+            )
+            response["Content-Disposition"] = "attachment; filename=all_tickets"+ str(datetime.datetime.now()) + ".xlsx"
+
+            return response
+        else:
+            return Response({"message": "No tickets found"}, status=status.HTTP_400_BAD_REQUEST)
 

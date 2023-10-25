@@ -5,8 +5,7 @@ from rest_framework import permissions, status, authentication
 from .models import Event, PromoCode, SubEvent, Addon
 from ticket.models import Ticket
 from .serializers import EventSerializer, SubEventSerializer, AddonSerializer
-
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -83,7 +82,7 @@ class get_max_ticket_sales(APIView):
     Get max ticket sales
     """
     permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request, pk):
         event = Event.objects.get(pk=pk)
         tickets = Ticket.objects.filter(event=event, is_active=True, ticket_type='REGULAR')
@@ -99,7 +98,7 @@ class get_sub_event_sales(APIView):
     Get sub event sales
     """
     permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request, pk):
         event = Event.objects.get(pk=pk)
         sub_events = SubEvent.objects.filter(event=event)
@@ -117,7 +116,7 @@ class get_addon_sales(APIView):
     Get addon sales
     """
     permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request, pk):
         event = Event.objects.get(pk=pk)
         addons = Addon.objects.filter(event=event)

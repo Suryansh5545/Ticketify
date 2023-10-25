@@ -10,6 +10,7 @@ from celery.result import AsyncResult
 from django.http import HttpResponse
 from openpyxl import Workbook
 from io import BytesIO
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
     
 
@@ -24,7 +25,7 @@ class get_tickets_by_filter(APIView):
     ticket_id: ID of the ticket
     """
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
         email = request.data.get('email')
         phone = request.data.get('phone')
@@ -68,7 +69,7 @@ class handle_check_in(APIView):
     ticket_id: ID of the ticket
     """
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
@@ -109,7 +110,7 @@ class get_check_in_data(APIView):
     ticket_id: ID of the ticket
     """
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
@@ -136,7 +137,7 @@ class resend_email(APIView):
     ticket_id: ID of the ticket
     """
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
@@ -167,7 +168,7 @@ class get_ticket_by_subevents(APIView):
     list_id: ID of the sub event
     """
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
         list_id = request.data.get('list_id')
         if not list_id:
@@ -192,7 +193,7 @@ class get_ticket_by_addons(APIView):
     list_id: ID of the addon
     """
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
         list_id = request.data.get('list_id')
         if not list_id:
@@ -230,7 +231,7 @@ class get_unverified_ticket_by_time(APIView):
     Get unverified tickets in time order
     """
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request):
         tickets = Ticket.objects.filter(is_active=True, customer_type="SCHOOL", id_verified=False).order_by('created_at')
         if not tickets:
@@ -245,6 +246,8 @@ class verify_ticket(APIView):
     Query Parameters:
     ticket_id: ID of the ticket
     """
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self,request):
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
@@ -267,7 +270,7 @@ class total_check_in_today(APIView):
     """
     Get total check ins today"""
     permission_classes = (permissions.IsAuthenticated, )
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
         time = datetime.datetime.now()
         total = CheckIn.objects.filter(check_in_time__date=time.date()).count()
@@ -280,6 +283,8 @@ class get_ticket_by_subevents_excel_download(APIView):
     Query Parameters:
     list_id: ID of the sub event
     """
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request, pk):
         if not pk:
             return Response({"message": "ID is required"}, status=status.HTTP_400_BAD_REQUEST)

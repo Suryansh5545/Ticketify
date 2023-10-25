@@ -2,7 +2,7 @@ import datetime
 from event.models import SubEvent, Addon
 from .models import Ticket, CheckIn
 from rest_framework.views import APIView, Response
-from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer, TicketListSerializerExcel, TicketVerify
+from .serializers import AdminTicketSerializer, CheckInSerializer, TicketListSerializer, TicketListSerializerExcel, TicketSerializerExcel, TicketVerify
 from django.db.models import Q
 from rest_framework import permissions, status, authentication
 from .utils import generate_ticket_image, send_ticket
@@ -334,7 +334,7 @@ class get_all_tickets_excel(APIView):
     def get(self, request):
         tickets = Ticket.objects.filter(is_active=True)
         if tickets.exists():
-            serializer = TicketListSerializerExcel(tickets, many=True)
+            serializer = TicketSerializerExcel(tickets, many=True)
             wb = Workbook()
             ws = wb.active
             ws.title = "Tickets"
@@ -356,7 +356,7 @@ class get_all_tickets_excel(APIView):
                 content=excel_data.getvalue(),
                 content_type="application/ms-excel",
             )
-            response["Content-Disposition"] = "attachment; filename=all_tickets"+ str(datetime.datetime.now()) + ".xlsx"
+            response["Content-Disposition"] = "attachment; filename=all_tickets "+ str(datetime.datetime.now()) + ".xlsx"
 
             return response
         else:

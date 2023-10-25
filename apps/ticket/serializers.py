@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from event.serializers import SubEventSerializer, AddonSerializer
+from transactions.models import Transaction
 from transactions.serializers import TransactionSerializer
 
 class SelectedSubEventSerializer(serializers.Serializer):
@@ -48,6 +49,21 @@ class TicketListSerializerExcel(serializers.Serializer):
     customer_email = serializers.EmailField()
     customer_phone = serializers.CharField()
     referral = serializers.CharField(required=False, allow_blank=True)
+
+
+class TransactionExcelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ('payment_amount',)
+
+class TicketSerializerExcel(serializers.Serializer):
+    id = serializers.CharField()
+    customer_name = serializers.CharField()
+    customer_email = serializers.EmailField()
+    customer_phone = serializers.CharField()
+    college_name = serializers.CharField()
+    referral = serializers.CharField(required=False, allow_blank=True)
+    payment_amount = serializers.DecimalField(max_digits=10, decimal_places=2, source='transaction_id.payment_amount',allow_null=True)
 
 class TicketVerify(serializers.Serializer):
     id = serializers.CharField()

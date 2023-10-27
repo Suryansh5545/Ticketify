@@ -71,8 +71,6 @@ class handle_check_in(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
-        if request.user.is_staff == False:
-            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
             return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)

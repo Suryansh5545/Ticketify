@@ -1,3 +1,4 @@
+import uuid
 from base.utils import get_url_from_hostname
 from django.shortcuts import redirect
 from rest_framework.views import APIView
@@ -38,11 +39,11 @@ class HandlePayment(APIView):
             elif(request.data.get('customer_type') == 'SCHOOL'):
                 Total_amount, promo_applied = HandlePriceCalculation(request)
                 if(Event.objects.get(is_active=True).student_price == 0 and Total_amount == 0):
-                    ticket = create_ticket(request, "JKLU#STUDENT", False)
+                    ticket = create_ticket(request,str('JKLU#'+str(uuid.uuid4())), False)
                     ticket.ticket_type = "STUDENT"
                     ticket.is_active = True
                     ticket.save()
-                    return redirect(get_url_from_hostname(settings.FRONTEND_URL) + "/delivery-student" )
+                    return Response({"message": 5545}, status=status.HTTP_200_OK)
                 else:
                     return_data = payment_gateway(request)
                     return Response(return_data, status=status.HTTP_200_OK)

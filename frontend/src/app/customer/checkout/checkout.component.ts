@@ -288,6 +288,10 @@ export class CheckoutComponent {
     }
     if (this.eventdata[0].payment_gateway == 'razorpay') {
     this.EventDetailsService.SendCheckoutData(data).then(() => {
+      if(this.EventDetailsService.CheckoutData.message == 5545) {
+        window.location.href = '/delivery-student';
+      }
+      else {
       const checkoutData = {
         "key_id": this.EventDetailsService.CheckoutData.id,
         "order_id": this.EventDetailsService.CheckoutData.payment_id,
@@ -302,15 +306,19 @@ export class CheckoutComponent {
       };
       const form = this.createForm(checkoutData);
       this.submitFormElement(form);
-
+    }
     });
   }
   else if (this.eventdata[0].payment_gateway == 'billdesk') {
     this.EventDetailsService.SendCheckoutData(data).then(() => {
+      if(this.EventDetailsService.CheckoutData.message == 5545) {
+        window.location.href = '/delivery-student';
+      }
+      else {
       const checkoutData = this.EventDetailsService.CheckoutData;
       const form = this.createForm(checkoutData);
       this.submitFormElement(form);
-
+      }
     });
   }
 }

@@ -296,6 +296,8 @@ class get_ticket_by_subevents_excel_download(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request, pk):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         if not pk:
             return Response({"message": "ID is required"}, status=status.HTTP_400_BAD_REQUEST)
         elif SubEvent.objects.filter(id=pk, is_active=True).exists() == False:
@@ -342,6 +344,8 @@ class get_all_tickets_excel(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         tickets = Ticket.objects.filter(is_active=True)
         if tickets.exists():
             serializer = TicketSerializerExcel(tickets, many=True)

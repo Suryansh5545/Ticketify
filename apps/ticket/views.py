@@ -71,6 +71,8 @@ class handle_check_in(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
             return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -139,6 +141,8 @@ class resend_email(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
             return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -170,6 +174,8 @@ class get_ticket_by_subevents(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self, request):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         list_id = request.data.get('list_id')
         if not list_id:
             return Response({"message": "ID is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -233,6 +239,8 @@ class get_unverified_ticket_by_time(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def get(self, request):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         tickets = Ticket.objects.filter(is_active=True, customer_type="SCHOOL", id_verified=False).order_by('created_at')
         if not tickets:
             return Response({"message": "No unverified tickets left"}, status=status.HTTP_400_BAD_REQUEST)
@@ -249,6 +257,8 @@ class verify_ticket(APIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
     def post(self,request):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
         ticket_id = request.data.get('ticket_id')
         if not ticket_id:
             return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)

@@ -60,6 +60,12 @@ export class TicketDialogComponent {
     });
   }
 
+  Decline() {
+    this.EventDetailsService.SendDecline(this.ticket_id).then(() => {
+      this._snackBar.open(this.EventDetailsService.DeclineResponse.message, 'Close');
+    });
+  }
+
   confirmCheckin() {
     const isConfirmed = window.confirm('Are you sure you want to check in this ticket? This action cannot be undone. Please use QR Scanner if available.');
     if (isConfirmed) {

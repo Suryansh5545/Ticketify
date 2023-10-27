@@ -241,7 +241,7 @@ class get_unverified_ticket_by_time(APIView):
     def get(self, request):
         if request.user.is_staff == False:
             return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
-        tickets = Ticket.objects.filter(is_active=True, customer_type="SCHOOL", id_verified=False).order_by('created_at')
+        tickets = Ticket.objects.filter(is_active=True, customer_type="SCHOOL", id_verified=False, declined=False).order_by('created_at')
         if not tickets:
             return Response({"message": "No unverified tickets left"}, status=status.HTTP_400_BAD_REQUEST)
         serializer = TicketVerify(tickets, many=True, context={"request": request})
@@ -375,4 +375,30 @@ class get_all_tickets_excel(APIView):
             return response
         else:
             return Response({"message": "No tickets found"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class decline_verify_ticket(APIView):
+    """
+    Decline a ticket
+    Query Parameters:
+    ticket_id: ID of the ticket
+    """
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
+    def post(self,request):
+        if request.user.is_staff == False:
+            return Response({"message": "You are not authorized to perform this action"}, status=status.HTTP_400_BAD_REQUEST)
+        ticket_id = request.data.get('ticket_id')
+        if not ticket_id:
+            return Response({"message": "ticket_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            ticket = Ticket.objects.get(id=ticket_id, is_active=True)
+        except Ticket.DoesNotExist:
+            return Response({"message": "Ticket does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+        if ticket.is_active:
+            ticket.declined = True
+            ticket.save()
+            return Response({"message": "Ticket declined successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Ticket is not active"}, status=status.HTTP_400_BAD_REQUEST)
 

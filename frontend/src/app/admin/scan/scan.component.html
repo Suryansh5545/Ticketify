@@ -7,13 +7,13 @@
               <mat-form-field class="form-field">
                 <mat-label>Select device</mat-label>
                 <mat-select #select1 (selectionChange)="action.playDevice(select1.value)">
-                  <mat-option *ngFor="let c of action.devices.value; let i = index" [value]="c.deviceId">
+                  <mat-option *ngFor="let c of action.devices.value.slice().reverse(); let i = index" [value]="c.deviceId">
                     {{ c.label }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>                                  
               <ngx-scanner-qrcode #action="scanner" (event)="onEvent($event, action)"></ngx-scanner-qrcode>
-            </div>
+            </div>            
           </div>
         </mat-card>
       </div>

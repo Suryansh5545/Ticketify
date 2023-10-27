@@ -11,7 +11,7 @@ from event.models import Event
 from django.http import HttpResponse
 import os, razorpay, json
 from base.utils import EmailService
-from .utils import payment_gateway, verify_payment_billdesk, verify_payment_razorpay
+from .utils import HandlePriceCalculation, payment_gateway, verify_payment_billdesk, verify_payment_razorpay
 from django_billdesk import ResponseMessage
 
 
@@ -35,6 +35,17 @@ class HandlePayment(APIView):
         else:
             if Event.objects.get(is_active=True).maintaince_mode == True:
                 return Response({"message": "Maintaince Mode"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            elif(request.data.get('customer_type') == 'SCHOOL'):
+                Total_amount, promo_applied = HandlePriceCalculation(request)
+                if(Event.objects.get(is_active=True).student_price == 0 and Total_amount == 0):
+                    ticket = create_ticket(request, "JKLU#STUDENT", False)
+                    ticket.ticket_type = "STUDENT"
+                    ticket.is_active = True
+                    ticket.save()
+                    return redirect(get_url_from_hostname(settings.FRONTEND_URL) + "/delivery-student" )
+                else:
+                    return_data = payment_gateway(request)
+                    return Response(return_data, status=status.HTTP_200_OK)
             else:
                 return_data = payment_gateway(request)
                 return Response(return_data, status=status.HTTP_200_OK)

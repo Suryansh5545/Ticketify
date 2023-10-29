@@ -29,6 +29,11 @@ import {MatSelectModule} from '@angular/material/select';
 import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
 import { VerifyComponent } from './verify/verify.component';
 
+// Font Awesome
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+
 const adminRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -75,6 +80,7 @@ const adminRoutes: Routes = [
     MatDialogModule,
     NgxScannerQrcodeModule,
     MatSelectModule,
+    FontAwesomeModule,
     RouterModule.forChild(adminRoutes),
   ], 
   exports: [
@@ -89,4 +95,8 @@ const adminRoutes: Routes = [
     RouterModule
   ]
 })
-export class AdminModule { }
+export class AdminModule { 
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas, far);
+  }
+ }

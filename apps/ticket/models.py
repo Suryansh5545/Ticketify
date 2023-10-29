@@ -41,6 +41,7 @@ class Ticket(models.Model):
     id_verified = models.BooleanField(default=False)
     promocode = models.ForeignKey('event.PromoCode', on_delete=models.SET_NULL, null=True, blank=True)
     declined = models.BooleanField(default=False)
+    vip = models.BooleanField(default=False)
 
     def generate_unique_ticket_id(self):
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))

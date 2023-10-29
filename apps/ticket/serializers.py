@@ -31,6 +31,7 @@ class AdminTicketSerializer(serializers.Serializer):
     selected_addons = AddonSerializer(many=True, required=False)
     transaction_id = TransactionSerializer(required=True)
     referral = serializers.CharField(required=False, allow_blank=True)
+    vip = serializers.BooleanField(default=False)
 
 
 class CheckInSerializer(serializers.Serializer):

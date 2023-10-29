@@ -22,6 +22,9 @@
               <input matInput placeholder="Search by Referral" [(ngModel)]="referral" (keyup.enter)="search()">
             </mat-form-field>
           </div>
+          <div class="col-md-12 col-lg-4" style="margin: 10px;">
+            <p>Total Tickets: <strong>{{ TotalTickets }}</strong></p>
+          </div>
         </div>
         <div class="row mt-4">
           <div class="col-md-12">

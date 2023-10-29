@@ -16,6 +16,7 @@ export class TicketsComponent {
   name: any;
   referral: any;
   TicketData: any;
+  TotalTickets: any = 0;
   displayedColumns: string[] = ['id', 'customer_email', 'customer_phone', 'customer_name', 'referral', 'selected_sub_event', 'selected_addon', 'ticket_view'];
   constructor(private EventDetailsService: EventDetailsService, private dialog: MatDialog, private _snackBar: MatSnackBar) { }
   search() {
@@ -31,8 +32,10 @@ export class TicketsComponent {
     }
     this.EventDetailsService.GetTicketData(data).then(() => {
       this.TicketData = this.EventDetailsService.TicketData;
+      this.TotalTickets = this.TicketData.length;
     }).catch((error) => {
       this.TicketData = [];
+      this.TotalTickets = 0;
     });
 
   }

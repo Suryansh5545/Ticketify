@@ -7,6 +7,10 @@
           <p><strong>Ticket ID:</strong> {{ data.ticket.id }}</p>
           <p><strong>Name:</strong> {{ data.ticket.customer_name }}</p>
           <p><strong>Customer Email:</strong> {{ data.ticket.customer_email }}</p>
+          <p><strong>VIP:</strong>
+            <fa-icon *ngIf="data.ticket.vip" [icon]="['fas', 'check']" size="2xl" style="color: #00ff00;"></fa-icon>
+            <fa-icon *ngIf="!data.ticket.vip" [icon]="['fas', 'xmark']" size="2xl" style="color: #6f0000;"></fa-icon>
+          </p>
         </div>
         <div class="col-md-6">
           <p><strong>Phone:</strong> {{ data.ticket.customer_phone }}</p>

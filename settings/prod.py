@@ -52,6 +52,7 @@ AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME", "aws_storage_bucket_
 AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID", "aws_access_key_id")
 AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY", "aws_secret_access_key")
 AWS_S3_ENDPOINT_URL = getenv("AWS_S3_ENDPOINT_URL", "aws_s3_endpoint_url")
+AWS_S3_CUSTOM_DOMAIN = getenv("AWS_S3_CUSTOM_DOMAIN", "aws_s3_custom_domain")
 AWS_DEFAULT_ACL = 'public-read'
 
 STORAGES = {

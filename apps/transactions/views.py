@@ -34,11 +34,11 @@ class HandlePayment(APIView):
             else:
                 return Response({"message": "Payment failed"}, status=status.HTTP_400_BAD_REQUEST)
         else:
+            Total_amount, promo_applied = HandlePriceCalculation(request)
             if Event.objects.get(is_active=True).maintaince_mode == True:
                 return Response({"message": "Maintaince Mode"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-            elif(request.data.get('customer_type') == 'SCHOOL'):
-                Total_amount, promo_applied = HandlePriceCalculation(request)
-                if(Event.objects.get(is_active=True).student_price == 0 and Total_amount == 0):
+            elif(request.data.get('customer_type') == 'SCHOOL' or Total_amount == 0):
+                if(Event.objects.get(is_active=True).student_price == 0 or Total_amount == 0):
                     ticket = create_ticket(request,str('JKLU#'+str(uuid.uuid4())), False)
                     ticket.ticket_type = "STUDENT"
                     ticket.is_active = True

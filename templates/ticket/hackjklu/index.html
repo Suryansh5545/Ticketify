@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+</head>
+
+<style>
+  body {
+  background: #000000;
+  font-family: "Share Tech Mono", monospace;
+}
+
+.main-content {
+  margin: 4em auto 0;
+  width: 740px;
+  text-transform: uppercase;
+}
+
+.ticket {
+  display: grid;
+  grid-template-columns: auto 143px;
+  background: #001E5E;
+  border-radius: 10px;
+  border: 2px solid #222;
+  cursor: default;
+}
+.ticket__main {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr) 120px;
+  grid-template-rows: repeat(4, min-content) auto;
+  background-image: url("https://imgur.com/7bUMQRk.jpeg");
+  background-size: cover;
+  background-position: -100px center;
+  background-repeat: no-repeat;
+
+}
+
+
+.ticket__side {
+}
+.dashedline {
+  border-top: 2.8px dashed #ffffff;
+  width: 400px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  position: absolute;
+  top: 0px;
+  left: 365px;
+  right: 0;
+  bottom: 30px;
+  z-index: 1;
+  transform-origin: 50% 50%;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 50% 50%;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 50% 50%;
+  -ms-transform: rotate(90deg);
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 50% 50%;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 50% 50%;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 50% 50%;
+  -ms-transform: rotate(90deg);
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 50% 50%;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 50% 50%;
+  -ms-transform: rotate(90deg);
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 50% 50%;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 50% 50%;
+  -ms-transform: rotate(90deg);
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 50% 50%;
+}
+.qrcode {
+  margin-top: 45px;
+  margin-left: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  max-width: 150px;
+  position: absolute;
+  top: 30px;
+  left: 720px;
+}
+
+.ticket__main--logo {
+  transform: translateX(-230px) translateY(-100px) scale(1.2) rotate(20deg);
+  width: 400px;
+  height: 300px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.ticket__main--title {
+  background-image: linear-gradient(90deg, #C33C39 7.95%, #E69235 94.22%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 40px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.ticket__main--details {
+  position: absolute;
+  display: inline;
+  font-size: 20px;
+  font-family: "Share Tech Mono", monospace;
+  color: #fff;
+  margin-top: 0px;
+  top: auto;
+  left: 470px;
+  position: absolute;
+}
+
+.ticket__main--name {
+  position: absolute;
+  display: inline;
+  font-size: 20px;
+  font-family: "Share Tech Mono", monospace;
+  color: #fff;
+  margin-top: 10px;
+  top: auto;
+  position: relative;
+}
+
+.ticket__main--name2 {
+    position: absolute;
+    display: inline;
+    font-size: 20px;
+    font-family: "Share Tech Mono", monospace;
+    color: #fff;
+    margin-top: 30px;
+    top: auto;
+    position: absolute;
+  }
+
+.ticket__side--title {
+  position: absolute;
+  display: inline;
+  font-size: 25px;
+  font-weight: 800;
+  font-family: "Share Tech Mono", monospace;
+  color: #fff;
+  top: 250px;
+  left: 765px;
+  transform: rotate(90deg);
+}
+
+.ticket__main--icon {
+  position: absolute;
+  max-width: 70px;
+  top: 210px;
+  left: 120px;
+}
+
+.ticket__main--icon2 {
+  position: absolute;
+  max-width: 55px;
+  top: 210px;
+  left: 200px;
+}
+
+</style>
+<body>
+<!-- partial:index.partial.html -->
+<div class="main-content">
+  <div class="ticket">
+    <div class="ticket__main">
+      <img src="https://i.imgur.com/Z0mBGYe.png" alt="Kiwi" class="ticket__main--logo">
+      <div class="ticket__main--details">
+        <p class="ticket__main--title">FOOD COUPON</p>
+        <p class="ticket__main--sub">15th - 17th March, 2024</p>
+        <p class="ticket__main--name">{{artistName}}</p>
+        <br>
+        <p class="ticket__main--name2"> {% for sub_event in doors %}
+            {{ sub_event }}{% if not forloop.last %}, {% endif %}
+            {% if forloop.counter|divisibleby:4 %}<br>{% endif %}
+          {% endfor %}</p>
+        <img src="https://imgur.com/NeDnJXw.png" class="ticket__main--icon">
+        <img src="https://imgur.com/kT3sbY4.png" class="ticket__main--icon2">
+
+      </div>
+    </div>
+    <div class="ticket__side">
+      <div class="dashedline"></div>
+      <img src="{{barcodeImageURL}}" class="qrcode">
+      <p class="ticket__side--title">{{ticketNumber}}</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

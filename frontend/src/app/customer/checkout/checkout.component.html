@@ -60,15 +60,15 @@
               </div>
               <div class="mt-2">
                 <p class="light-text">By uploading your Student ID, you agree to the terms and conditions for students.</p>
-                <p class="light-text">Tickets to school students will not be received instantly it will be sent within 48hrs of registration after manual scrutiny.</p>
+                <p class="light-text">Food Coupons to school students will not be received instantly it will be sent within 48hrs of registration after manual scrutiny.</p>
               </div>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="referral" class="form-label light-text">Referral (Optional)</label>
               <input type="text" class="form-control grey-input" id="referral" aria-describedby="referral" autocomplete="referral" />
-            </div>
+            </div> -->
             <div class="my-5 text-center" *ngIf="eventdata && eventdata.length > 0">
-              <p class="section-description light-text"> Upto {{eventdata[0].sub_events_included_allowed}} Events included in Ticket Price</p>
+              <p class="section-description light-text"> Register for Food Coupon only after getting your devfolio application accepted</p>
             </div>
             <div class="text-center" *ngIf="eventdata && eventdata.length > 0">
               <button class="btn btn-primary" *ngIf="eventdata[0].rules_url.length > 0">
@@ -214,7 +214,7 @@
                 <p>{{ TotalPrice | currency : "INR" }}</p>
               </div>
             </div>
-            <div class="row" *ngIf="studentType != 'SCHOOL'">
+            <!-- <div class="row" *ngIf="studentType != 'SCHOOL'">
               <div class="col-md-6">
                 <h4 class="light-text">Promo Code</h4>
               </div>
@@ -229,7 +229,7 @@
                   <button mat-raised-button color="accent" (click)="applyCoupon(couponCode)">Apply</button>
                 </div>
               </div>
-            </div>
+            </div> -->
             <hr>
             <div class="row mb-3">
               <div class="col-md-12">

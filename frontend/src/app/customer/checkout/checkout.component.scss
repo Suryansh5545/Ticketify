@@ -1,37 +1,18 @@
-@font-face {
-  font-family: 'HelveticaNowDisplay';
-  src: url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Bold.woff2);
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'HelveticaNowDisplay';
-  src: url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Regular.woff2);
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'HelveticaNowDisplay';
-  src: url(https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/fonts/HelveticaNowDisplay-Light.woff2);
-  font-weight: lighter;
-  font-style: normal;
-}
 .headline {
-  font-family: 'HelveticaNowDisplay', Arial, Helvetica, sans-serif;
+  font-family: 'Share Tech Mono', Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-style: normal;
 }
 
 /* Use "HelveticaNowDisplay Regular" for normal text */
 .normal-text {
-  font-family: 'HelveticaNowDisplay', Arial, Helvetica, sans-serif;
+  font-family: 'Share Tech Mono', Arial, Helvetica, sans-serif;
   font-weight: normal;
   font-style: normal;
 }
 
 .light-text {
-  font-family: 'HelveticaNowDisplay', Arial, Helvetica, sans-serif;
+  font-family: 'Share Tech Mono', Arial, Helvetica, sans-serif;
   font-weight: lighter;
   font-style: normal;
 }

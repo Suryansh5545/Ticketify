@@ -88,15 +88,16 @@ def generate_ticket_image (ticket_id):
             "ticketType": student,
         }
 
-    template = get_template('ticket/sabrang/index.html')
+    template = get_template('ticket/hackjklu/index.html')
     html_content = template.render(ticket_data)
     options = {
         'quality': 100,
-        'crop-w': '300',
-        'crop-y': '40',
-        'crop-x': '305',
-        'crop-h': '600',
+        'crop-w': '730',
+        'crop-y': '64',
+        'crop-x': '144',
+        'crop-h': '300',
         'zoom': '2',
+        "enable-local-file-access": None,
     }
     ticket_name = f"ticket_{encrypted_ticket_id}.jpg"
     img_bytes = imgkit.from_string(html_content, None, options=options)
@@ -118,7 +119,7 @@ def generate_qr_code(ticket_id):
     qr.make(fit=True)
 
     # Create an image from the QR code
-    qr_image = qr.make_image(fill_color="black", back_color="white")
+    qr_image = qr.make_image(fill_color="white", back_color="transparent")
 
     # Create a BytesIO object to store the image data
     qr_image_bytes = BytesIO()

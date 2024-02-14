@@ -40,12 +40,10 @@ REST_FRAMEWORK = {
     )
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "https://ticketify.tech",
-    "https://sabrang.ticketify.tech",
-    "https://staging.ticketify.tech",
-    "https://ticketify.hackjklu.com",
-]
+if getenv("CORS_ALLOWED_ORIGINS"):
+    CORS_ALLOWED_ORIGINS = getenv("CORS_ALLOWED_ORIGINS").split(",")
+else:
+    CORS_ALLOWED_ORIGINS = []
 
 # S3 Bucket settings
 AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME", "aws_storage_bucket_name")

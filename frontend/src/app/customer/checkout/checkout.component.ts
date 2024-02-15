@@ -223,7 +223,6 @@ export class CheckoutComponent {
       var nameInput = document.getElementById("name") as HTMLInputElement;
       var emailInput = document.getElementById("email") as HTMLInputElement;
       var phoneNumberInput = document.getElementById("phone") as HTMLInputElement;
-      var referralInput = document.getElementById("referral") as HTMLInputElement;
       var institutenameInput = document.getElementById("institutename") as HTMLInputElement;
       var studentTypeInput = document.querySelector('input[name="studentType"]:checked') as HTMLInputElement;
       const studentType = studentTypeInput ? studentTypeInput.value : '';
@@ -267,7 +266,7 @@ export class CheckoutComponent {
         var name = nameInput.value;
         var email = emailInput.value;
         var phoneNumber = phoneNumberInput.value;
-        var referral = referralInput.value;
+        var referral = '';
         var institutename = institutenameInput.value;
       }
       const data = {

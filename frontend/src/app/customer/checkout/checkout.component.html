@@ -1,17 +1,21 @@
-<nav class="navbar bg-black border-bottom border-bottom-dark" data-bs-theme="dark">
+<nav class="navbar bg-black" data-bs-theme="dark">
   <div class="container-fluid">
     <ng-container *ngIf="eventdata && eventdata.length > 0">
-      <img *ngIf="eventdata[0].image" [src]="eventdata[0].image" alt="Logo" height="30" class="d-inline-block align-text-top" />
-    </ng-container>    
+      <div class="d-flex align-items-center">
+        <img *ngIf="eventdata[0].image" [src]="eventdata[0].image" alt="Logo" height="30" class="d-inline-block align-text-top" />
+        <h3 class="headline" style="color: white; margin-left: 10px; margin-top: 15px; font-size: x-large;">{{ eventdata[0].name }}</h3>
+      </div>
+    </ng-container>
     <ng-container *ngIf="eventdata && eventdata.length > 0">
       <img *ngIf="eventdata[0].sponsor_logo" [src]="eventdata[0].sponsor_logo" alt="Logo" height="30" class="d-inline-block align-text-top" />
     </ng-container>    
-    </div>
+  </div>
 </nav>
+
 <div class="row container-fluid">
     <div class="col-lg-8">
-      <div class="card text-light mb-3 customer-interface-card">
-        <div class="card-body">
+      <div class="text-light mb-3" style="margin: 15px;">
+        <div class="">
           <form>
             <div class="input-container">
               <div class="mb-3">
@@ -94,9 +98,9 @@
                       <mat-card-title class="headline">{{ event.name }}</mat-card-title>
                     </mat-card-header>
                   </div>
-                  <div class="col order-4 card-image-container" *ngIf="!isMobile">
+                  <!-- <div class="col order-4 card-image-container" *ngIf="!isMobile">
                     <img *ngIf="event.image" [src]="event.image" class="card-img" alt="Event Image" />
-                  </div>
+                  </div> -->
                   <div class="col select-button order-last">
                     <mat-card-actions>
                       <mat-checkbox (change)="SelectSubEvent($event, event)" color="primary" class="light-text">Select</mat-checkbox>
@@ -130,9 +134,9 @@
                       <mat-card-title class="headline">{{ event.name }}</mat-card-title>
                     </mat-card-header>
                   </div>
-                  <div class="col order-4 card-image-container" *ngIf="!isMobile">
+                  <!-- <div class="col order-4 card-image-container" *ngIf="!isMobile">
                     <img *ngIf="event.image" [src]="event.image" class="card-img" alt="Event Image" />
-                  </div>
+                  </div> -->
                   <div class="col select-button order-last">
                     <mat-card-actions>
                       <mat-checkbox (change)="SelectSubEvent($event, event)" color="primary" class="light-text">Select</mat-checkbox>
@@ -240,10 +244,10 @@
             </div>                   
             <div class="row mt-3">
               <div class="col-md-12">
-                <button mat-raised-button class="bg-success" style="width: 100%;" (click)="Checkout()" [disabled]="!agreeToTerms">Pay</button>
+                <button mat-raised-button style="width: 100%; background: linear-gradient(270deg, #F5992E -8.52%, #CE3B35 100%); color: black;" (click)="Checkout()" [disabled]="!agreeToTerms">Pay</button>
               </div>
             </div>
-            <div class="row mb-3" *ngIf="eventdata[0].additional_info">
+            <div class="row mb-3" *ngIf="eventdata && eventdata.length > 0 && eventdata[0].additional_info">
               <div class="col-md-12">
                 <p class="additioanl-info light-text">{{eventdata[0].additional_info}}</p>
               </div>

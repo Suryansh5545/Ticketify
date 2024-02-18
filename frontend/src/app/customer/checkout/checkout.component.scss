@@ -1,7 +1,11 @@
+
+
+
 .headline {
   font-family: 'Share Tech Mono', Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-style: normal;
+  color: rgb(156 163 175);
 }
 
 /* Use "HelveticaNowDisplay Regular" for normal text */
@@ -9,12 +13,14 @@
   font-family: 'Share Tech Mono', Arial, Helvetica, sans-serif;
   font-weight: normal;
   font-style: normal;
+  color: rgb(156 163 175);
 }
 
 .light-text {
   font-family: 'Share Tech Mono', Arial, Helvetica, sans-serif;
   font-weight: lighter;
   font-style: normal;
+  color: rgb(156 163 175);
 }
 
 
@@ -38,7 +44,7 @@
   
 
 .customer-interface-card {
-  background-color: #000000;
+  background-color: #111010;
   width: auto; /* Adjust the width as per your requirements */
   margin: 10px; /* Adjust the margin as per your requirements */
   border: 1px solid #ccc; /* Add a border as the bounding box */
@@ -57,7 +63,7 @@
 }
 
 .payment-internal-interface-card {
-  background-color: #000000;
+  background-color: #111010;
   width: auto; /* Adjust the width as per your requirements */
   margin: 10px; /* Adjust the margin as per your requirements */
   position: sticky; 
@@ -118,9 +124,9 @@ fa-icon {
     font-size: 0.8rem;
   }
 }
-fa-icon {
-  display: none;
-}
+// fa-icon {
+//   display: none;
+// }
 }
 
 .ribbon {
@@ -181,14 +187,39 @@ fa-icon {
 }
 
 .grey-input {
-  background-color: #000000; /* Change this color to the shade of grey you prefer */
+  background-color: #111010; /* Change this color to the shade of grey you prefer */
 }
 
 .form-control {
   border: var(--bs-border-width) solid #ffffff;
   color: #fff;
+  
 }
 
 .container-fluid {
-  background-color: #000000;
+  background-color: #111010;
+  @media (min-width: 576px) { 
+    padding: 0;
+   }
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) { 
+  padding: 0 1rem 0 1rem;
+ }
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { 
+  padding: 0 3rem 0 3rem;
+ }
+
+// X-Large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+  padding: 0 3.5rem 0 3.5rem;
+ }
+
+// XX-Large devices (larger desktops, 1400px and up)
+@media (min-width: 1400px) { 
+  padding: 0 5rem 0 5rem;
+ }
+
 }

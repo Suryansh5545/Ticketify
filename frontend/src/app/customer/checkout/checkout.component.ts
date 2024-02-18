@@ -79,10 +79,18 @@ export class CheckoutComponent {
         if (event.target.value == "SCHOOL") {
           this.TotalPrice -= parseFloat(this.eventdata[0].price);
           this.TotalPrice += parseFloat(this.eventdata[0].student_price);
+          this.SubEventsSelected.forEach((subEvent: any) => {
+            subEvent.given = true;
+        });
+        this.TotalPrice = 0;
         }
         else {
           this.TotalPrice -= parseFloat(this.eventdata[0].student_price);
           this.TotalPrice += parseFloat(this.eventdata[0].price);
+          this.SubEventsSelected.forEach((subEvent: any) => {
+            subEvent.given = false;
+            this.TotalPrice += parseFloat(subEvent.price);
+        });
         }
       }
       this.studentType = event.target.value;
@@ -162,7 +170,7 @@ export class CheckoutComponent {
       // }
       // else {
         if (event.checked) {
-          if (this.SubEventsIncluded+1 > this.EventDetailsService.event[0].sub_events_included_allowed) {
+          if (this.SubEventsIncluded+1 > this.EventDetailsService.event[0].sub_events_included_allowed && this.studentType != 'SCHOOL') {
           this.TotalPrice += parseFloat(subEvent.price);
           subEvent.given = false;
           this.SubEventsSelected.push(subEvent);
@@ -173,7 +181,7 @@ export class CheckoutComponent {
             this.SubEventsIncluded += 1;
           }
         } else {
-          if (subEvent.given == false || this.SubEventsIncluded > this.EventDetailsService.event[0].sub_events_included_allowed) {
+          if (subEvent.given == false || this.SubEventsIncluded > this.EventDetailsService.event[0].sub_events_included_allowed && this.studentType != 'SCHOOL') {
             this.TotalPrice -= parseFloat(subEvent.price);
           }
           this.SubEventsSelected.splice(this.SubEventsSelected.indexOf(subEvent), 1);

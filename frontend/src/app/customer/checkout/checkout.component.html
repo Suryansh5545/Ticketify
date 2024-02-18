@@ -1,4 +1,4 @@
-<nav class="navbar bg-black" data-bs-theme="dark">
+<nav class="navbar" data-bs-theme="dark">
   <div class="container-fluid">
     <ng-container *ngIf="eventdata && eventdata.length > 0">
       <div class="d-flex align-items-center">
@@ -20,17 +20,26 @@
             <div class="input-container">
               <div class="mb-3">
                 <label for="name" class="form-label light-text">Name</label>
-                <input type="text" class="form-control grey-input small-input" id="name" aria-describedby="nameHelp" autocomplete="name" />
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label light-text">Email address</label>
-                <input type="email" class="form-control grey-input small-input" id="email" aria-describedby="emailHelp" autocomplete="email" />
+                <div class="input-group">
+                  <span class="input-group-text"><fa-icon [icon]="['fas', 'user']"></fa-icon></span>
+                  <input type="text" class="form-control grey-input small-input" id="name" aria-describedby="nameHelp" autocomplete="name" placeholder="Name" />
+                </div>
               </div>
               <div class="mb-3">
                 <label for="phone" class="form-label light-text">Phone Number</label>
-                <input type="text" class="form-control grey-input small-input" id="phone" aria-describedby="phoneHelp" autocomplete="tel" />
+                <div class="input-group">
+                  <span class="input-group-text"><fa-icon [icon]="['fas', 'phone']"></fa-icon></span>
+                  <input type="text" class="form-control grey-input small-input" id="phone" aria-describedby="phoneHelp" autocomplete="tel" placeholder="Phone Number" />
+                </div>
               </div>
-            </div>                       
+              <div class="mb-3">
+                <label for="email" class="form-label light-text">Email address</label>
+                <div class="input-group">
+                  <span class="input-group-text"><fa-icon [icon]="['fas', 'envelope']"></fa-icon></span>
+                  <input type="email" class="form-control grey-input small-input" id="email" aria-describedby="emailHelp" autocomplete="email" placeholder="Email" />
+                </div>
+              </div>
+            </div>                                 
             <div class="mb-3">
               <label class="light-text">Are you a College Student or School Student?</label>
               <div class="form-check">
@@ -72,7 +81,7 @@
               <input type="text" class="form-control grey-input" id="referral" aria-describedby="referral" autocomplete="referral" />
             </div> -->
             <div class="my-5 text-center" *ngIf="eventdata && eventdata.length > 0">
-              <p class="section-description light-text"> Register for Food Coupon only after getting your devfolio application accepted</p>
+              <p class="section-description light-text"> Register for Food Coupon after getting your devfolio application accepted</p>
             </div>
             <div class="text-center" *ngIf="eventdata && eventdata.length > 0">
               <button class="btn btn-primary" *ngIf="eventdata[0].rules_url.length > 0">

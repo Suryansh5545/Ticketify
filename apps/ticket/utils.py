@@ -105,7 +105,10 @@ def generate_ticket_image (ticket_id):
     ticket.ticket_image.save(ticket_name, File(img_io), save=True)
     ticket.ticket_image_generated = True
     ticket.save()
-    send_ticket(ticket.id)
+    try:
+        send_ticket(ticket.id)
+    except Exception as e:
+        print(e)
     image_url = ticket.ticket_image.url
     if settings.DEBUG:
         image_url = settings.TICKETIFY_API_SERVER + image_url

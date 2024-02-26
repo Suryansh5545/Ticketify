@@ -112,7 +112,7 @@ def generate_ticket_image (ticket_id):
     image_url = ticket.ticket_image.url
     if settings.DEBUG:
         image_url = settings.TICKETIFY_API_SERVER + image_url
-    return html_content
+    return image_url
     
 
 def generate_qr_code(ticket_id):

@@ -122,7 +122,7 @@ def generate_qr_code(ticket_id):
     qr.make(fit=True)
 
     # Create an image from the QR code
-    qr_image = qr.make_image(fill_color="white", back_color="transparent")
+    qr_image = qr.make_image(fill_color="black", back_color="transparent")
 
     # Create a BytesIO object to store the image data
     qr_image_bytes = BytesIO()

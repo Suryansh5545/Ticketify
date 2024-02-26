@@ -88,14 +88,14 @@ def generate_ticket_image (ticket_id):
             "ticketType": student,
         }
 
-    template = get_template('ticket/hackjklu/index.html')
+    template = get_template('ticket/sabrang/index.html')
     html_content = template.render(ticket_data)
     options = {
         'quality': 100,
-        'crop-w': '730',
-        'crop-y': '64',
-        'crop-x': '144',
-        'crop-h': '300',
+        'crop-w': '300',
+        'crop-y': '40',
+        'crop-x': '305',
+        'crop-h': '600',
         'zoom': '2',
         "enable-local-file-access": None,
     }
@@ -112,7 +112,7 @@ def generate_ticket_image (ticket_id):
     image_url = ticket.ticket_image.url
     if settings.DEBUG:
         image_url = settings.TICKETIFY_API_SERVER + image_url
-    return image_url
+    return html_content
     
 
 def generate_qr_code(ticket_id):

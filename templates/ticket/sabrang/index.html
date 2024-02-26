@@ -3,8 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>QR Code Ticket</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <style>
+  body {
+    font-family: "Share Tech Mono", monospace;
+    color: #000000;
+  }
+
+  .title1 {
+    position: absolute;
+    top: 50px;
+    color: linear-gradient(90deg, #C33C39 7.95%, #E69235 94.22%);
+
+  }
+
   .cardWrap {
     width: 34em;
     height: 30em; /* Adjust the height to match the rotated width */
@@ -62,12 +75,11 @@
   }
   .title {
     transform: rotate(270deg);
-    font-size: 0.55em;
+    font-size: 0.58em;
     position: absolute;
-    top: 61px;
+    top: 72px;
     right: 91px;
     width: 100%;
-    font-family: "HelveticaNowDisplay Bold";
   }
   
   .name {
@@ -77,7 +89,6 @@
     right: 61px;
     top: 59px;
     width: 100%;
-    font-family: "HelveticaNowDisplay Bold";
   }
   
   .event {
@@ -89,7 +100,6 @@
     margin: 5%;
     height: 100px; /* Set a fixed height */
     overflow: hidden; /* Hide overflowing content */
-    font-family: "HelveticaNowDisplay Regular";
   }
   
   .student {
@@ -100,7 +110,6 @@
     top: 47px;
     margin: 5%;
     width: 100%;
-    font-family: "HelveticaNowDisplay Regular";
   }
   
   .location {
@@ -111,7 +120,6 @@
     top: 49px;
     margin: 5%;
     width: 100%;
-    font-family: "HelveticaNowDisplay Regular";
   }
   
   .time {
@@ -122,26 +130,25 @@
     top: -75px;
     margin: 5%;
     width: 100%;
-    font-family: "HelveticaNowDisplay Bold";
   }
   .image-bar-left {
     transform: rotate(270deg);
     position: relative;
-    left: 3%;
+    left: 1%;
     top: 65%;
-    width: 7%;
+    width: 10%;
   }
   .image-bar-right {
     position: relative;
     left: 1.5%;
-    top: 14%;
+    top: 18%;
     transform: rotate(270deg);
-    width: 10%;
+    width: 8%;
   }
   .image-bar-sponsor1 {
     position: relative;
     left: 1.5%;
-    top: 14%;
+    top: 25%;
     transform: rotate(270deg);
     width: 10%;
   }
@@ -162,7 +169,6 @@
   .number h3 {
     margin: 1.5em 0 0 0;
     font-size: 1.3em;
-    font-family: "HelveticaNowDisplay Regular";
   }
   
   .qrcode {
@@ -179,7 +185,7 @@
 <!-- partial:index.partial.html -->
 <div class="cardWrap">
   <div class="card cardLeft">
-    <h1><img src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/sabrang%20word_black.svg"></h1>
+    <h1 class="title1">HackJKLU v3.0</h1>
     <div class="title">
       <h2>{{date}}</h2>
     </div>
@@ -199,7 +205,7 @@
       <h2>{{location}}</h2>
     </div>
     <div class="time">
-      <h2>9AM Onwards</h2>
+      <h2>12PM Onwards</h2>
     </div>
   </div>
   <div class="card cardRight">
@@ -211,10 +217,10 @@
     </div>
   </div>
 
-    <img class="image-bar-left" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/jklu_logo.png">
-    <img class="image-bar-right" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/sabrang%20peacock%20white.svg">
-    <img class="image-bar-sponsor1" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/Capture.PNG">
-    <img class="image-bar-sponsor2" src="https://sabrang.blr1.cdn.digitaloceanspaces.com/sabrang/ticket_generation/Capture2.PNG">
+    <img class="image-bar-left" src="https://storageapi.ticketify.tech/ticketify2/logo/kT3sbY4.png">
+    <img class="image-bar-right" src="https://storageapi.ticketify.tech/ticketify2/logo/hackjklu-logo.webp">
+    <img class="image-bar-sponsor1" src="https://storageapi.ticketify.tech/ticketify2/logo/Capture.PNG">
+    <img class="image-bar-sponsor2" src="https://storageapi.ticketify.tech/ticketify2/logo/Capture.PNG">
 </div>
 <!-- partial -->
   

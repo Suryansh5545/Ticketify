@@ -6,6 +6,7 @@ from ticket.models import Ticket, CheckIn
 from transactions.models import Transaction
 from django.contrib.auth.models import User
 from django.utils.timezone import make_aware
+import pdb
 
 
 class TestTicket(TestCase):
@@ -17,7 +18,7 @@ class TestTicket(TestCase):
                 name="Event",
                 description="Test Event",
                 start_date="2023-09-26",
-                end_date="2023-09-29",
+                end_date="2030-09-29",
                 location="Test",
                 price=300.00,
                 sub_events_included_allowed=3,
@@ -53,7 +54,7 @@ class TestTicket(TestCase):
             customer_name="Test User",
             customer_email="example@email.com",
             customer_phone="1234567890",
-            event_id=1,
+            event=self.event,
             is_active=True,
             check_in="1234567890",
             transaction_id=self.transaction,
@@ -108,7 +109,6 @@ class TestTicket(TestCase):
             "/api/ticket/handle_check_in/",
             {
                 "ticket_id": self.ticket.check_in,
-                "operator": self.user.id,
             },
         )
         self.assertEqual(request.status_code, 200)

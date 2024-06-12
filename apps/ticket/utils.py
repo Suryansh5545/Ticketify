@@ -61,7 +61,7 @@ def create_ticket(request, order_id=None, promo_applied=False):
 
 
 @shared_task(name="generate_ticket_image")
-def generate_ticket_image (ticket_id):
+def generate_ticket_image(ticket_id):
     ticket = Ticket.objects.get(pk=ticket_id)
     encrypted_ticket_id = encrypt_decrypt_ticket_id(ticket.id)
     qr_code_image = generate_qr_code(ticket.check_in)
@@ -87,17 +87,27 @@ def generate_ticket_image (ticket_id):
             "barcodeImageURL": f"data:image/png;base64,{qr_code_image_base64}",
             "ticketType": student,
         }
-
-    template = get_template('ticket/sabrang/index.html')
-    html_content = template.render(ticket_data)
-    options = {
-        'quality': 100,
-        'crop-w': '300',
-        'crop-y': '40',
-        'crop-x': '305',
-        'crop-h': '600',
-        'zoom': '2',
-    }
+    event_template = ticket.event.ticket_template
+    if event_template == 'testing':
+        template = get_template('ticket/ticket_template.html')
+        html_content = template.render(ticket_data)
+        options = {
+            'width': '802',
+            'height': '250',
+            'quality': 100,
+            'zoom': '2.0',
+        }
+    else:
+        template = get_template('ticket/sabrang/index.html')
+        html_content = template.render(ticket_data)
+        options = {
+            'quality': 100,
+            'crop-w': '300',
+            'crop-y': '40',
+            'crop-x': '305',
+            'crop-h': '600',
+            'zoom': '2',
+        }
     ticket_name = f"ticket_{encrypted_ticket_id}.jpg"
     img_bytes = imgkit.from_string(html_content, None, options=options)
     img_io = io.BytesIO(img_bytes)

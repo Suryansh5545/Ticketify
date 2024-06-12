@@ -28,6 +28,11 @@ class Event(models.Model):
     maintaince_mode = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    template_options = (
+        ('sabrang', 'SABRANG'),
+        ('testing', 'TESTING')
+    )
+    ticket_template = models.CharField(max_length=100,choices=template_options, default='testing')
 
 
     def save(self, *args, **kwargs):

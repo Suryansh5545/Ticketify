@@ -113,81 +113,85 @@ class PaymentWebhook(APIView):
     Handle Payment Webhook
     """
     def post(self, request):
-        payload_body = json.dumps(request.data, separators=(',', ':'))
-        webhook_signature = request.headers.get("X-Razorpay-Signature")
-        webhook_secret = os.environ.get("RAZORPAY_WEBHOOK_SECRET")
-        webhook_valid = client.utility.verify_webhook_signature(payload_body, webhook_signature, webhook_secret)
-        if webhook_valid:
-            data = json.loads(payload_body)
-            if data['event'] == "order.paid":
-                transaction = Transaction.objects.get(order_id=data['payload']['order']['entity']['id'])
-                transaction.payment_status = "captured"
-                transaction.webhook_recieved = True
-                if transaction.payment_id == "":
-                    transaction.payment_id = data['payload']['payment']['entity']['id']
-                transaction.payment_method = data['payload']['payment']['entity']['method']
-                transaction.save()
-                ticket = Ticket.objects.get(order_id = transaction.order_id)
-                ticket.transaction_id = transaction
-                ticket.is_active = True
-                if ticket.ticket_image_generated == False:
-                    image = generate_ticket_image(ticket.id)
-                    ticket.ticket_image_generated = True
+        event = Event.objects.get(is_active=True)
+        if event.payment_gateway == "razorpay":
+            payload_body = json.dumps(request.data, separators=(',', ':'))
+            webhook_signature = request.headers.get("X-Razorpay-Signature")
+            webhook_secret = os.environ.get("RAZORPAY_WEBHOOK_SECRET")
+            webhook_valid = client.utility.verify_webhook_signature(payload_body, webhook_signature, webhook_secret)
+            if webhook_valid:
+                data = json.loads(payload_body)
+                if data['event'] == "order.paid":
+                    transaction = Transaction.objects.get(order_id=data['payload']['order']['entity']['id'])
+                    transaction.payment_status = "captured"
+                    transaction.webhook_recieved = True
+                    if transaction.payment_id == "":
+                        transaction.payment_id = data['payload']['payment']['entity']['id']
+                    transaction.payment_method = data['payload']['payment']['entity']['method']
+                    transaction.save()
+                    ticket = Ticket.objects.get(order_id = transaction.order_id)
+                    ticket.transaction_id = transaction
+                    ticket.is_active = True
+                    if ticket.ticket_image_generated == False:
+                        image = generate_ticket_image(ticket.id)
+                        ticket.ticket_image_generated = True
+                    else:
+                        return Response({"message": "Webhook recieved"}, status=status.HTTP_200_OK)
+                    ticket.save()
+                    return Response({"message": "Order Paid Notified"}, status=status.HTTP_202_ACCEPTED)
+                elif data['event'] == "payment.captured":
+                    transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'])
+                    if transaction.webhook_recieved == True:
+                        return Response({"message": "Webhook Confirmation already Recieved"}, status=status.HTTP_200_OK)
+                    transaction.payment_status = "captured"
+                    if transaction.payment_id == "":
+                        transaction.payment_id = data['payload']['payment']['entity']['id']
+                    transaction.webhook_recieved = True
+                    transaction.payment_method = data['payload']['payment']['entity']['method']
+                    transaction.save()
+                    ticket = Ticket.objects.get(order_id = transaction.order_id)
+                    ticket.transaction_id = transaction
+                    ticket.is_active = True
+                    if ticket.ticket_image_generated == False:
+                        image = generate_ticket_image(ticket.id)
+                        ticket.ticket_image_generated = True
+                    else:
+                        return Response({"message": "Webhook recieved"}, status=status.HTTP_200_OK)
+                    ticket.save()
+                    return Response({"message": "Payment Captured Notified"}, status=status.HTTP_200_OK)
+                elif data['event'] == "payment.failed":
+                    transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'])
+                    transaction.payment_status = "failed"
+                    transaction.webhook_recieved = True
+                    transaction.save()
+                    ticket = Ticket.objects.get(order_id = transaction.order_id)
+                    ticket.transaction_id = transaction
+                    ticket.is_active = False
+                    ticket.save()
+                    return Response({"message": "Payment Captured Notified"}, status=status.HTTP_202_ACCEPTED)
+                elif data['event'] == "payment.dispute.created":
+                    transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'], payment_id=data['payload']['payment']['entity']['id'])
+                    transaction.payment_status = "disputed"
+                    transaction.save()
+                    ticket = Ticket.objects.get(order_id = transaction.order_id)
+                    ticket.is_active = False
+                    ticket.save()
+                    message = "Dispute Created for Order ID: " + data['payload']['payment']['entity']['order_id'] + " Payment ID: " + data['payload']['payment']['entity']['id'] + " Amount: " + data['payload']['payment']['entity']['amount'] + " Reason: " + data['payload']['dispute']['entity']['reason_code']
+                    EmailService.send_email("Payment Disputed", message, os.environ.get("NOTIFICATION_EMAIL"))
+                    return Response({"message": "Payment Disputed Notified"}, status=status.HTTP_202_ACCEPTED)
+                elif data['event'] == "refund.created":
+                    transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'], payment_id=data['payload']['payment']['entity']['id'])
+                    transaction.payment_status = "refunded"
+                    transaction.save()
+                    ticket = Ticket.objects.get(order_id = transaction.order_id)
+                    ticket.is_active = False
+                    ticket.save()
+                    return Response({"message": "Payment Refunded Notified"}, status=status.HTTP_202_ACCEPTED)
                 else:
+                    message = "Webhook recieved for " + data['event'] + "Unable to handle this event"
+                    EmailService.send_email("Unknown Webhook Recieved", message, os.environ.get("NOTIFICATION_EMAIL"))
                     return Response({"message": "Webhook recieved"}, status=status.HTTP_200_OK)
-                ticket.save()
-                return Response({"message": "Order Paid Notified"}, status=status.HTTP_202_ACCEPTED)
-            elif data['event'] == "payment.captured":
-                transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'])
-                if transaction.webhook_recieved == True:
-                    return Response({"message": "Webhook Confirmation already Recieved"}, status=status.HTTP_200_OK)
-                transaction.payment_status = "captured"
-                if transaction.payment_id == "":
-                    transaction.payment_id = data['payload']['payment']['entity']['id']
-                transaction.webhook_recieved = True
-                transaction.payment_method = data['payload']['payment']['entity']['method']
-                transaction.save()
-                ticket = Ticket.objects.get(order_id = transaction.order_id)
-                ticket.transaction_id = transaction
-                ticket.is_active = True
-                if ticket.ticket_image_generated == False:
-                    image = generate_ticket_image(ticket.id)
-                    ticket.ticket_image_generated = True
-                else:
-                    return Response({"message": "Webhook recieved"}, status=status.HTTP_200_OK)
-                ticket.save()
-                return Response({"message": "Payment Captured Notified"}, status=status.HTTP_200_OK)
-            elif data['event'] == "payment.failed":
-                transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'])
-                transaction.payment_status = "failed"
-                transaction.webhook_recieved = True
-                transaction.save()
-                ticket = Ticket.objects.get(order_id = transaction.order_id)
-                ticket.transaction_id = transaction
-                ticket.is_active = False
-                ticket.save()
-                return Response({"message": "Payment Captured Notified"}, status=status.HTTP_202_ACCEPTED)
-            elif data['event'] == "payment.dispute.created":
-                transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'], payment_id=data['payload']['payment']['entity']['id'])
-                transaction.payment_status = "disputed"
-                transaction.save()
-                ticket = Ticket.objects.get(order_id = transaction.order_id)
-                ticket.is_active = False
-                ticket.save()
-                message = "Dispute Created for Order ID: " + data['payload']['payment']['entity']['order_id'] + " Payment ID: " + data['payload']['payment']['entity']['id'] + " Amount: " + data['payload']['payment']['entity']['amount'] + " Reason: " + data['payload']['dispute']['entity']['reason_code']
-                EmailService.send_email("Payment Disputed", message, os.environ.get("NOTIFICATION_EMAIL"))
-                return Response({"message": "Payment Disputed Notified"}, status=status.HTTP_202_ACCEPTED)
-            elif data['event'] == "refund.created":
-                transaction = Transaction.objects.get(order_id=data['payload']['payment']['entity']['order_id'], payment_id=data['payload']['payment']['entity']['id'])
-                transaction.payment_status = "refunded"
-                transaction.save()
-                ticket = Ticket.objects.get(order_id = transaction.order_id)
-                ticket.is_active = False
-                ticket.save()
-                return Response({"message": "Payment Refunded Notified"}, status=status.HTTP_202_ACCEPTED)
             else:
-                message = "Webhook recieved for " + data['event'] + "Unable to handle this event"
-                EmailService.send_email("Unknown Webhook Recieved", message, os.environ.get("NOTIFICATION_EMAIL"))
-                return Response({"message": "Webhook recieved"}, status=status.HTTP_200_OK)
+                return Response({"message": "Invalid Webhook Signature"}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({"message": "Invalid Webhook Signature"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Webhook not supported"}, status=status.HTTP_400_BAD_REQUEST)

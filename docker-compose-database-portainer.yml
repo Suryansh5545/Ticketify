@@ -36,6 +36,8 @@ services:
 volumes:
   postgres-data:
   redis-data:
+  s3data:
+  minio_storage: {}
 
 networks:
   default:

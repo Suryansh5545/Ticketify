@@ -23,7 +23,7 @@ The idea to create this came from the fact that many fest/events hosted by colle
 6. Admin Page with Stats for Ticket Sale, Sub Event Sale, Addon and Total Check IN.
 7. Android APP for QR Scanning (A Anroid app will be far more faster and better at this then a webcam)(Under Development).
 8. Celery worker support to handle heavy task of ticket image generation.
-9. Webhooks to detect initation of Dispute or refund and disable the ticket or payment captured in case of late capture. This will mark the ticket paid and send a email to customer.(Razorpay Only for now)
+9. Webhooks to detect initation of Dispute or refund and disable the ticket or payment captured in case of late capture. This will mark the ticket paid and send a email to customer.(Razorpay Only for now, Sabrang Branch suuports Billdesk too)
 10. Constnat Evaluation of all ticket sold for the active event to check for there payment status. Which will make sure that all scenerios are covered of transaction failure or late success. (Razorpay Only for now)
 
 # Is the system stable and tested for commercial use?

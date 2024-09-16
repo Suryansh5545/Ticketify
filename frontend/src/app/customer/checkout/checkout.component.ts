@@ -122,45 +122,45 @@ export class CheckoutComponent {
     }
 
     SelectSubEvent(event: any, subEvent: any) {
-      // if (subEvent.type == 'premium') {
-      //   if (event.checked) {
-      //     if (this.PremiumSubEventsIncluded+1 > this.EventDetailsService.event[0].flagship_event_included_allowed) {
-      //     this.TotalPrice += parseFloat(subEvent.price);
-      //     subEvent.given = false;
-      //     this.SubEventsSelected.push(subEvent);
-      //     }
-      //     else {
-      //       subEvent.given = true;
-      //       this.SubEventsSelected.push(subEvent);
-      //       this.PremiumSubEventsIncluded += 1;
-      //     }
-      //   } else {
-      //     if (subEvent.given == false || this.PremiumSubEventsIncluded > this.EventDetailsService.event[0].flagship_event_included_allowed) {
-      //       this.TotalPrice -= parseFloat(subEvent.price);
-      //     }
-      //     this.SubEventsSelected.splice(this.SubEventsSelected.indexOf(subEvent), 1);
-      //     let executed = 0;
-      //     for (let i = 0; i < this.SubEventsSelected.length && executed < this.EventDetailsService.event[0].flagship_event_included_allowed; i++) {
-      //       if(this.SubEventsSelected[i].type == 'premium') {
-      //         executed += 1;
-      //         if (this.SubEventsSelected[i].given == false) {
-      //             this.TotalPrice -= parseFloat(this.SubEventsSelected[i].price);
-      //           this.SubEventsSelected[i].given = true;
-      //           }
-      //       }
-      //     }
-      //     let count = 0;
-      //     this.SubEventsSelected.forEach((subEvent: any) => {
-      //       if (subEvent.type != 'standard') {
-      //       if (subEvent.given == true) {
-      //         count += 1;
-      //       }
-      //       }
-      //     });
-      //     this.PremiumSubEventsIncluded = count;
-      // }
-      // }
-      // else {
+      if (subEvent.type == 'premium') {
+        if (event.checked) {
+          if (this.PremiumSubEventsIncluded+1 > this.EventDetailsService.event[0].flagship_event_included_allowed) {
+          this.TotalPrice += parseFloat(subEvent.price);
+          subEvent.given = false;
+          this.SubEventsSelected.push(subEvent);
+          }
+          else {
+            subEvent.given = true;
+            this.SubEventsSelected.push(subEvent);
+            this.PremiumSubEventsIncluded += 1;
+          }
+        } else {
+          if (subEvent.given == false || this.PremiumSubEventsIncluded > this.EventDetailsService.event[0].flagship_event_included_allowed) {
+            this.TotalPrice -= parseFloat(subEvent.price);
+          }
+          this.SubEventsSelected.splice(this.SubEventsSelected.indexOf(subEvent), 1);
+          let executed = 0;
+          for (let i = 0; i < this.SubEventsSelected.length && executed < this.EventDetailsService.event[0].flagship_event_included_allowed; i++) {
+            if(this.SubEventsSelected[i].type == 'premium') {
+              executed += 1;
+              if (this.SubEventsSelected[i].given == false) {
+                  this.TotalPrice -= parseFloat(this.SubEventsSelected[i].price);
+                this.SubEventsSelected[i].given = true;
+                }
+            }
+          }
+          let count = 0;
+          this.SubEventsSelected.forEach((subEvent: any) => {
+            if (subEvent.type != 'standard') {
+            if (subEvent.given == true) {
+              count += 1;
+            }
+            }
+          });
+          this.PremiumSubEventsIncluded = count;
+      }
+      }
+      else {
         if (event.checked) {
           if (this.SubEventsIncluded+1 > this.EventDetailsService.event[0].sub_events_included_allowed) {
           this.TotalPrice += parseFloat(subEvent.price);
@@ -179,25 +179,25 @@ export class CheckoutComponent {
           this.SubEventsSelected.splice(this.SubEventsSelected.indexOf(subEvent), 1);
           let executed = 0;
           for (let i = 0; i < this.SubEventsSelected.length && executed < this.EventDetailsService.event[0].sub_events_included_allowed; i++) {
-            // if(this.SubEventsSelected[i].type == 'standard') {
+            if(this.SubEventsSelected[i].type == 'standard') {
             executed += 1;
             if (this.SubEventsSelected[i].given == false) {
                 this.TotalPrice -= parseFloat(this.SubEventsSelected[i].price);
               this.SubEventsSelected[i].given = true;
               }
-            // }
+            }
           }
           let count = 0;
           this.SubEventsSelected.forEach((subEvent: any) => {
-            // if (subEvent.type != 'premium') {
+            if (subEvent.type != 'premium') {
             if (subEvent.given == true) {
               count += 1;
             }
-            // }
+            }
           });
           this.SubEventsIncluded = count;
         }
-      // }
+      }
   }
 
     onAddonSelectionChange(addonlist: any) {

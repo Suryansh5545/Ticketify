@@ -8,5 +8,5 @@
  */
 export const environment = {
     production: true,
-    api_endpoint: 'https://event.jklu.edu.in/api/',
+    api_endpoint: 'https://sabrang.ticketless.online/api/',
   };

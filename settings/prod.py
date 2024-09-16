@@ -44,7 +44,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://ticketify.tech",
     "https://sabrang.ticketify.tech",
     "https://staging.ticketify.tech",
-    "https://event.jklu.edu.in",
+    "https://sabrang.ticketless.online",
 ]
 
 # S3 Bucket settings

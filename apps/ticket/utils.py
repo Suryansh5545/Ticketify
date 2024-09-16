@@ -80,7 +80,7 @@ def generate_ticket_image(ticket_id):
             "showName": ticket.event.name,
             "location": ticket.event.location,
             "day": ticket.event.start_date.strftime("%A"),
-            "date": ticket.event.start_date.strftime("%d %B %Y") + " - " + ticket.event.end_date.strftime("%d %B %Y"),
+            "date": ticket.event.start_date.strftime("%d %B") + " - " + ticket.event.end_date.strftime("%d %B"),
             "year": ticket.event.start_date.strftime("%Y"),
             "timeSlot": ticket.event.start_date.strftime("%I:%M %p"),
             "doors": sub_events,
@@ -128,7 +128,7 @@ def generate_qr_code(ticket_id):
     qr.make(fit=True)
 
     # Create an image from the QR code
-    qr_image = qr.make_image(fill_color="black", back_color="white")
+    qr_image = qr.make_image(fill_color="white", back_color=(25, 12, 61))
 
     # Create a BytesIO object to store the image data
     qr_image_bytes = BytesIO()

@@ -68,7 +68,7 @@
               <input type="text" class="form-control grey-input" id="referral" aria-describedby="referral" autocomplete="referral" />
             </div>
             <div class="my-5 text-center" *ngIf="eventdata && eventdata.length > 0">
-              <p class="section-description light-text"> Upto {{eventdata[0].sub_events_included_allowed}} Events included in Ticket Price</p>
+              <p class="section-description light-text"> Upto {{eventdata[0].sub_events_included_allowed + eventdata[0].flagship_event_included_allowed}} Events included in Ticket Price</p>
             </div>
             <div class="text-center" *ngIf="eventdata && eventdata.length > 0">
               <button class="btn btn-primary" *ngIf="eventdata[0].rules_url.length > 0">

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>QR Code Ticket</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 </head>
 <style>
   body {
@@ -65,20 +68,22 @@
   }
   .title {
     transform: rotate(270deg);
-    font-size: 0.55em;
+    font-size: 0.50em;
     position: absolute;
-    top: 61px;
-    right: 91px;
+    top: 63px;
+    right: 88px;
     width: 100%;
+    font-family: "Rubik", sans-serif;
   }
   
   .name {
     transform: rotate(270deg);
     font-size: 0.7em;
     position: absolute;
-    right: 61px;
+    right: 57px;
     top: 59px;
     width: 100%;
+    font-family: "Rubik", sans-serif;
   }
   
   .event {
@@ -87,9 +92,11 @@
     position: absolute;
     top: 48px;
     width: 80%;
+    right: -5px;
     margin: 5%;
     height: 100px; /* Set a fixed height */
     overflow: hidden; /* Hide overflowing content */
+    font-family: "Rubik", sans-serif;
   }
   
   .student {
@@ -100,6 +107,7 @@
     top: 47px;
     margin: 5%;
     width: 100%;
+    font-family: "Rubik", sans-serif;
   }
   
   .location {
@@ -110,6 +118,7 @@
     top: 49px;
     margin: 5%;
     width: 100%;
+    font-family: "Rubik", sans-serif;
   }
   
   .time {
@@ -120,6 +129,7 @@
     top: -75px;
     margin: 5%;
     width: 100%;
+    font-family: "Rubik", sans-serif;
   }
   .image-bar-left {
     transform: rotate(270deg);
@@ -159,6 +169,7 @@
   .number h3 {
     margin: 1.5em 0 0 0;
     font-size: 1.3em;
+    font-family: "Rubik", sans-serif;
   }
   
   .qrcode {
@@ -195,7 +206,7 @@
       <h2>{{location}}</h2>
     </div>
     <div class="time">
-      <h2>9AM Onwards</h2>
+      <h2></h2>
     </div>
   </div>
   <div class="card cardRight">

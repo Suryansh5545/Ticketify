@@ -30,7 +30,7 @@ app.conf.beat_schedule = {
     },
     'check_promo': {
         'task': 'event.tasks.check_promo',
-        'schedule': 3600.0,  # 1 hour
+        'schedule': 7200.0,  # 1 hour
     },
     'check_old_transactions': {
         'task': 'transactions.tasks.check_old_transactions',

@@ -6,6 +6,9 @@ from transactions.serializers import TransactionSerializer
 class SelectedSubEventSerializer(serializers.Serializer):
     id = serializers.IntegerField()
 
+class SelectedSubEventNameSerializer(serializers.Serializer):
+    name = serializers.CharField()
+
 class TicketSerializer(serializers.Serializer):
     customer_name = serializers.CharField()
     customer_email = serializers.EmailField()
@@ -62,9 +65,24 @@ class TicketSerializerExcel(serializers.Serializer):
     customer_name = serializers.CharField()
     customer_email = serializers.EmailField()
     customer_phone = serializers.CharField()
+    
+    # Use the nested serializer to serialize selected sub-events
+    selected_sub_events = SelectedSubEventNameSerializer(many=True, required=False)
+
     college_name = serializers.CharField()
     referral = serializers.CharField(required=False, allow_blank=True)
-    payment_amount = serializers.DecimalField(max_digits=10, decimal_places=2, source='transaction_id.payment_amount',allow_null=True)
+    payment_amount = serializers.DecimalField(max_digits=10, decimal_places=2, source='transaction_id.payment_amount', allow_null=True)
+
+    def to_representation(self, instance):
+        # Call the parent method to get the standard representation
+        representation = super().to_representation(instance)
+
+        # Here we can manipulate the selected_sub_events field if needed
+        if 'selected_sub_events' in representation:
+            # Extract only names if required
+            representation['selected_sub_events'] = ', '.join(item['name'] for item in representation['selected_sub_events'])
+        
+        return representation
 
 class TicketVerify(serializers.Serializer):
     id = serializers.CharField()

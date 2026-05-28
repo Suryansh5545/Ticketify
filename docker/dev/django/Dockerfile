@@ -1,11 +1,11 @@
-FROM python:3.11
+FROM python:3.11-bullseye
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-#System Dependencies
-RUN apt-get update
-RUN apt-get install -y wkhtmltopdf
+RUN apt-get update && apt-get install -y \
+    wkhtmltopdf \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 RUN mkdir /code

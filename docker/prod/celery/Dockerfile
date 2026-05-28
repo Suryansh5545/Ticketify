@@ -1,8 +1,9 @@
-FROM python:3.11
+FROM python:3.11-bullseye
 
-#System Dependencies
-RUN apt-get update
-RUN apt-get install -y wkhtmltopdf
+
+RUN apt-get update && apt-get install -y \
+    wkhtmltopdf \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 RUN mkdir /code

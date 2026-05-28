@@ -3,7 +3,7 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
-DEBUG = True
+DEBUG = False
 
 # Admin settings
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")

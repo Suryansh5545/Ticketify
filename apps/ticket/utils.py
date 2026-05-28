@@ -74,7 +74,7 @@ def generate_ticket_image (ticket_id):
     img_bytes = imgkit.from_string(html_content, None, options=options)
     img_io = io.BytesIO(img_bytes)
     ticket.ticket_image.save(ticket_name, File(img_io), save=True)
-    send_ticket(ticket.id)
+    send_ticket.delay(ticket.id)
     image_url = ticket.ticket_image.url
     if settings.DEBUG:
         image_url = settings.TICKETIFY_API_SERVER + image_url
